@@ -1,0 +1,17 @@
+
+DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+
+/00_NOTES
+/01_ASSETS
+/02/DEV/android_studio/Selfieclub/.gradle
+/02/DEV/android_studio/Selfieclub/local.properties
+/02/DEV/android_studio/Selfieclub/.idea/workspace.xml
+/02/DEV/android_studio/Selfieclub/app/build
+/03/DEPLOY
