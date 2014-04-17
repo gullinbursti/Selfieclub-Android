@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="app_name">SelfieClub</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="accessibility_topnav_tab">TOPNAV</string>
+    <string name="accessibility_imagebutton_maincamera">CAMERA</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="empty_string"></string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="tab_friends_title">Friends</string>
+    <string name="tab_clubs_title">Clubs</string>
+    <string name="tab_verify_title">Verify</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="friends_message">
+<![CDATA[
+
+
+           Friends Section
+
+
+]]>
+    </string>
+    <string name="clubs_message">
+<![CDATA[
+
+
+           Clubs Section
+
+
+]]>
+    </string>
+    <string name="verify_message">
+<![CDATA[
+
+
+           Verify Section
+
+
+]]>
+    </string>
+    <string name="camera_message">
+<![CDATA[
+
+
+           Camera Section
+
+
+]]>
+    </string>
+    <string name="settings_message">
+<![CDATA[
+
+
+           Settings Section
+
+
+]]>
+    </string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="fpo_textview_lorem">LOREM IPSUM SIT DOLAR AMET</string>
+    <string name="fpo_textview_hoge">HOGE PIYO</string>
+    <string name="fpo_textview_hogera">HOGERA PIYO</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

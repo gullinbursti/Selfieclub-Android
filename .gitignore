@@ -10,8 +10,9 @@ Thumbs.db
 
 /00_NOTES
 /01_ASSETS
-/02/DEV/android_studio/Selfieclub/.gradle
+02_DEV/android_studio/SelfieClub/.gradle
+02_DEV/android_studio/SelfieClub/.idea
 /02/DEV/android_studio/Selfieclub/local.properties
 /02/DEV/android_studio/Selfieclub/.idea/workspace.xml
-/02/DEV/android_studio/Selfieclub/app/build
+02_DEV/android_studio/SelfieClub/app/build
 /03/DEPLOY

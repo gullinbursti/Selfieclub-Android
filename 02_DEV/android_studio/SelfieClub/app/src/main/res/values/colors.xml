@@ -1,0 +1,15 @@
+<resources>
+<!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <color name="black_overlay">#66000000</color>
+
+<!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <color name="activity_friends_bg_color">#ff004080</color>
+    <color name="activity_clubs_bg_color">#ff008000</color>
+    <color name="activity_verify_bg_color">#ff330080</color>
+    <color name="activity_camera_bg_color">#ff545454</color>
+    <color name="activity_settings_bg_color">#ff800079</color>
+
+<!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+</resources>
