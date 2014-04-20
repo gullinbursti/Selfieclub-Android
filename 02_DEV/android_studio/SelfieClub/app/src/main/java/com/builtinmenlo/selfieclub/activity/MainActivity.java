@@ -24,7 +24,6 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -77,8 +76,6 @@ public class MainActivity extends Activity {
 		clubsTab.setText(R.string.tab_clubs_title);
 		clubsTab.setTabListener(new TabButtonListener(clubsFragment));
 		topNavActionBar.addTab(clubsTab);
-
-		Camera c = Camera.open();
 
 		verifyTab = topNavActionBar.newTab();
 		verifyTab.setText(R.string.tab_verify_title);
