@@ -19,13 +19,14 @@ package com.builtinmenlo.selfieclub.activity;
 
 //] includes [!]>
 //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
+
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;

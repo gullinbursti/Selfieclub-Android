@@ -18,10 +18,10 @@ package com.builtinmenlo.selfieclub.listeners;
 
 //] includes [!]>
 //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
+
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.util.Log;
 
 import com.builtinmenlo.selfieclub.R;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[

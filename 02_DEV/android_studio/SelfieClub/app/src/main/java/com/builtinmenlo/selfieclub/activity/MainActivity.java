@@ -19,6 +19,7 @@ package com.builtinmenlo.selfieclub.activity;
 
 //] includes [!]>
 //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -29,7 +30,6 @@ import android.util.Log;
 import android.view.View;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.activity.CameraActivity;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.SettingsTabBtnFragment;

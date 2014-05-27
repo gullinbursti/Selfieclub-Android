@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/imgAddOrCheck"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="5dp" />
+
+
+    <ImageView
+        android:id="@+id/imgFollowers"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:id="@+id/lblFollowers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:minWidth="10dp"
+        android:singleLine="true"
+        android:layout_toRightOf="@+id/imgFollowers"
+        android:textSize="16dp" />
+
+    <ImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/lblFollowers" />
+
+    <ImageView
+        android:id="@+id/imgAvatarCheck"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignRight="@+id/imgAvatar"
+        android:layout_alignBottom="@+id/imgAvatar"
+        android:background="@drawable/verified_overlay" />
+
+
+    <TextView
+        android:id="@+id/lblName"
+        android:layout_marginLeft="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/imgAddOrCheck"
+        android:layout_toRightOf="@+id/imgAvatar"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@android:color/black"
+        android:textSize="20dp" />
+
+
+</RelativeLayout>
