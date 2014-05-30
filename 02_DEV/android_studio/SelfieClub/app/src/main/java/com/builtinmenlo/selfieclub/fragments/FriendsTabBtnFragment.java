@@ -31,6 +31,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
+import com.builtinmenlo.selfieclub.models.UserActivity;
+import com.builtinmenlo.selfieclub.models.UserActivityProtocol;
 import com.loopj.android.http.*;
 
 import java.io.IOException;
@@ -55,10 +58,14 @@ import java.util.List;
 
 
 // <[!] class delaration [¡]>
-public class FriendsTabBtnFragment extends Fragment {
+public class FriendsTabBtnFragment extends Fragment implements UserActivityProtocol{
     public ListView lv;
     public List<Friend> friends;
     private MyCustomAdapter myAdapter;
+
+    public void testMethod(String message){
+        Log.w("Activity",message);
+    }
 
     private String[] imageURLArray = new String[]{
             "http://farm8.staticflickr.com/7315/9046944633_881f24c4fa_s.jpg",
@@ -175,9 +182,12 @@ public class FriendsTabBtnFragment extends Fragment {
         friend2.setFriend(false);
         friend2.setFollowers(40);
 
-
         friends.add(friend1);
         friends.add(friend2);
+
+        UserActivity userActivity = new UserActivity(this);
+        userActivity.doRequest();
+
 
         lv = (ListView) view.findViewById(android.R.id.list);
         if (lv != null) {
