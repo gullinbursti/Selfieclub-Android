@@ -2,7 +2,6 @@ package com.builtinmenlo.selfieclub.models;
 
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 
 import org.apache.http.HttpResponse;
@@ -18,17 +17,15 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 
-import com.builtinmenlo.selfieclub.models.SCAsyncGetInterface;
-
 /**
  * Created by Leonardo on 5/31/14.
  */
 
-public class SCAsyncGet extends AsyncTask<String,String,String> {
+public class AsyncGet extends AsyncTask<String,String,String> {
 
-    private SCAsyncGetInterface scAsyncGetInterface;
+    private AsyncGetProtocol scAsyncGetInterface;
 
-    public SCAsyncGet(SCAsyncGetInterface scAsyncGetInterface){
+    public AsyncGet(AsyncGetProtocol scAsyncGetInterface){
         this.scAsyncGetInterface = scAsyncGetInterface;
     }
 
@@ -49,7 +46,7 @@ public class SCAsyncGet extends AsyncTask<String,String,String> {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(
                         is, "iso-8859-1"), 8);
                 StringBuilder sb = new StringBuilder();
-                String line = null;
+                String line;
                 while ((line = reader.readLine()) != null) {
                     sb.append(line + "\n");
                 }

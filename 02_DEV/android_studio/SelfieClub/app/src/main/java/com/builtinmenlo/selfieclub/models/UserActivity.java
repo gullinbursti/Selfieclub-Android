@@ -1,20 +1,19 @@
 package com.builtinmenlo.selfieclub.models;
 import com.builtinmenlo.selfieclub.Constants;
-import com.builtinmenlo.selfieclub.models.SCAsyncGet;
 
 /**
  * Created by Leonardo on 5/29/14.
  */
-public class UserActivity implements SCAsyncGetInterface
+public class UserActivity implements AsyncGetProtocol
 {
     private UserActivityProtocol userActivityProtocol;
-    private SCAsyncGet scAsyncGet = null;
+    private AsyncGet scAsyncGet = null;
 
 
     public UserActivity (UserActivityProtocol userActivityProtocol){
         this.userActivityProtocol = userActivityProtocol;
         if(this.scAsyncGet == null){
-            this.scAsyncGet = new SCAsyncGet(this);
+            this.scAsyncGet = new AsyncGet(this);
         }
     }
 
