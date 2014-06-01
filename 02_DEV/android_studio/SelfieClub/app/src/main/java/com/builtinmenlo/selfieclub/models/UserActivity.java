@@ -1,6 +1,9 @@
 package com.builtinmenlo.selfieclub.models;
 import com.builtinmenlo.selfieclub.Constants;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * Created by Leonardo on 5/29/14.
  */
@@ -24,8 +27,12 @@ public class UserActivity implements AsyncGetProtocol
     }
 
 
-    public void didReceiveData(String data){
-        this.userActivityProtocol.testMethod(data);
+    public void didReceiveData(JSONArray data){
+        try{
+            this.userActivityProtocol.testMethod(data.getJSONObject(0).toString());
+        }
+        catch (Exception e){}
+
     }
     public void didReceiveError(String error){
         this.userActivityProtocol.testMethod(error);

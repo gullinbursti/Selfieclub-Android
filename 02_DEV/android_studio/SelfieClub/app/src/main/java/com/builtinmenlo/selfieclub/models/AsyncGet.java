@@ -9,6 +9,9 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 import java.io.BufferedReader;
@@ -69,7 +72,13 @@ public class AsyncGet extends AsyncTask<String,String,String> {
 
     @Override
     protected void onPostExecute(String result){
-        this.scAsyncGetInterface.didReceiveData(result);
+        try{
+            JSONArray jsonArray = new JSONArray(result);
+            this.scAsyncGetInterface.didReceiveData(jsonArray);
+        }
+        catch (JSONException e){
+            this.scAsyncGetInterface.didReceiveError("Error parsing Json:"+result);
+        }
 
     }
 
