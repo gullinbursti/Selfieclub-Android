@@ -43,6 +43,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.models.UserActivity;
 import com.builtinmenlo.selfieclub.models.UserActivityProtocol;
@@ -62,10 +63,6 @@ public class FriendsTabBtnFragment extends Fragment implements UserActivityProto
     public ListView lv;
     public List<Friend> friends;
     private MyCustomAdapter myAdapter;
-
-    public void testMethod(String message){
-        Log.w("Activity",message);
-    }
 
     private String[] imageURLArray = new String[]{
             "http://farm8.staticflickr.com/7315/9046944633_881f24c4fa_s.jpg",
@@ -186,7 +183,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserActivityProto
         friends.add(friend2);
 
         UserActivity userActivity = new UserActivity(this);
-        userActivity.doRequest();
+        userActivity.requestUserActivity("131849");
 
 
         lv = (ListView) view.findViewById(android.R.id.list);
@@ -263,4 +260,10 @@ public class FriendsTabBtnFragment extends Fragment implements UserActivityProto
 
     }
 
+    public void didReceiveUserActivity(ArrayList<ActivityItem> activityList){
+        Log.w("Info",activityList.toString());
+    }
+    public void didReceiveUserActivityError(String error){
+        Log.e("Activity_error",error);
+    }
 }
