@@ -183,7 +183,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserActivityProto
         friends.add(friend2);
 
         UserActivity userActivity = new UserActivity(this);
-        userActivity.requestUserActivity("131849");
+        userActivity.requestUserActivity("131849","2014-05-31 16:30:55");
 
 
         lv = (ListView) view.findViewById(android.R.id.list);

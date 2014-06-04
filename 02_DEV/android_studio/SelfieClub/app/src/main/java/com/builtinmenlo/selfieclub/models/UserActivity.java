@@ -35,6 +35,10 @@ public class UserActivity implements AsyncGetProtocol
         this.scAsyncGet.execute(Constants.API_ENDPOINT+"/users/getActivity?userID="+userId);
     }
 
+    public void requestUserActivity(String userId, String date){
+        this.scAsyncGet.execute(Constants.API_ENDPOINT+"/users/getActivity?userID="+userId+"&lastUpdated="+date);
+    }
+
 
     public void didReceiveData(JSONArray data){
         try{
