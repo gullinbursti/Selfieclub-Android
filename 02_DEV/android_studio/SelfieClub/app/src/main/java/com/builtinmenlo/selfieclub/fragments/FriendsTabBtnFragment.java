@@ -44,6 +44,8 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
+import com.builtinmenlo.selfieclub.models.ContactManager;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +116,10 @@ public class FriendsTabBtnFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
+
+        ContactManager contactManager = new ContactManager(this.getActivity().getContentResolver());
+        contactManager.getContacts();
+
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {
