@@ -31,10 +31,19 @@ public class UserActivity implements AsyncGetProtocol
         }
     }
 
+    /**
+     * Request the user's activity from the server. Needs to implement the UserActivityProtocol
+     * @param userId The user's id
+     */
     public void requestUserActivity(String userId){
         this.scAsyncGet.execute(Constants.API_ENDPOINT+"/users/getActivity?userID="+userId);
     }
 
+    /**
+     * Request the user's activity from the server. Needs to implement the UserActivityProtocol
+     * @param userId The user's id
+     * @param date Date/time in format “YYYY:MM:DD HH:MM:SS”
+     */
     public void requestUserActivity(String userId, String date){
         this.scAsyncGet.execute(Constants.API_ENDPOINT+"/users/getActivity?userID="+userId+"&lastUpdated="+date);
     }

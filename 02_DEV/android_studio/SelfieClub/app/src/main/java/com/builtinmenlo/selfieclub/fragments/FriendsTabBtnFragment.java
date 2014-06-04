@@ -31,7 +31,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,13 +43,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
-import com.builtinmenlo.selfieclub.models.UserActivity;
-import com.builtinmenlo.selfieclub.models.UserActivityProtocol;
-import com.loopj.android.http.*;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +53,7 @@ import java.util.List;
 
 
 // <[!] class delaration [¡]>
-public class FriendsTabBtnFragment extends Fragment implements UserActivityProtocol{
+public class FriendsTabBtnFragment extends Fragment{
     public ListView lv;
     public List<Friend> friends;
     private MyCustomAdapter myAdapter;
@@ -182,8 +176,8 @@ public class FriendsTabBtnFragment extends Fragment implements UserActivityProto
         friends.add(friend1);
         friends.add(friend2);
 
-        UserActivity userActivity = new UserActivity(this);
-        userActivity.requestUserActivity("131849","2014-05-31 16:30:55");
+
+
 
 
         lv = (ListView) view.findViewById(android.R.id.list);
@@ -260,10 +254,5 @@ public class FriendsTabBtnFragment extends Fragment implements UserActivityProto
 
     }
 
-    public void didReceiveUserActivity(ArrayList<ActivityItem> activityList){
-        Log.w("Info",activityList.toString());
-    }
-    public void didReceiveUserActivityError(String error){
-        Log.e("Activity_error",error);
-    }
+
 }
