@@ -38,7 +38,7 @@ public class UserActivity implements AsycPostProtocol
      */
     public void requestUserActivity(String userId){
         HashMap<String, String> data = new HashMap<String, String>();
-        data.put("userID","131820");
+        data.put("userID",userId);
         this.asycPost.setmData(data);
         this.asycPost.execute(Constants.API_ENDPOINT+Constants.GET_ACTIVITY_PATH);
     }
