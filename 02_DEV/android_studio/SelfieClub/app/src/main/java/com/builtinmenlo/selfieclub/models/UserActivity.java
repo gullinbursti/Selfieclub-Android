@@ -9,22 +9,23 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 
 /**
  * Created by Leonardo on 5/29/14.
  */
-public class UserActivity implements AsyncGetProtocol
+public class UserActivity implements AsycPostProtocol
 {
     private UserActivityProtocol userActivityProtocol;
-    private AsyncGet scAsyncGet = null;
+    private AsycPost asycPost = null;
     private ArrayList<ActivityItem> activityList;
 
 
     public UserActivity (UserActivityProtocol userActivityProtocol){
         this.userActivityProtocol = userActivityProtocol;
-        if(this.scAsyncGet == null){
-            this.scAsyncGet = new AsyncGet(this);
+        if(this.asycPost == null){
+            this.asycPost = new AsycPost(this);
         }
         if(this.activityList == null){
             this.activityList = new ArrayList<ActivityItem>();
@@ -36,7 +37,10 @@ public class UserActivity implements AsyncGetProtocol
      * @param userId The user's id
      */
     public void requestUserActivity(String userId){
-        this.scAsyncGet.execute(Constants.API_ENDPOINT+"/users/getActivity?userID="+userId);
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("userID","131820");
+        this.asycPost.setmData(data);
+        this.asycPost.execute(Constants.API_ENDPOINT+Constants.GET_ACTIVITY_PATH);
     }
 
     /**
@@ -45,7 +49,11 @@ public class UserActivity implements AsyncGetProtocol
      * @param date Date/time in format “YYYY:MM:DD HH:MM:SS”
      */
     public void requestUserActivity(String userId, String date){
-        this.scAsyncGet.execute(Constants.API_ENDPOINT+"/users/getActivity?userID="+userId+"&lastUpdated="+date);
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("lastUpdated",date);
+        this.asycPost.setmData(data);
+        this.asycPost.execute(Constants.API_ENDPOINT+Constants.GET_ACTIVITY_PATH);
     }
 
 
@@ -75,8 +83,6 @@ public class UserActivity implements AsyncGetProtocol
             activityItem.setUser(user);
             activityItem.setTime(dateFromString(jsonObject.getString("time")));
             activityItem.setMessage(jsonObject.getString("message"));
-            String type = jsonObject.getString("type");
-            activityItem.setType(Integer.valueOf(type));
         }
         catch (Exception e){
             activityItem = null;
