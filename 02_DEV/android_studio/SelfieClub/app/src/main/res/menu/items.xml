@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuNotificationToggle"
+        android:icon="@null"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_notifications" />
+
+    <item
+        android:id="@+id/menuTerms"
+        android:icon="@null"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_terms" />
+
+    <item
+        android:id="@+id/menuPrivacyPolicy"
+        android:icon="@null"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_privacy_policy" />
+
+    <item
+        android:id="@+id/menuSupport"
+        android:icon="@null"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_support" />
+
+    <item
+        android:id="@+id/menuRate"
+        android:icon="@null"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_rate_app" />
+
+    <item
+        android:id="@+id/menuNetworkStatus"
+        android:icon="@null"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_network_status" />
+</menu>

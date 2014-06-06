@@ -11,9 +11,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.InputStream;
@@ -34,12 +31,12 @@ public class AsyncGet extends AsyncTask<String,String,String> {
 
     @Override
     protected String doInBackground(String... params){
-        InputStream is = null;
+        InputStream is;
         String resultString ="";
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet request = new HttpGet();
         try{
-            URI website = new URI("http://api-stage.letsvolley.com/api/matt/users/getActivity?userID=131849");
+            URI website = new URI(params[0]);
 
             request.setURI(website);
             HttpResponse httpResponse = httpClient.execute(request);

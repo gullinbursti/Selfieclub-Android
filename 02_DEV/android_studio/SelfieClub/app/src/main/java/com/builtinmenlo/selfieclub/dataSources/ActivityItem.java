@@ -11,7 +11,7 @@ public class ActivityItem {
     private User user;
     private Date time;
     private String message;
-    private int type;
+
 
     public String getActivityItemId() {
         return activityItemId;
@@ -53,11 +53,4 @@ public class ActivityItem {
         this.message = message;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 }
