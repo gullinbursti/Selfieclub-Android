@@ -44,7 +44,7 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
-import com.builtinmenlo.selfieclub.models.ContactManager;
+
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -116,10 +116,6 @@ public class FriendsTabBtnFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
-
-        ContactManager contactManager = new ContactManager(this.getActivity().getContentResolver());
-        contactManager.getContacts();
-
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {
@@ -211,7 +207,7 @@ public class FriendsTabBtnFragment extends Fragment{
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
-            ViewHolder viewHolder = null;
+            ViewHolder viewHolder;
             if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.friends_item, parent, false);
@@ -229,15 +225,12 @@ public class FriendsTabBtnFragment extends Fragment{
 
             TextView lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
             TextView lblName = (TextView) convertView.findViewById(R.id.lblName);
-            //ImageView imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
             ImageView imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
             ImageView imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
             ImageView imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
 
             lblFollowers.setText(String.valueOf(friend.getFollowers()));
             lblName.setText(friend.getName());
-
-            //imgAvatarCheck.setImageBitmap(getRoundedCornerBitmap(friend.getAvatar(), 20));
 
             if (friend.isFriend()) {
                 imgAddOrCheck.setBackgroundResource(R.drawable.green_check_mark);
@@ -257,8 +250,5 @@ public class FriendsTabBtnFragment extends Fragment{
 
             return convertView;
         }
-
     }
-
-
 }

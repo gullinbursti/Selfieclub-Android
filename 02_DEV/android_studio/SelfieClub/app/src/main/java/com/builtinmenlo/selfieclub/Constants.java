@@ -6,4 +6,5 @@ package com.builtinmenlo.selfieclub;
 public final class Constants {
     public static final String API_ENDPOINT = "http://api-dev.letsvolley.com";
     public static final String GET_ACTIVITY_PATH = "/api/pedro/users/getactivity";
+    public static final String USER_PATH = "/api/pedro/Users.php";
 }
