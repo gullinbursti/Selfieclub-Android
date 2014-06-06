@@ -10,7 +10,8 @@
     <color name="activity_verify_bg_color">#ff330080</color>
     <color name="activity_camera_bg_color">#ff545454</color>
     <color name="activity_settings_bg_color">#ff800079</color>
-    <color name="actionbar_text">#005de9</color>
+    <color name="actionbar_text_color">#005de9</color>
+    <color name="actionbar_background_color">#005de9</color>
 
 <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
 </resources>

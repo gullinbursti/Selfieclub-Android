@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
@@ -59,7 +60,6 @@ public class MainActivity extends Activity {
 	Fragment clubsFragment = new ClubsTabBtnFragment();
 	Fragment verifyFragment = new VerifyTabBtnFragment();
     Fragment settingsFragment = new SettingsTabBtnFragment();
-    Fragment settingsFragment2 = new SettingsTabBtnFragment();
 	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -74,12 +74,10 @@ public class MainActivity extends Activity {
 
 		ActionBar topNavActionBar = getActionBar();
 		topNavActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		topNavActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_HOME);
-		topNavActionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
-        topNavActionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        topNavActionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.white)));
 
 		friendsTab = topNavActionBar.newTab();
-		friendsTab.setText(R.string.tab_friends_title);
+        friendsTab.setText(R.string.tab_friends_title);
 		friendsTab.setTabListener(new TabButtonListener(friendsFragment));
 		topNavActionBar.addTab(friendsTab);
 
@@ -99,10 +97,6 @@ public class MainActivity extends Activity {
         settingsTab.setTabListener(new TabButtonListener(settingsFragment));
         topNavActionBar.addTab(settingsTab);
 
-        settingsTab2 = topNavActionBar.newTab();
-        settingsTab2.setCustomView(R.layout.overflow_tab_bar);
-        settingsTab2.setTabListener(new TabButtonListener(settingsFragment2));
-        topNavActionBar.addTab(settingsTab2);
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
 
