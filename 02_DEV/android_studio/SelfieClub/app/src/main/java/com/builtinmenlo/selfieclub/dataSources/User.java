@@ -9,6 +9,7 @@ public class User {
     private String avatarUrl;
 
 
+
     public String getUsername() {
         return username;
     }
@@ -32,4 +33,5 @@ public class User {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
 }

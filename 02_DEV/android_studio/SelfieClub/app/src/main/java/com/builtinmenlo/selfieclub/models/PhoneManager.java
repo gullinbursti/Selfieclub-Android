@@ -7,10 +7,13 @@ import android.provider.ContactsContract;
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.User;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,18 +21,14 @@ import java.util.HashMap;
  * Created by Leonardo on 6/3/14.
  * This class implements the method for handling the user's contacts
  */
-public class PhoneManager implements AsycPostProtocol{
+public class PhoneManager {
 
     private ContentResolver contentResolver;
-    private PhoneManagerInterface phoneManagerInterface;
-    private AsycPost asycPost;
 
-    public PhoneManager(PhoneManagerInterface phoneManagerInterface, ContentResolver contentResolver){
+
+
+    public PhoneManager(ContentResolver contentResolver){
         this.contentResolver = contentResolver;
-        this.phoneManagerInterface = phoneManagerInterface;
-        if(this.asycPost==null){
-            this.asycPost = new AsycPost(this);
-        }
     }
 
     public ArrayList<HashMap<String,String>> getContacts() {
@@ -56,7 +55,7 @@ public class PhoneManager implements AsycPostProtocol{
         return contactData;
     }
 
-    public void matchPhoneNumbers(String userId, String[] phoneNumbersArray){
+    public void matchPhoneNumbers(final PhoneMatchInterface phoneMatchInterface,String userId, String[] phoneNumbersArray){
         StringBuilder builder = new StringBuilder();
         for(String s : phoneNumbersArray){
             builder.append(s);
@@ -68,19 +67,44 @@ public class PhoneManager implements AsycPostProtocol{
         data.put("userID",userId);
         data.put("action","11");
         data.put("phone",phoneNumbers);
-        this.asycPost.setmData(data);
-        this.asycPost.execute(Constants.API_ENDPOINT+Constants.USER_PATH);
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.USER_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONArray data) {
+                        ArrayList<User> matchedArray= new ArrayList<User>();
+                        try{
+                            for(int i=0; i<data.length();i++){
+                                User user = parseUser(data.getJSONObject(0));
+                                matchedArray.add(user);
+                            }
+                            phoneMatchInterface.didReceiveMatchedNumbers(matchedArray);
+                        }
+                        catch (Exception e){
+                            phoneMatchInterface.didReceiveMatchedNumbersError(e.toString());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        phoneMatchInterface.didReceiveMatchedNumbersError(response);
+                    }
 
-
+                }
+        );
     }
 
-
-    public void didReceiveData(JSONArray data){
-        this.phoneManagerInterface.didReceiveMatchedNumbers(data);
-
+    private User parseUser(JSONObject jsonObject){
+        try{
+            User user = new User();
+            user.setUsername(jsonObject.getString("username"));
+            user.setUserId(jsonObject.getString("id"));
+            user.setAvatarUrl(jsonObject.getString("avatar_url"));
+            return user;
+        }
+        catch (Exception e){
+            return null;
+        }
     }
-    public void didReceiveError(String error){
-        this.phoneManagerInterface.didReceiveMatchedNumbersError(error);
-    }
+
 
 }
