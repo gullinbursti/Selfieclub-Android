@@ -47,7 +47,7 @@ import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.models.ClubInfoProtocol;
 import com.builtinmenlo.selfieclub.models.ClubManager;
-import com.builtinmenlo.selfieclub.models.PhoneManager;
+
 
 
 

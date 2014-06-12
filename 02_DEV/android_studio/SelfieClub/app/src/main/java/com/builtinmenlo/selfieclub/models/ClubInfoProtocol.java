@@ -2,6 +2,8 @@ package com.builtinmenlo.selfieclub.models;
 
 import com.builtinmenlo.selfieclub.dataSources.Club;
 
+
+
 /**
  * Created by Leonardo on 6/11/14.
  */
