@@ -5,13 +5,6 @@
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
-    <ImageView
-        android:id="@+id/imgAddOrCheck"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="5dp" />
 
     <ImageView
         android:id="@+id/imgAvatar"
@@ -20,21 +13,13 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"/>
 
-    <ImageView
-        android:id="@+id/imgAvatarCheck"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignRight="@+id/imgAvatar"
-        android:layout_alignBottom="@+id/imgAvatar"
-        android:background="@drawable/verified_overlay" />
 
     <TextView
-        android:id="@+id/lblName"
-        android:layout_marginLeft="5dp"
+        android:id="@+id/lblText"
+        android:layout_margin="10dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/imgAddOrCheck"
         android:layout_toRightOf="@+id/imgAvatar"
         android:gravity="center_vertical"
         android:singleLine="true"

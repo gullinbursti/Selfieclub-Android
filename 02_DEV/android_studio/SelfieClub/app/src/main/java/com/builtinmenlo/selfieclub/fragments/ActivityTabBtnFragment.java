@@ -42,34 +42,29 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
-import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.User;
-import com.builtinmenlo.selfieclub.models.UserActivity;
 import com.builtinmenlo.selfieclub.models.UserActivityProtocol;
+import com.builtinmenlo.selfieclub.models.UserManager;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-;
-//]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
-
-
-// <[!] class delaration [¡]>
 public class ActivityTabBtnFragment extends Fragment implements UserActivityProtocol {
     public ListView lv;
     public List<ActivityItem> notifications;
     private MyCustomAdapter myAdapter;
 
-    public ActivityTabBtnFragment() {/*..\(^_^)/..*/}
+    public ActivityTabBtnFragment() {
+    }
 
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
         Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        BitmapShader shader = new BitmapShader (bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         Paint paint = new Paint();
         paint.setShader(shader);
         Canvas c = new Canvas(circleBitmap);
-        c.drawCircle(48,48,24,paint);
+        c.drawCircle(48, 48, 24, paint);
 
         return circleBitmap;
     }
@@ -81,10 +76,11 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
 
-        UserActivity api = new UserActivity(this);
+        //PhoneManager phoneManager = new PhoneManager(this.getActivity().getContentResolver());
+        //contacts = phoneManager.getContacts();
 
-        api.requestUserActivity("131820");
-
+        UserManager userManager = new UserManager();
+        userManager.requestUserActivity(this, "131820");
 
         //return (inflater.inflate(R.layout.friends_tab, container, false));
         return view;
@@ -111,7 +107,6 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
         Bitmap bitmap;
     }
 
-
     private class DownloadAsyncTask extends AsyncTask<ViewHolder, Void, ViewHolder> {
 
         @Override
@@ -124,7 +119,6 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
             } catch (Exception e) {
                 viewHolder.bitmap = null;
             }
-
             return viewHolder;
         }
 
@@ -138,12 +132,10 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
         }
     }
 
-
     public void populate() {
-
         lv = (ListView) getActivity().findViewById(android.R.id.list);
         if (lv != null) {
-            myAdapter = new MyCustomAdapter(getActivity(), R.layout.friends_item, notifications);
+            myAdapter = new MyCustomAdapter(getActivity(), R.layout.notification_item, notifications);
             lv.setAdapter(myAdapter);
 
             lv.setOnItemClickListener(new OnItemClickListener() {
@@ -158,7 +150,7 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
 
     private class MyCustomAdapter extends ArrayAdapter<ActivityItem> {
 
-        public MyCustomAdapter(Context context, int textViewResourceId, List<Friend> list) {
+        public MyCustomAdapter(Context context, int textViewResourceId, List<ActivityItem> list) {
             super(context, textViewResourceId, list);
 
         }
@@ -169,55 +161,34 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
             ViewHolder viewHolder;
             if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                convertView = inflater.inflate(R.layout.friends_item, parent, false);
+                convertView = inflater.inflate(R.layout.notification_item, parent, false);
 
                 viewHolder = new ViewHolder();
-                viewHolder.imageView = (ImageView)convertView.findViewById(R.id.imgAvatar);
+                viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imgAvatar);
                 convertView.setTag(viewHolder);
             }
 
-            viewHolder = (ViewHolder)convertView.getTag();
-            viewHolder.imageURL = notifications.get(position).;
-            new DownloadAsyncTask().execute(viewHolder);
-
             User friend = notifications.get(position).getUser();
 
-           // TextView lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
-            TextView lblName = (TextView) convertView.findViewById(R.id.lblName);
-            //ImageView imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
-            ImageView imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
-            ImageView imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
+            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder.imageURL = friend.getAvatarUrl();
+            new DownloadAsyncTask().execute(viewHolder);
 
-            //lblFollowers.setText(String.valueOf(friend.getFollowers()));
-            lblName.setText(friend.get());
+            TextView lblText = (TextView) convertView.findViewById(R.id.lblText);
 
-            if (friend.isFriend()) {
-                imgAddOrCheck.setBackgroundResource(R.drawable.green_check_mark);
-                imgAvatarCheck.setVisibility(View.VISIBLE);
-            } else {
-                imgAddOrCheck.setBackgroundResource(R.drawable.blue_plus_button);
-                imgAvatarCheck.setVisibility(View.INVISIBLE);
-            }
-
-            /*if (friend.getFollowers() > 0){
-                imgFollowers.setBackgroundResource(R.drawable.verify_arrow_green);
-                lblFollowers.setTextColor(Color.GREEN);
-            }else{
-                imgFollowers.setBackgroundResource(R.drawable.verify_arrow_grey);
-                lblFollowers.setTextColor(Color.LTGRAY);
-            }*/
+            lblText.setText(notifications.get(position).getMessage());
 
             return convertView;
         }
     }
 
-    public void didReceiveUserActivity(ArrayList<ActivityItem> activityList){
+    public void didReceiveUserActivity(ArrayList<ActivityItem> activityList) {
         notifications = activityList;
 
-        populate(findViewbyId);
+        populate();
     }
 
-    public void didReceiveUserActivityError(String error){
-
+    public void didReceiveUserActivityError(String error) {
+        System.err.println(error);
     }
 }
