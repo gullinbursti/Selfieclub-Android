@@ -55,7 +55,7 @@ public class PhoneManager {
         return contactData;
     }
 
-    public void matchPhoneNumbers(final PhoneMatchInterface phoneMatchInterface,String userId, String[] phoneNumbersArray){
+    public void matchPhoneNumbers(final PhoneMatchProtocol phoneMatchInterface,String userId, String[] phoneNumbersArray){
         StringBuilder builder = new StringBuilder();
         for(String s : phoneNumbersArray){
             builder.append(s);

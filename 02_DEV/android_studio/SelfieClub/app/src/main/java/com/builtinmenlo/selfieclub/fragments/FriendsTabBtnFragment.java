@@ -43,7 +43,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
+import com.builtinmenlo.selfieclub.models.ClubInfoProtocol;
+import com.builtinmenlo.selfieclub.models.ClubManager;
+import com.builtinmenlo.selfieclub.models.PhoneManager;
+
 
 
 import java.net.URL;
@@ -55,7 +60,7 @@ import java.util.List;
 
 
 // <[!] class delaration [¡]>
-public class FriendsTabBtnFragment extends Fragment{
+public class FriendsTabBtnFragment extends Fragment implements ClubInfoProtocol {
     public ListView lv;
     public List<Friend> friends;
     private MyCustomAdapter myAdapter;
@@ -116,6 +121,9 @@ public class FriendsTabBtnFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
+
+        ClubManager clubManager = new ClubManager();
+        clubManager.requestClubInfo(this,"131820","40");
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {
@@ -251,4 +259,7 @@ public class FriendsTabBtnFragment extends Fragment{
             return convertView;
         }
     }
+
+    public void didReceiveClubInfo(Club club){}
+    public void didReceiveClubInfoError(String error){}
 }
