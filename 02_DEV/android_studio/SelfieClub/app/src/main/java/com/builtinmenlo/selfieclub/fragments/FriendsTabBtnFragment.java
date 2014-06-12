@@ -26,7 +26,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
@@ -43,12 +42,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.dataSources.Club;
+import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
-import com.builtinmenlo.selfieclub.models.ClubInfoProtocol;
-import com.builtinmenlo.selfieclub.models.ClubManager;
-
-
+import com.builtinmenlo.selfieclub.models.UserActivityProtocol;
+import com.builtinmenlo.selfieclub.models.UserManager;
 
 
 import java.net.URL;
@@ -60,7 +57,7 @@ import java.util.List;
 
 
 // <[!] class delaration [¡]>
-public class FriendsTabBtnFragment extends Fragment implements ClubInfoProtocol {
+public class FriendsTabBtnFragment extends Fragment implements UserActivityProtocol{
     public ListView lv;
     public List<Friend> friends;
     private MyCustomAdapter myAdapter;
@@ -121,9 +118,9 @@ public class FriendsTabBtnFragment extends Fragment implements ClubInfoProtocol 
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
+        UserManager userManager = new UserManager();
+        userManager.requestUserActivity(this,"131820");
 
-        ClubManager clubManager = new ClubManager();
-        clubManager.requestClubInfo(this,"131820","40");
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {
@@ -260,6 +257,12 @@ public class FriendsTabBtnFragment extends Fragment implements ClubInfoProtocol 
         }
     }
 
-    public void didReceiveClubInfo(Club club){}
-    public void didReceiveClubInfoError(String error){}
+
+    public void didReceiveUserActivity(ArrayList<ActivityItem> activityList){}
+
+    /**
+     * Called if an error happens while fetching the activity list
+     * @param error The error's message
+     */
+    public void didReceiveUserActivityError(String error){}
 }

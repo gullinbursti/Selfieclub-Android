@@ -1,5 +1,7 @@
 package com.builtinmenlo.selfieclub.models;
 
+import android.util.Log;
+
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
 import com.builtinmenlo.selfieclub.dataSources.User;
@@ -18,13 +20,11 @@ import com.loopj.android.http.*;
  */
 public class UserManager
 {
-    private ArrayList<ActivityItem> activityList;
+
 
 
     public UserManager(){
-        if(this.activityList == null){
-            this.activityList = new ArrayList<ActivityItem>();
-        }
+
     }
 
     /**
@@ -32,6 +32,7 @@ public class UserManager
      * @param userId The user's id
      */
     public void requestUserActivity(final UserActivityProtocol userActivityProtocol, String userId){
+
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
@@ -39,10 +40,12 @@ public class UserManager
         client.post(Constants.API_ENDPOINT+Constants.GET_ACTIVITY_PATH,requestParams,new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(JSONArray data) {
+                        ArrayList<ActivityItem> activityList = new ArrayList<ActivityItem>();
                         try{
                             for(int i=0; i<data.length();i++){
                                 User user = parseUser(data.getJSONObject(0).getJSONObject("user"));
-                                activityList.add(parseActivityItem(data.getJSONObject(0),user));
+                                ActivityItem activityItem = parseActivityItem(data.getJSONObject(0), user);
+                                activityList.add(activityItem);
                             }
                             userActivityProtocol.didReceiveUserActivity(activityList);
                         }
@@ -65,6 +68,7 @@ public class UserManager
      * @param date Date/time in format “YYYY:MM:DD HH:MM:SS”
      */
     public void requestUserActivity(final UserActivityProtocol userActivityProtocol, String userId, String date){
+
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
@@ -73,10 +77,12 @@ public class UserManager
         client.post(Constants.API_ENDPOINT+Constants.GET_ACTIVITY_PATH,requestParams,new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(JSONArray data) {
+                        ArrayList<ActivityItem> activityList = new ArrayList<ActivityItem>();
                         try{
                             for(int i=0; i<data.length();i++){
                                 User user = parseUser(data.getJSONObject(0).getJSONObject("user"));
-                                activityList.add(parseActivityItem(data.getJSONObject(0),user));
+                                ActivityItem activityItem = parseActivityItem(data.getJSONObject(0), user);
+                                activityList.add(activityItem);
                             }
                             userActivityProtocol.didReceiveUserActivity(activityList);
                         }
@@ -100,9 +106,10 @@ public class UserManager
             activityItem.setActivityType(jsonObject.getInt("activity_type"));
             activityItem.setUser(user);
             activityItem.setTime(dateFromString(jsonObject.getString("time")));
-            activityItem.setMessage(jsonObject.getString("message"));
+
         }
         catch (Exception e){
+            Log.e("UserManager",e.toString());
             activityItem = null;
         }
         return activityItem;
