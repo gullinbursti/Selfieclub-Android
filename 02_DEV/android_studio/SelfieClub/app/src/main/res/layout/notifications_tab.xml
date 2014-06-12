@@ -3,10 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+    <include layout="@layout/friends_item" android:id="@+id/friendLayout"/>
+
     <LinearLayout
+        android:layout_below="@+id/friendLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
 

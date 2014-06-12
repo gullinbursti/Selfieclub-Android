@@ -36,6 +36,7 @@ import android.view.ViewConfiguration;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.SettingsTabBtnFragment;
@@ -54,12 +55,12 @@ public class MainActivity extends Activity {
 	//]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
 	public final static String INTENT_PAYLOAD_AS_STRING = "com.builtinmenlo.selfieclub.activity.INTENT_PAYLOAD_AS_STRING";
 
-	Tab friendsTab, clubsTab, verifyTab, settingsTab, settingsTab2;
+	Tab friendsTab, clubsTab, verifyTab, notificationsTab;
 
 	Fragment friendsFragment = new FriendsTabBtnFragment();
 	Fragment clubsFragment = new ClubsTabBtnFragment();
 	Fragment verifyFragment = new VerifyTabBtnFragment();
-    Fragment settingsFragment = new SettingsTabBtnFragment();
+    Fragment notificationsFragment = new ActivityTabBtnFragment();
 	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -91,11 +92,11 @@ public class MainActivity extends Activity {
 		verifyTab.setTabListener(new TabButtonListener(verifyFragment));
 		topNavActionBar.addTab(verifyTab);
 
-        settingsTab = topNavActionBar.newTab();
-        settingsTab.setCustomView(R.layout.notifications_tab_bar);
-        settingsTab.setText("4");
-        settingsTab.setTabListener(new TabButtonListener(settingsFragment));
-        topNavActionBar.addTab(settingsTab);
+        notificationsTab = topNavActionBar.newTab();
+        //notificationsTab.setCustomView(R.layout.notifications_tab_bar);
+        notificationsTab.setText("4");
+        notificationsTab.setTabListener(new TabButtonListener(notificationsFragment));
+        topNavActionBar.addTab(notificationsTab);
 
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 

@@ -100,7 +100,7 @@ public class FriendsTabBtnFragment extends Fragment implements ClubInfoProtocol 
         Paint paint = new Paint();
         paint.setShader(shader);
         Canvas c = new Canvas(circleBitmap);
-        c.drawCircle(40,40,20,paint);
+        c.drawCircle(48,48,24,paint);
 
         return circleBitmap;
     }
@@ -231,13 +231,13 @@ public class FriendsTabBtnFragment extends Fragment implements ClubInfoProtocol 
 
             Friend friend = friends.get(position);
 
-            TextView lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
+           // TextView lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
             TextView lblName = (TextView) convertView.findViewById(R.id.lblName);
-            ImageView imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
+            //ImageView imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
             ImageView imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
             ImageView imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
 
-            lblFollowers.setText(String.valueOf(friend.getFollowers()));
+            //lblFollowers.setText(String.valueOf(friend.getFollowers()));
             lblName.setText(friend.getName());
 
             if (friend.isFriend()) {
@@ -248,13 +248,13 @@ public class FriendsTabBtnFragment extends Fragment implements ClubInfoProtocol 
                 imgAvatarCheck.setVisibility(View.INVISIBLE);
             }
 
-            if (friend.getFollowers() > 0){
+            /*if (friend.getFollowers() > 0){
                 imgFollowers.setBackgroundResource(R.drawable.verify_arrow_green);
                 lblFollowers.setTextColor(Color.GREEN);
             }else{
                 imgFollowers.setBackgroundResource(R.drawable.verify_arrow_grey);
                 lblFollowers.setTextColor(Color.LTGRAY);
-            }
+            }*/
 
             return convertView;
         }
