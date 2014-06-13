@@ -42,11 +42,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
-import com.builtinmenlo.selfieclub.models.UserActivityProtocol;
+import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 
+
+import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ import java.util.List;
 
 
 // <[!] class delaration [¡]>
-public class FriendsTabBtnFragment extends Fragment implements UserActivityProtocol{
+public class FriendsTabBtnFragment extends Fragment{
     public ListView lv;
     public List<Friend> friends;
     private MyCustomAdapter myAdapter;
@@ -118,8 +119,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserActivityProto
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
-        UserManager userManager = new UserManager();
-        userManager.requestUserActivity(this,"131820");
+        
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
@@ -257,12 +257,4 @@ public class FriendsTabBtnFragment extends Fragment implements UserActivityProto
         }
     }
 
-
-    public void didReceiveUserActivity(ArrayList<ActivityItem> activityList){}
-
-    /**
-     * Called if an error happens while fetching the activity list
-     * @param error The error's message
-     */
-    public void didReceiveUserActivityError(String error){}
 }

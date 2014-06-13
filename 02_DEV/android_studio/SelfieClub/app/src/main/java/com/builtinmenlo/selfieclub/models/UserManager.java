@@ -99,6 +99,30 @@ public class UserManager
         );
     }
 
+    /**
+     * Requests the clubs related to a user. Needs to implement UserClubsProtocol
+     * @param userClubsProtocol
+     * @param userId
+     */
+    public void requestUserClubs(final UserClubsProtocol userClubsProtocol, String userId){
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.GET_USERCLUBS_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        userClubsProtocol.didReceiveUserClubs(data);
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        userClubsProtocol.didReceiveUserClubsError(response);
+                    }
+
+                }
+        );
+    }
+
     private ActivityItem parseActivityItem(JSONObject jsonObject, User user){
         ActivityItem activityItem = new ActivityItem();
         try {
