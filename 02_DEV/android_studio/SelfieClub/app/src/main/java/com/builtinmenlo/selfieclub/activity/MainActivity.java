@@ -29,11 +29,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
@@ -93,8 +96,18 @@ public class MainActivity extends Activity {
 		topNavActionBar.addTab(verifyTab);
 
         notificationsTab = topNavActionBar.newTab();
-        //notificationsTab.setCustomView(R.layout.notifications_tab_bar);
-        notificationsTab.setText("4");
+
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.notifications_tab_bar, null);
+        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.lblTitleText);
+        mTitleTextView.setText("0");
+
+        notificationsTab.setCustomView(mCustomView);
+
+        // notificationsTab.setCustomView(R.layout.notifications_tab_bar);
+        // notificationsTab.setIcon(getResources().getDrawable(R.drawable.red_activity_dot));
+        //notificationsTab.setText("4");
         notificationsTab.setTabListener(new TabButtonListener(notificationsFragment));
         topNavActionBar.addTab(notificationsTab);
 

@@ -51,11 +51,11 @@ public class TabButtonListener implements ActionBar.TabListener {
 
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-        RelativeLayout tabLayout = (RelativeLayout) tab.getCustomView(); //get the view for the tab
+        /*RelativeLayout tabLayout = (RelativeLayout) tab.getCustomView(); //get the view for the tab
         if (tabLayout != null) {
             tabLayout.setBackgroundColor(Color.RED); // change the background
             tab.setCustomView(tabLayout); // assign back to the tab
-        }
+        }*/
 
 		fragmentTransaction.replace(R.id.tab_fragment_layout, fragment);
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
@@ -63,9 +63,6 @@ public class TabButtonListener implements ActionBar.TabListener {
 	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         if (fragment != null) {
-            String formattedName = tab.getText().toString();
-            tab.setText(Html.fromHtml(formattedName));
-            // Detach the fragment, because another one is being attached
             fragmentTransaction.remove(fragment);
         }
 

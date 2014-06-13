@@ -6,10 +6,10 @@
     android:background="@android:color/transparent">
 
 
-    <ImageView
+    <com.builtinmenlo.selfieclub.views.RoundedImageView
         android:id="@+id/imgAvatar"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"/>
 

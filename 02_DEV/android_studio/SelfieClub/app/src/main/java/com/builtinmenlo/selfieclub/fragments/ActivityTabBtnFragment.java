@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -51,9 +52,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityTabBtnFragment extends Fragment implements UserActivityProtocol {
-    public ListView lv;
-    public List<ActivityItem> notifications;
-    private MyCustomAdapter myAdapter;
+    private ListView lv;
+    private List<ActivityItem> notifications;
+    private MyCustomAdapter adapter;
 
     public ActivityTabBtnFragment() {
     }
@@ -76,11 +77,21 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
 
+        lv = (ListView) view.findViewById(android.R.id.list);
+        notifications = new ArrayList<ActivityItem>();
+        populate();
         //PhoneManager phoneManager = new PhoneManager(this.getActivity().getContentResolver());
         //contacts = phoneManager.getContacts();
 
         UserManager userManager = new UserManager();
         userManager.requestUserActivity(this, "131820");
+
+       /* ActivityItem item0 = new ActivityItem();
+        item0.setMessage("Hola");
+        notifications = new ArrayList<ActivityItem>();
+        notifications.add(item0);
+
+        populate();*/
 
         //return (inflater.inflate(R.layout.friends_tab, container, false));
         return view;
@@ -127,16 +138,20 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
             if (result.bitmap == null) {
                 result.imageView.setImageResource(R.drawable.ic_launcher);
             } else {
-                result.imageView.setImageBitmap(getRoundedCornerBitmap(result.bitmap));
+                //result.imageView.setImageBitmap(getRoundedCornerBitmap(result.bitmap));
+                result.imageView.setImageBitmap(result.bitmap);
             }
         }
     }
 
     public void populate() {
-        lv = (ListView) getActivity().findViewById(android.R.id.list);
         if (lv != null) {
-            myAdapter = new MyCustomAdapter(getActivity(), R.layout.notification_item, notifications);
-            lv.setAdapter(myAdapter);
+            adapter = new MyCustomAdapter(getActivity(), R.layout.notification_item, notifications);
+            lv.post(new Runnable() {
+                public void run() {
+                    lv.setAdapter(adapter);
+                }
+            });
 
             lv.setOnItemClickListener(new OnItemClickListener() {
 
@@ -144,7 +159,6 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
                     //arg1.setBackgroundColor(Color.TRANSPARENT);
                 }
             });
-            lv.setVisibility(View.VISIBLE);
         }
     }
 
@@ -153,6 +167,16 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
         public MyCustomAdapter(Context context, int textViewResourceId, List<ActivityItem> list) {
             super(context, textViewResourceId, list);
 
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return notifications.size();
         }
 
         @Override
@@ -177,6 +201,7 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
             TextView lblText = (TextView) convertView.findViewById(R.id.lblText);
 
             lblText.setText(notifications.get(position).getMessage());
+            //lblText.setText("Hola");
 
             return convertView;
         }
@@ -185,7 +210,8 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
     public void didReceiveUserActivity(ArrayList<ActivityItem> activityList) {
         notifications = activityList;
 
-        populate();
+        //populate();
+        adapter.notifyDataSetChanged();
     }
 
     public void didReceiveUserActivityError(String error) {
