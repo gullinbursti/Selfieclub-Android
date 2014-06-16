@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:id="@+id/lblStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imgAvatar"
+        android:layout_toRightOf="@+id/imgAvatar"
+        android:singleLine="false"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/lblTime"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lblStatus"
+        android:layout_toRightOf="@+id/imgAvatar"
+        android:singleLine="true"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:id="@+id/imgNews"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lblTime"
+        android:layout_margin="10dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnUpVote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnReply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</RelativeLayout>

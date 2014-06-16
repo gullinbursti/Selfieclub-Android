@@ -43,7 +43,7 @@ public class ClubsTabBtnFragment extends Fragment {
 		container.setBackgroundColor(getResources().getColor(R.color.activity_clubs_bg_color));
 
 		TextView textView = (TextView) container.findViewById(R.id.fragment_textview);
-		textView.setText(R.string.clubs_message);
+		//textView.setText(R.string.clubs_message);
 
 		return (inflater.inflate(R.layout.fragment_tab_btn, container, false));
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯

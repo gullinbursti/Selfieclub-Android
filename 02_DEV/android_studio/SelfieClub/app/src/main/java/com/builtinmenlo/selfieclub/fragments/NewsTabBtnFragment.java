@@ -1,7 +1,7 @@
 /**~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*._
  /**~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~,
  *
- * @class VerifyTabBtnFragment
+ * @class NewsTabBtnFragment
  * @project SelfieClub
  * @package com.builtinmenlo.selfieclub.fragments
  *
@@ -35,7 +35,7 @@ import com.builtinmenlo.selfieclub.R;
 
 
 // <[!] class delaration [¡]>
-public class VerifyTabBtnFragment extends Fragment {
+public class NewsTabBtnFragment extends Fragment {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
 	//] class properties ]>
@@ -43,7 +43,7 @@ public class VerifyTabBtnFragment extends Fragment {
 	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 	// <*] class constructor [*>
-	public VerifyTabBtnFragment() {/*..\(^_^)/..*/}
+	public NewsTabBtnFragment() {/*..\(^_^)/..*/}
 	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
 	//]~=~=~=~=~=~=~=~=~=[>
 
@@ -52,7 +52,7 @@ public class VerifyTabBtnFragment extends Fragment {
 		container.setBackgroundColor(getResources().getColor(R.color.activity_verify_bg_color));
 
 		TextView textView = (TextView) container.findViewById(R.id.fragment_textview);
-		textView.setText(R.string.verify_message);
+		//textView.setText(R.string.verify_message);
 
 		return (inflater.inflate(R.layout.fragment_tab_btn, container, false));
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯

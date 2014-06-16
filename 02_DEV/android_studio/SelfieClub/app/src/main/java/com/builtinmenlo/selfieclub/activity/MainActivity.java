@@ -25,7 +25,6 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,16 +33,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
-import com.builtinmenlo.selfieclub.fragments.SettingsTabBtnFragment;
-import com.builtinmenlo.selfieclub.fragments.VerifyTabBtnFragment;
+import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
 
 import java.lang.reflect.Field;
@@ -58,11 +54,11 @@ public class MainActivity extends Activity {
 	//]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
 	public final static String INTENT_PAYLOAD_AS_STRING = "com.builtinmenlo.selfieclub.activity.INTENT_PAYLOAD_AS_STRING";
 
-	Tab friendsTab, clubsTab, verifyTab, notificationsTab;
+	Tab friendsTab, clubsTab, newsTab, notificationsTab;
 
 	Fragment friendsFragment = new FriendsTabBtnFragment();
 	Fragment clubsFragment = new ClubsTabBtnFragment();
-	Fragment verifyFragment = new VerifyTabBtnFragment();
+	Fragment newsFragment = new NewsTabBtnFragment();
     Fragment notificationsFragment = new ActivityTabBtnFragment();
 	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
@@ -85,15 +81,16 @@ public class MainActivity extends Activity {
 		friendsTab.setTabListener(new TabButtonListener(friendsFragment));
 		topNavActionBar.addTab(friendsTab);
 
+        newsTab = topNavActionBar.newTab();
+        newsTab.setText(R.string.tab_news_title);
+        newsTab.setTabListener(new TabButtonListener(newsFragment));
+        topNavActionBar.addTab(newsTab);
+
 		clubsTab = topNavActionBar.newTab();
 		clubsTab.setText(R.string.tab_clubs_title);
 		clubsTab.setTabListener(new TabButtonListener(clubsFragment));
 		topNavActionBar.addTab(clubsTab);
 
-		verifyTab = topNavActionBar.newTab();
-		verifyTab.setText(R.string.tab_verify_title);
-		verifyTab.setTabListener(new TabButtonListener(verifyFragment));
-		topNavActionBar.addTab(verifyTab);
 
         notificationsTab = topNavActionBar.newTab();
 

@@ -53,7 +53,7 @@ public class SettingsTabBtnFragment extends Fragment {
 		container.setBackgroundColor(getResources().getColor(R.color.activity_settings_bg_color));
 
 		TextView textView = (TextView) container.findViewById(R.id.fragment_textview);
-		textView.setText(R.string.settings_message);
+		//textView.setText(R.string.settings_message);
 
 		return (inflater.inflate(R.layout.fragment_tab_btn, container, false));
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯

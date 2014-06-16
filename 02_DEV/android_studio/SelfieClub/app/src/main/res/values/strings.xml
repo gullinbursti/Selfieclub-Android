@@ -18,55 +18,11 @@
 
     <string name="tab_friends_title">Friends</string>
     <string name="tab_clubs_title">Clubs</string>
-    <string name="tab_verify_title">Verify</string>
+    <string name="tab_news_title">News</string>
 
     <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
 
-    <string name="friends_message">
-<![CDATA[
-
-
-           Friends Section
-
-
-]]>
-    </string>
-    <string name="clubs_message">
-<![CDATA[
-
-
-           Clubs Section
-
-
-]]>
-    </string>
-    <string name="verify_message">
-<![CDATA[
-
-
-           Verify Section
-
-
-]]>
-    </string>
-    <string name="camera_message">
-<![CDATA[
-
-
-           Camera Section
-
-
-]]>
-    </string>
-    <string name="settings_message">
-<![CDATA[
-
-
-           Settings Section
-
-
-]]>
-    </string>
+    <string name="notifications">Notifications</string>
 
     <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
 

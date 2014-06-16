@@ -3,19 +3,23 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <!--<include layout="@layout/friends_item" android:id="@+id/friendLayout"/>
-            android:layout_below="@+id/friendLayout"
--->
+    <include
+        android:id="@+id/friendLayout"
+        layout="@layout/friends_item" />
 
-    <!-- <EditText
-         android:id="@+id/searchBar"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content" /> -->
+    <TextView
+        android:id="@+id/lblNotifications"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friendLayout"
+        android:layout_margin="20dp"
+        android:text="@string/notifications" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/lblNotifications"
         android:layout_marginBottom="10dp"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="2dp"
