@@ -43,7 +43,9 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
+import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
+import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 
 
@@ -58,7 +60,7 @@ import java.util.List;
 
 
 // <[!] class delaration [¡]>
-public class FriendsTabBtnFragment extends Fragment{
+public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol{
     public ListView lv;
     public List<Friend> friends;
     private MyCustomAdapter myAdapter;
@@ -106,6 +108,8 @@ public class FriendsTabBtnFragment extends Fragment{
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        UserManager userManager = new UserManager();
+        userManager.requestFriends(this,"131820");
         View view = inflater.inflate(R.layout.friends_tab, container, false);
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
@@ -255,6 +259,13 @@ public class FriendsTabBtnFragment extends Fragment{
 
             return convertView;
         }
+    }
+
+    public void didReceiveFriendsList(ArrayList<User> friendsList){
+
+    }
+    public void didReceiveFriendsListError(String errorMessage){
+
     }
 
 }

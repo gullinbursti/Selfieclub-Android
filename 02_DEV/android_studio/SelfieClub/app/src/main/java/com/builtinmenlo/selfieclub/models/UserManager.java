@@ -123,6 +123,37 @@ public class UserManager
         );
     }
 
+    public void requestFriends(final UserFriendsProtocol userFriendsProtocol, String userId){
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("action","5");
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.USER_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        ArrayList<User> activityList = new ArrayList<User>();
+                        try{
+                                User user = parseUser(data);
+                                activityList.add(user);
+                                userFriendsProtocol.didReceiveFriendsList(activityList);
+                            }
+
+
+                        catch (Exception e){
+                            userFriendsProtocol.didReceiveFriendsListError(e.toString());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        userFriendsProtocol.didReceiveFriendsListError(response);
+                    }
+
+                }
+        );
+
+    }
+
     private ActivityItem parseActivityItem(JSONObject jsonObject, User user){
         ActivityItem activityItem = new ActivityItem();
         try {
