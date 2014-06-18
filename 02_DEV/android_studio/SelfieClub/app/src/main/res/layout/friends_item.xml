@@ -1,25 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/row"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:paddingRight="25dp">
 
     <ImageView
         android:id="@+id/imgAddOrCheck"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:background="@drawable/gray_stroke_gray"/>
 
+    <ImageView
+        android:id="@+id/imgFollowers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/verify_arrow_grey"/>
+
+    <TextView
+        android:id="@+id/lblFollowers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/imgFollowers"
+        android:singleLine="true"
+        android:textColor="#dadada"
+        android:text="0"
+        android:textSize="16sp"
+        />
+
+
+    <com.builtinmenlo.selfieclub.views.SVGImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@id/lblFollowers"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/friends_item_image_mask"
+        app:svg_raw_resource="@raw/shape_star" />
+    <!--
     <ImageView
         android:id="@+id/imgAvatar"
         android:layout_width="96dp"
         android:layout_height="96dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@id/lblFollowers"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"/>
-
+        android:layout_marginLeft="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/friends_item_image_mask"/>
+-->
     <ImageView
         android:id="@+id/imgAvatarCheck"
         android:layout_width="25dp"

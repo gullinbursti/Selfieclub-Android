@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/friendLayout"
         android:layout_margin="20dp"
+        android:textColor="#dadada"
+        android:textSize="20dp"
         android:text="@string/notifications" />
 
     <ListView
@@ -22,7 +24,7 @@
         android:layout_below="@+id/lblNotifications"
         android:layout_marginBottom="10dp"
         android:divider="@android:color/darker_gray"
-        android:dividerHeight="2dp"
+        android:dividerHeight="1dp"
         android:fastScrollEnabled="true"
         android:fillViewport="true"
         android:listSelector="#00000000"

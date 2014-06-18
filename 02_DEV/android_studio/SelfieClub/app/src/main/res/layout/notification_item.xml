@@ -3,7 +3,8 @@
     android:id="@+id/row"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:paddingTop="10dp"    android:paddingBottom="10dp">
 
 
     <com.builtinmenlo.selfieclub.views.RoundedImageView
@@ -11,7 +12,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="30dp"/>
 
 
     <TextView

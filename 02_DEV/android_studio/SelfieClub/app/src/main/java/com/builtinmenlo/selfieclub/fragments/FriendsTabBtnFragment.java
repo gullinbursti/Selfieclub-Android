@@ -39,6 +39,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
@@ -62,35 +63,9 @@ import java.util.List;
 // <[!] class delaration [¡]>
 public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol{
     public ListView lv;
-    public List<Friend> friends;
+    public List<User> friends;
     private MyCustomAdapter myAdapter;
-
-    private String[] imageURLArray = new String[]{
-            "http://farm8.staticflickr.com/7315/9046944633_881f24c4fa_s.jpg",
-            "http://farm4.staticflickr.com/3777/9049174610_bf51be8a07_s.jpg",
-            "http://farm8.staticflickr.com/7324/9046946887_d96a28376c_s.jpg",
-            "http://farm3.staticflickr.com/2828/9046946983_923887b17d_s.jpg",
-            "http://farm4.staticflickr.com/3810/9046947167_3a51fffa0b_s.jpg",
-            "http://farm4.staticflickr.com/3773/9049175264_b0ea30fa75_s.jpg",
-            "http://farm4.staticflickr.com/3781/9046945893_f27db35c7e_s.jpg",
-            "http://farm6.staticflickr.com/5344/9049177018_4621cb63db_s.jpg",
-            "http://farm8.staticflickr.com/7307/9046947621_67e0394f7b_s.jpg",
-            "http://farm6.staticflickr.com/5457/9046948185_3be564ac10_s.jpg",
-            "http://farm4.staticflickr.com/3752/9046946459_a41fbfe614_s.jpg",
-            "http://farm8.staticflickr.com/7403/9046946715_85f13b91e5_s.jpg",
-            "http://farm8.staticflickr.com/7315/9046944633_881f24c4fa_s.jpg",
-            "http://farm4.staticflickr.com/3777/9049174610_bf51be8a07_s.jpg",
-            "http://farm8.staticflickr.com/7324/9046946887_d96a28376c_s.jpg",
-            "http://farm3.staticflickr.com/2828/9046946983_923887b17d_s.jpg",
-            "http://farm4.staticflickr.com/3810/9046947167_3a51fffa0b_s.jpg",
-            "http://farm4.staticflickr.com/3773/9049175264_b0ea30fa75_s.jpg",
-            "http://farm4.staticflickr.com/3781/9046945893_f27db35c7e_s.jpg",
-            "http://farm6.staticflickr.com/5344/9049177018_4621cb63db_s.jpg",
-            "http://farm8.staticflickr.com/7307/9046947621_67e0394f7b_s.jpg",
-            "http://farm6.staticflickr.com/5457/9046948185_3be564ac10_s.jpg",
-            "http://farm4.staticflickr.com/3752/9046946459_a41fbfe614_s.jpg",
-            "http://farm8.staticflickr.com/7403/9046946715_85f13b91e5_s.jpg"};
-
+    private ProgressBar loadingIcon;
 
     public FriendsTabBtnFragment() {/*..\(^_^)/..*/}
 
@@ -112,9 +87,11 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         userManager.requestFriends(this,"131820");
         View view = inflater.inflate(R.layout.friends_tab, container, false);
 
+        loadingIcon = (ProgressBar)view.findViewById(R.id.loadingIcon);
+
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
 
-        populate(view);
+        //populate(view);
 
         //return (inflater.inflate(R.layout.friends_tab, container, false));
         return view;
@@ -123,7 +100,6 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
-        
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
@@ -149,6 +125,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         @Override
         protected ViewHolder doInBackground(ViewHolder... params) {
             //load image directly
+
             ViewHolder viewHolder = params[0];
             try {
                 URL imageURL = new URL(viewHolder.imageURL);
@@ -163,35 +140,18 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         @Override
         protected void onPostExecute(ViewHolder result) {
             if (result.bitmap == null) {
-                result.imageView.setImageResource(R.drawable.ic_launcher);
+                result.imageView.setImageResource(R.drawable.friends_item_image_mask);
             } else {
-                result.imageView.setImageBitmap(getRoundedCornerBitmap(result.bitmap));
+                //result.imageView.setImageBitmap(getRoundedCornerBitmap(result.bitmap));
+                result.imageView.setImageBitmap(result.bitmap);
             }
         }
     }
 
 
-    public void populate(View view) {
+    public void populate() {
 
-        friends = new ArrayList<Friend>();
-
-        Friend friend1 = new Friend();
-        friend1.setName("Jenny Jones");
-        friend1.setFriend(true);
-
-        Friend friend2 = new Friend();
-        friend2.setName("Jenny Jones");
-        friend2.setFriend(false);
-        friend2.setFollowers(40);
-
-        friends.add(friend1);
-        friends.add(friend2);
-
-
-
-
-
-        lv = (ListView) view.findViewById(android.R.id.list);
+        lv = (ListView) getActivity().findViewById(android.R.id.list);
         if (lv != null) {
             myAdapter = new MyCustomAdapter(getActivity(), R.layout.friends_item, friends);
             lv.setAdapter(myAdapter);
@@ -206,9 +166,9 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         }
     }
 
-    private class MyCustomAdapter extends ArrayAdapter<Friend> {
+    private class MyCustomAdapter extends ArrayAdapter<User> {
 
-        public MyCustomAdapter(Context context, int textViewResourceId, List<Friend> list) {
+        public MyCustomAdapter(Context context, int textViewResourceId, List<User> list) {
             super(context, textViewResourceId, list);
 
         }
@@ -226,11 +186,12 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
                 convertView.setTag(viewHolder);
             }
 
+            User friend = friends.get(position);
+
             viewHolder = (ViewHolder)convertView.getTag();
-            viewHolder.imageURL = imageURLArray[position];
+            viewHolder.imageURL = friend.getAvatarUrl();
             new DownloadAsyncTask().execute(viewHolder);
 
-            Friend friend = friends.get(position);
 
            // TextView lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
             TextView lblName = (TextView) convertView.findViewById(R.id.lblName);
@@ -239,13 +200,13 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             ImageView imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
 
             //lblFollowers.setText(String.valueOf(friend.getFollowers()));
-            lblName.setText(friend.getName());
+            lblName.setText(friend.getUsername());
 
-            if (friend.isFriend()) {
-                imgAddOrCheck.setBackgroundResource(R.drawable.green_check_mark);
+           /*if (friend.isFriend()) {
+                imgAddOrCheck.setBackgroundResource(R.drawable.green_dot);
                 imgAvatarCheck.setVisibility(View.VISIBLE);
             } else {
-                imgAddOrCheck.setBackgroundResource(R.drawable.blue_plus_button);
+                imgAddOrCheck.setBackgroundResource(R.drawable.gray_stroke_gray);
                 imgAvatarCheck.setVisibility(View.INVISIBLE);
             }
 
@@ -262,6 +223,9 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     }
 
     public void didReceiveFriendsList(ArrayList<User> friendsList){
+        System.err.println(friendsList);
+        friends =  friendsList;
+        populate();
 
     }
     public void didReceiveFriendsListError(String errorMessage){

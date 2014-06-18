@@ -6,14 +6,19 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
 
-       <!-- <EditText
+        <EditText
             android:id="@+id/searchBar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" /> -->
+            android:layout_height="wrap_content"
+            android:background="@drawable/friends_header_background"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="40dp"
+            android:paddingRight="60dp"
+            android:hint="@string/search_friends_hint"/>
 
         <ListView
             android:id="@android:id/list"
@@ -23,16 +28,17 @@
             android:layout_marginBottom="10dp"
             android:layout_weight="1"
             android:divider="@android:color/darker_gray"
-            android:dividerHeight="2dp"
+            android:dividerHeight="1dp"
             android:fastScrollEnabled="true"
             android:fillViewport="true"
             android:listSelector="#00000000"
             android:scrollingCache="true" />
     </LinearLayout>
 
-    <Spinner
+    <ProgressBar
         android:id="@+id/loadingIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
 </RelativeLayout>

@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
 	public void onMainCameraClick(View view) {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 		Intent intent = new Intent(this, CameraActivity.class);
-		intent.putExtra(MainActivity.INTENT_PAYLOAD_AS_STRING, String.valueOf(R.string.fpo_textview_hoge));
+		//intent.putExtra(MainActivity.INTENT_PAYLOAD_AS_STRING, String.valueOf(R.string.fpo_textview_hoge));
 		startActivity(intent);
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
