@@ -48,7 +48,7 @@
         android:layout_marginLeft="10dp"
         android:scaleType="fitXY"
         android:src="@drawable/friends_item_image_mask"
-        app:svg_raw_resource="@raw/shape_star" />
+        app:svg_raw_resource="@raw/image" />
     <!--
     <ImageView
         android:id="@+id/imgAvatar"
