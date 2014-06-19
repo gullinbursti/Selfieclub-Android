@@ -4,12 +4,16 @@ import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
+import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import com.loopj.android.http.*;
@@ -112,7 +116,20 @@ public class UserManager
         client.post(Constants.API_ENDPOINT+Constants.GET_USERCLUBS_PATH,requestParams,new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(JSONObject data) {
-                        userClubsProtocol.didReceiveUserClubs(data);
+
+                        try {
+                            ArrayList<Club> clubsList = parseUserClubs(data);
+                            Collections.sort(clubsList,new Comparator<Club>() {
+                                @Override
+                                public int compare(Club lhs, Club rhs) {
+                                    return rhs.getUpdated().compareTo(lhs.getUpdated());
+                                }
+                            });
+                            userClubsProtocol.didReceiveUserClubs(clubsList);
+                        } catch (JSONException e) {
+                            userClubsProtocol.didReceiveUserClubsError(e.toString());
+                        }
+
                     }
                     @Override
                     public void onFailure(Throwable e, String response){
@@ -193,5 +210,51 @@ public class UserManager
         }
         return date;
     }
+
+    private ArrayList<Club>parseUserClubs(JSONObject data) throws JSONException {
+        ArrayList<Club> clubArray = new ArrayList<Club>();
+        JSONArray memberArray = data.getJSONArray("member");
+        JSONArray otherArray = data.getJSONArray("other");
+        JSONArray pendingArray = data.getJSONArray("pending");
+        JSONArray ownedArray = data.getJSONArray("owned");
+        for(int i=0;i<memberArray.length();i++)
+            clubArray.add(parseClub(memberArray.getJSONObject(i)));
+        for(int i=0;i<otherArray.length();i++)
+            clubArray.add(parseClub(otherArray.getJSONObject(i)));
+        for(int i=0;i<pendingArray.length();i++)
+            clubArray.add(parseClub(pendingArray.getJSONObject(i)));
+        for (int i=0;i<ownedArray.length();i++)
+            clubArray.add(parseClub(ownedArray.getJSONObject(i)));
+        return clubArray;
+    }
+
+
+    private Club parseClub(JSONObject data){
+        Club club = new Club();
+        try {
+            club.setClubId(data.getString("id"));
+            club.setClubType(data.getString("club_type"));
+            club.setClubName(data.getString("name"));
+            club.setClubDescription(data.getString("description"));
+            club.setClubImage(data.getString("img"));
+            club.setClubTotalMembers(data.getString("total_members"));
+            club.setAdded(data.getString("added"));
+            club.setUpdated(data.getString("updated"));
+            club.setClubOwner(parseUser(data.getJSONObject("owner")));
+            club.setClubMembers(data.getJSONArray("members"));
+            club.setClubPendingMembers(data.getJSONArray("pending"));
+            club.setClubBlockedMembers(data.getJSONArray("blocked"));
+            club.setClubSubmissions(data.getJSONArray("submissions"));
+        } catch (JSONException e) {
+            Log.e(this.getClass().getName(),"Error parsing the club object");
+            e.printStackTrace();
+        }
+        finally {
+            return club;
+        }
+
+    }
+
+
 
 }
