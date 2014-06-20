@@ -40,7 +40,7 @@ import java.util.ArrayList;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
-// <[!] class delaration [¡]>
+// <[!] class declaration [¡]>
 public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol{
     public ClubsTabBtnFragment() {/*..\(^_^)/..*/}
 

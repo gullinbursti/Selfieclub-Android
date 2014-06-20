@@ -5,6 +5,8 @@ import android.util.Log;
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
 import com.builtinmenlo.selfieclub.dataSources.Club;
+import com.builtinmenlo.selfieclub.dataSources.Friend;
+import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -140,23 +142,33 @@ public class UserManager
         );
     }
 
-    public void requestFriends(final UserFriendsProtocol userFriendsProtocol, String userId){
+    public void requestFriends(final UserFriendsProtocol userFriendsProtocol, String userId, String phoneNumbers){
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         data.put("action","5");
+        data.put("phone",phoneNumbers);
         RequestParams requestParams = new RequestParams(data);
         client.post(Constants.API_ENDPOINT+Constants.USER_PATH,requestParams,new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(JSONObject data) {
-                        ArrayList<User> activityList = new ArrayList<User>();
                         try{
-                                User user = parseUser(data);
-                                activityList.add(user);
-                                userFriendsProtocol.didReceiveFriendsList(activityList);
+                            Friend owner = new Friend();
+                            owner.setUserId(data.getString("id"));
+                            owner.setAvatarUrl(data.getString("avatar_url"));
+                            owner.setUsername(data.getString("username"));
+                            boolean smsVerified = data.getBoolean("sms_verified");
+                            owner.setState(smsVerified?1:0);
+                            JSONArray friendsArray = data.getJSONArray("friends");
+                            ArrayList<Friend> friends = new ArrayList<Friend>();
+                            for(int i=0 ; i<friendsArray.length();i++){
+                                friends.add(parseFriend(friendsArray.getJSONObject(i)));
                             }
-
-
+                            FriendsViewData friendsViewData = new FriendsViewData();
+                            friendsViewData.setOwner(owner);
+                            friendsViewData.setFriends(friends);
+                            userFriendsProtocol.didReceiveFriendsList(friendsViewData);
+                            }
                         catch (Exception e){
                             userFriendsProtocol.didReceiveFriendsListError(e.toString());
                         }
@@ -254,6 +266,22 @@ public class UserManager
         }
 
     }
+
+    private Friend parseFriend(JSONObject data){
+        Friend friend = new Friend();
+        try {
+            JSONObject user = data.getJSONObject("user");
+            friend.setUserId(user.getString("id"));
+            friend.setUsername(user.getString("username"));
+            friend.setAvatarUrl(user.getString("avatar_url"));
+            friend.setState(data.getInt("state"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return friend;
+    }
+
 
 
 
