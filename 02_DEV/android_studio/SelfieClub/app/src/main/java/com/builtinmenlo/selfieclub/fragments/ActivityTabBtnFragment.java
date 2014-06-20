@@ -84,14 +84,7 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
         //contacts = phoneManager.getContacts();
 
         UserManager userManager = new UserManager();
-        userManager.requestUserActivity(this, "131820");
-
-       /* ActivityItem item0 = new ActivityItem();
-        item0.setMessage("Hola");
-        notifications = new ArrayList<ActivityItem>();
-        notifications.add(item0);
-
-        populate();*/
+        userManager.requestUserActivity(this, "2394");
 
         //return (inflater.inflate(R.layout.friends_tab, container, false));
         return view;

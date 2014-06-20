@@ -43,6 +43,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
+import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
@@ -60,23 +62,12 @@ import java.util.List;
 // <[!] class delaration [¡]>
 public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol{
     public ListView lv;
-    public List<User> friends;
-    private MyCustomAdapter myAdapter;
+    public List<Friend> friends;
+    public User owner;
+    private MyCustomAdapter adapter;
     private ProgressBar loadingIcon;
 
     public FriendsTabBtnFragment() {/*..\(^_^)/..*/}
-
-    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
-        Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        BitmapShader shader = new BitmapShader (bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        Paint paint = new Paint();
-        paint.setShader(shader);
-        Canvas c = new Canvas(circleBitmap);
-        c.drawCircle(48,48,24,paint);
-
-        return circleBitmap;
-    }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
@@ -88,9 +79,10 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
 
-        //populate(view);
+        lv = (ListView) view.findViewById(android.R.id.list);
+        friends = new ArrayList<Friend>();
+        populate();
 
-        //return (inflater.inflate(R.layout.friends_tab, container, false));
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
@@ -139,7 +131,6 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             if (result.bitmap == null) {
                 result.imageView.setImageResource(R.drawable.friends_item_image_mask);
             } else {
-                //result.imageView.setImageBitmap(getRoundedCornerBitmap(result.bitmap));
                 result.imageView.setImageBitmap(result.bitmap);
             }
         }
@@ -147,11 +138,13 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
 
     public void populate() {
-
-        lv = (ListView) getActivity().findViewById(android.R.id.list);
         if (lv != null) {
-            myAdapter = new MyCustomAdapter(getActivity(), R.layout.friends_item, friends);
-            lv.setAdapter(myAdapter);
+            adapter = new MyCustomAdapter(getActivity(), R.layout.friends_item, friends);
+            lv.post(new Runnable() {
+                public void run() {
+                    lv.setAdapter(adapter);
+                }
+            });
 
             lv.setOnItemClickListener(new OnItemClickListener() {
 
@@ -159,16 +152,25 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
                     //arg1.setBackgroundColor(Color.TRANSPARENT);
                 }
             });
-            lv.setVisibility(View.VISIBLE);
         }
     }
 
-    private class MyCustomAdapter extends ArrayAdapter<User> {
+    private class MyCustomAdapter extends ArrayAdapter<Friend> {
 
-        public MyCustomAdapter(Context context, int textViewResourceId, List<User> list) {
+        public MyCustomAdapter(Context context, int textViewResourceId, List<Friend> list) {
             super(context, textViewResourceId, list);
-
         }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return friends.size();
+        }
+
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -183,7 +185,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
                 convertView.setTag(viewHolder);
             }
 
-            User friend = friends.get(position);
+            Friend friend = friends.get(position);
 
             viewHolder = (ViewHolder)convertView.getTag();
             viewHolder.imageURL = friend.getAvatarUrl();
@@ -199,7 +201,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             //lblFollowers.setText(String.valueOf(friend.getFollowers()));
             lblName.setText(friend.getUsername());
 
-           /*if (friend.isFriend()) {
+           if (friend.getState() == 1) {
                 imgAddOrCheck.setBackgroundResource(R.drawable.green_dot);
                 imgAvatarCheck.setVisibility(View.VISIBLE);
             } else {
@@ -220,15 +222,12 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     }
 
     public void didReceiveFriendsList(FriendsViewData friendsViewData){
-        /*
-        System.err.println(friendsList);
-        friends =  friendsList;
-        populate();
-        */
-
+        friends =  friendsViewData.getFriends();
+        owner = friendsViewData.getOwner();
+        adapter.notifyDataSetChanged();
     }
     public void didReceiveFriendsListError(String errorMessage){
-
+        System.err.println(errorMessage);
     }
 
 }
