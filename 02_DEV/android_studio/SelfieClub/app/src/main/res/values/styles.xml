@@ -23,7 +23,7 @@
     <style name="MyActionBarTabs" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
         <!-- tab indicator -->
        <item name="android:background">@drawable/actionbar_tab_indicator</item>
-        <item name="android:colorBackground">@android:color/white</item>
+        <item name="android:colorBackground">#dadada</item>
 
         <item name="android:showDividers">none</item>
         <item name="android:paddingLeft">2dp</item>
