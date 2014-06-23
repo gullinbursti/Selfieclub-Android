@@ -190,6 +190,35 @@ public class UserManager
             activityItem.setActivityType(jsonObject.getInt("activity_type"));
             activityItem.setUser(user);
             activityItem.setTime(dateFromString(jsonObject.getString("time")));
+            switch (activityItem.getActivityType()){
+                case 1:
+                    activityItem.setMessage(user.getUsername()+" Verified");
+                    break;
+                case 3:
+                    activityItem.setMessage(user.getUsername()+" has upvotes you into"+jsonObject.getString("club_name"));
+                    break;
+                case 5:
+                    activityItem.setMessage(user.getUsername()+ " has reply a photo into "+jsonObject.getString("club_name"));
+                    break;
+                case 6:
+                    activityItem.setMessage(user.getUsername()+ " has accepted your invite into "+jsonObject.getString("club_name"));
+                    break;
+                case 7:
+                    activityItem.setMessage(user.getUsername()+ " leave "+jsonObject.getString("club_name"));
+                    break;
+                case 8:
+                    activityItem.setMessage(user.getUsername()+ " invited you into "+jsonObject.getString("club_name"));
+                    break;
+                case 9:
+                    activityItem.setMessage(user.getUsername()+ " submitted a photo into "+jsonObject.getString("club_name"));
+                    break;
+                case 10:
+                    activityItem.setMessage(user.getUsername()+ " send a replay into "+jsonObject.getString("club_name"));
+                    break;
+                case 11:
+                    activityItem.setMessage(user.getUsername()+ " joined  "+jsonObject.getString("club_name"));
+            }
+
 
         }
         catch (Exception e){
