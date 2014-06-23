@@ -202,10 +202,10 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             lblName.setText(friend.getUsername());
 
            if (friend.getState() == 1) {
-                imgAddOrCheck.setBackgroundResource(R.drawable.green_dot);
+                imgAddOrCheck.setBackgroundResource(R.drawable.green_selection_dot);
                 imgAvatarCheck.setVisibility(View.VISIBLE);
             } else {
-                imgAddOrCheck.setBackgroundResource(R.drawable.gray_stroke_gray);
+                imgAddOrCheck.setBackgroundResource(R.drawable.gray_selection_dot);
                 imgAvatarCheck.setVisibility(View.INVISIBLE);
             }
 

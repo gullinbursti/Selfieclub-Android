@@ -3,7 +3,7 @@
     android:id="@+id/row"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
+    android:background="@drawable/activity_row_background"
     android:paddingTop="10dp"    android:paddingBottom="10dp">
 
 
