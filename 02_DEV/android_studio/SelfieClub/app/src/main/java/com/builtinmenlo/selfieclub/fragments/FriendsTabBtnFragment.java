@@ -192,13 +192,13 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             new DownloadAsyncTask().execute(viewHolder);
 
 
-           // TextView lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
+            // TextView lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
             TextView lblName = (TextView) convertView.findViewById(R.id.lblName);
-            //ImageView imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
+            // ImageView imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
             ImageView imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
             ImageView imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
 
-            //lblFollowers.setText(String.valueOf(friend.getFollowers()));
+            // lblFollowers.setText(String.valueOf(friend.getFollowers()));
             lblName.setText(friend.getUsername());
 
            if (friend.getState() == 1) {
