@@ -10,6 +10,8 @@
         <item name="android:actionBarTabTextStyle">@style/MyActionBarTabText</item>
         <item name="android:actionBarTabStyle">@style/MyActionBarTabs</item>
         <item name="android:actionOverflowButtonStyle">@android:style/Widget.Holo.ActionButton.Overflow</item>
+        <item name="actionBarDivider">@null</item>
+        <item name="android:actionBarDivider">@null</item>
     </style>
 
     <!-- ActionBar styles -->
@@ -24,10 +26,8 @@
         <!-- tab indicator -->
        <item name="android:background">@drawable/actionbar_tab_indicator</item>
         <item name="android:colorBackground">#dadada</item>
-
-        <item name="android:showDividers">none</item>
-        <item name="android:actionBarDivider">@android:color/transparent</item>
         <item name="android:dividerPadding">0dp</item>
+
         <item name="android:paddingLeft">2dp</item>
         <item name="android:paddingRight">2dp</item>
     </style>
