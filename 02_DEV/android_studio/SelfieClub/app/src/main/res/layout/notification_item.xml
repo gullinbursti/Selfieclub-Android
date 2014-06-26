@@ -4,23 +4,24 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/activity_row_background"
-    android:paddingTop="10dp"    android:paddingBottom="10dp">
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
 
 
     <com.builtinmenlo.selfieclub.views.RoundedImageView
         android:id="@+id/imgAvatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="30dp" />
 
 
     <TextView
         android:id="@+id/lblText"
-        android:layout_margin="10dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_margin="10dp"
         android:layout_toRightOf="@+id/imgAvatar"
         android:gravity="center_vertical"
         android:singleLine="true"

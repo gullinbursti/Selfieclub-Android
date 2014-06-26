@@ -37,22 +37,27 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
+import com.builtinmenlo.selfieclub.dataSources.Friend;
+import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.models.UserActivityProtocol;
+import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.BinaryHttpResponseHandler;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityTabBtnFragment extends Fragment implements UserActivityProtocol {
+public class ActivityTabBtnFragment extends Fragment implements UserActivityProtocol, UserFriendsProtocol {
     private ListView lv;
+    public Friend owner;
     private List<ActivityItem> notifications;
     private MyCustomAdapter adapter;
 
@@ -85,6 +90,8 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
 
         UserManager userManager = new UserManager();
         userManager.requestUserActivity(this, "2394");
+        userManager.requestFriends(this, "2394", "+17143309754|+15617164724|+15617164831|+17409726939|+16505754720|+14086210100|+15303041380|+141 52646152|+16192042875|+16179397216|+15612369460|+18475305634|+14089215625|+19783175663|+14159354255|+14255032279|+16502244999|+14159028877|+12393709811|+12 135098296|+14083109905|+19196560716|+14087181396|+14085069784|+14152549391|+16509969693|+15612719211|+17869735014|+15624539140|+16506192664|+13107078969|+1 4152609007|+16263750676|+14079219866|+18187266581|+18312220104|+19312496956|+13105978645|+13106262124|+19493502980|+14084995523|+14153788924|+17816161660|+ 14156867366|+17816161660|+16507434738|+14153368700|+15105797189|+14153086768|+16506192665|+12068566868|+13105005463|+13035266649|+12133009127|+14156095557| +14084293828|+16507968877|+12135905745");
+
 
         //return (inflater.inflate(R.layout.friends_tab, container, false));
         return view;
@@ -200,14 +207,68 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
         }
     }
 
+
+    public void populateOwnerView() {
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        // TextView lblFollowers = (TextView) getActivity().findViewById(R.id.lblFollowers);
+        TextView lblName = (TextView) getActivity().findViewById(R.id.lblName);
+        //ImageView imgFollowers = (ImageView) getActivity().findViewById(R.id.imgFollowers);
+        ImageView imgAddOrCheck = (ImageView) getActivity().findViewById(R.id.imgAddOrCheck);
+        ImageView imgAvatarCheck = (ImageView) getActivity().findViewById(R.id.imgAvatarCheck);
+
+
+        // lblFollowers.setText(String.valueOf(friend.getFollowers()));
+        lblName.setText(owner.getUsername());
+
+        imgAddOrCheck.setBackgroundResource(R.drawable.selector_profile_camera_button);
+
+        /*if (owner.getState() == 1) {
+            imgAddOrCheck.setBackgroundResource(R.drawable.green_selection_dot);
+            imgAvatarCheck.setVisibility(View.VISIBLE);
+        } else {
+            imgAddOrCheck.setBackgroundResource(R.drawable.gray_selection_dot);
+            imgAvatarCheck.setVisibility(View.INVISIBLE);
+        }*/
+
+            /*if (friend.getFollowers() > 0){
+                imgFollowers.setBackgroundResource(R.drawable.verify_arrow_green);
+                lblFollowers.setTextColor(Color.GREEN);
+            }else{
+                imgFollowers.setBackgroundResource(R.drawable.verify_arrow_grey);
+                lblFollowers.setTextColor(Color.LTGRAY);
+            }*/
+
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(owner.getAvatarUrl(), null, new BinaryHttpResponseHandler() {
+            @Override
+            public void onSuccess(byte[] fileData) {
+                Bitmap image = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
+                ((ImageView) getActivity().findViewById(R.id.imgAvatar)).setImageBitmap(image);
+            }
+        });
+
+    }
+
     public void didReceiveUserActivity(ArrayList<ActivityItem> activityList) {
         notifications = activityList;
-
-        //populate();
         adapter.notifyDataSetChanged();
     }
 
     public void didReceiveUserActivityError(String error) {
         System.err.println(error);
     }
+
+    public void didReceiveFriendsList(FriendsViewData friendsViewData) {
+        owner = (Friend) friendsViewData.getOwner();
+        populateOwnerView();
+    }
+
+    public void didReceiveFriendsListError(String errorMessage) {
+        System.err.println(errorMessage);
+    }
+
+
 }
