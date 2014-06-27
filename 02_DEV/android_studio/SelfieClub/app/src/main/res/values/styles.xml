@@ -24,7 +24,8 @@
     <!-- ActionBar tabs styles -->
     <style name="MyActionBarTabs" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
         <!-- tab indicator -->
-       <item name="android:background">@drawable/actionbar_tab_indicator</item>
+        <!--<item name="android:background">@drawable/actionbar_tab_indicator</item>-->
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:colorBackground">#dadada</item>
         <item name="android:dividerPadding">0dp</item>
 

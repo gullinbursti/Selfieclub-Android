@@ -24,7 +24,9 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.text.Html;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -51,17 +53,22 @@ public class TabButtonListener implements ActionBar.TabListener {
 
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-        /*RelativeLayout tabLayout = (RelativeLayout) tab.getCustomView(); //get the view for the tab
-        if (tabLayout != null) {
-            tabLayout.setBackgroundColor(Color.RED); // change the background
-            tab.setCustomView(tabLayout); // assign back to the tab
-        }*/
+        RelativeLayout tabLayout = (RelativeLayout) tab.getCustomView(); //get the view for the tab
+        ImageView redDot = (ImageView) tabLayout.findViewById(R.id.imgRedDot);
+        if (tabLayout != null && redDot == null) {
+            ((TextView)tabLayout.findViewById(R.id.lblTitleText)).setTextColor(Color.parseColor("#005de9"));
+        }
 
 		fragmentTransaction.replace(R.id.tab_fragment_layout, fragment);
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
 	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        RelativeLayout tabLayout = (RelativeLayout) tab.getCustomView(); //get the view for the tab
+        ImageView redDot = (ImageView) tabLayout.findViewById(R.id.imgRedDot);
+        if (tabLayout != null && redDot == null) {
+            ((TextView)tabLayout.findViewById(R.id.lblTitleText)).setTextColor(Color.parseColor("#bababa"));
+        }
         if (fragment != null) {
             fragmentTransaction.remove(fragment);
         }

@@ -5,21 +5,15 @@
     android:layout_height="fill_parent"
     >
 
-    <ImageView
-        android:id="@+id/imgRedDot"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_centerInParent="true"
-        android:src="@drawable/notification_bubble"></ImageView>
-
     <TextView
         android:id="@+id/lblTitleText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_height="fill_parent"
+        android:gravity="center"
         android:singleLine="true"
-        android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:textColor="#bababa"
+        android:textStyle="normal"
+        android:textSize="20dp" />
 </RelativeLayout>
 
     <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->

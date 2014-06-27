@@ -76,35 +76,41 @@ public class MainActivity extends Activity {
 		topNavActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         topNavActionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.white)));
 
-		friendsTab = topNavActionBar.newTab();
-        friendsTab.setText(R.string.tab_friends_title);
-		friendsTab.setTabListener(new TabButtonListener(friendsFragment));
-		topNavActionBar.addTab(friendsTab);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        friendsTab = topNavActionBar.newTab();
+        View friendsTabCustomView = mInflater.inflate(R.layout.item_tab_bar, null);
+        TextView friendsTitleTextView = (TextView) friendsTabCustomView.findViewById(R.id.lblTitleText);
+        friendsTitleTextView.setText(R.string.tab_friends_title);
+        friendsTab.setCustomView(friendsTabCustomView);
+        //friendsTab.setText(R.string.tab_friends_title);
+        friendsTab.setTabListener(new TabButtonListener(friendsFragment));
+        topNavActionBar.addTab(friendsTab);
 
         newsTab = topNavActionBar.newTab();
-        newsTab.setText(R.string.tab_news_title);
+        View newsTabCustomView = mInflater.inflate(R.layout.item_tab_bar, null);
+        TextView newsTitleTextView = (TextView) newsTabCustomView.findViewById(R.id.lblTitleText);
+        newsTitleTextView.setText(R.string.tab_news_title);
+        newsTab.setCustomView(newsTabCustomView);
+        //newsTab.setText(R.string.tab_news_title);
         newsTab.setTabListener(new TabButtonListener(newsFragment));
         topNavActionBar.addTab(newsTab);
 
-		clubsTab = topNavActionBar.newTab();
-		clubsTab.setText(R.string.tab_clubs_title);
-		clubsTab.setTabListener(new TabButtonListener(clubsFragment));
-		topNavActionBar.addTab(clubsTab);
+        clubsTab = topNavActionBar.newTab();
+        View clubsTabCustomView = mInflater.inflate(R.layout.item_tab_bar, null);
+        TextView clubsTitleTextView = (TextView) clubsTabCustomView.findViewById(R.id.lblTitleText);
+        clubsTitleTextView.setText(R.string.tab_clubs_title);
+        clubsTab.setCustomView(clubsTabCustomView);
+        //clubsTab.setText(R.string.tab_clubs_title);
+        clubsTab.setTabListener(new TabButtonListener(clubsFragment));
+        topNavActionBar.addTab(clubsTab);
 
 
         notificationsTab = topNavActionBar.newTab();
-
-        LayoutInflater mInflater = LayoutInflater.from(this);
-
         View mCustomView = mInflater.inflate(R.layout.notifications_tab_bar, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.lblTitleText);
         mTitleTextView.setText("0");
-
         notificationsTab.setCustomView(mCustomView);
-
-        // notificationsTab.setCustomView(R.layout.notifications_tab_bar);
-        // notificationsTab.setIcon(getResources().getDrawable(R.drawable.red_activity_dot));
-        //notificationsTab.setText("4");
         notificationsTab.setTabListener(new TabButtonListener(notificationsFragment));
         topNavActionBar.addTab(notificationsTab);
 
