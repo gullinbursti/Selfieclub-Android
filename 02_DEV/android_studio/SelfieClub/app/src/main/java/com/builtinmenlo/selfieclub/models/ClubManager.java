@@ -44,16 +44,19 @@ public class ClubManager {
                             club.setClubPendingMembers(data.getJSONArray("pending"));
                             club.setClubBlockedMembers(data.getJSONArray("blocked"));
                             club.setClubSubmissions(data.getJSONArray("submissions"));
-                            clubInfoProtocol.didReceiveClubInfo(club);
+                            if (clubInfoProtocol!=null)
+                                clubInfoProtocol.didReceiveClubInfo(club);
 
                         }
                         catch (Exception e){
-                            clubInfoProtocol.didReceiveClubInfoError(e.toString());
+                            if (clubInfoProtocol!=null)
+                                clubInfoProtocol.didReceiveClubInfoError(e.toString());
                         }
                     }
                     @Override
                     public void onFailure(Throwable e, String response){
-                        clubInfoProtocol.didReceiveClubInfoError(response);
+                        if (clubInfoProtocol!=null)
+                            clubInfoProtocol.didReceiveClubInfoError(response);
                     }
 
                 }
