@@ -6,14 +6,17 @@ import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.Club;
+import com.builtinmenlo.selfieclub.dataSources.NewsItem;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -60,6 +63,88 @@ public class ClubManager {
         );
 
     }
+
+    public void requestNews(final NewsFeedProtocol newsFeedProtocol, String userId){
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.GET_USERCLUBS_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        ArrayList<NewsItem>newsFeedArray = new ArrayList<NewsItem>();
+                        JSONObject object;
+                        JSONArray submissionsArray;
+                        try{
+                            JSONArray memberArray = data.getJSONArray("member");
+                            for(int i=0;i<memberArray.length();i++){
+                                object = memberArray.getJSONObject(i);
+                                submissionsArray = object.getJSONArray("submissions");
+                                for(int j=0;j<submissionsArray.length();j++){
+                                    newsFeedArray.add(parseNewsItem(submissionsArray.getJSONObject(j),object.getString("name")));
+                                }
+                            }
+
+                            JSONArray otherArray = data.getJSONArray("other");
+                            for(int i=0;i<otherArray.length();i++){
+                                object = otherArray.getJSONObject(i);
+                                submissionsArray = object.getJSONArray("submissions");
+                                for(int j=0;j<submissionsArray.length();j++){
+                                    newsFeedArray.add(parseNewsItem(submissionsArray.getJSONObject(j),object.getString("name")));
+                                }
+                            }
+
+                            JSONArray pendingArray = data.getJSONArray("pending");
+                            for(int i=0;i<pendingArray.length();i++){
+                                object = pendingArray.getJSONObject(i);
+                                submissionsArray = object.getJSONArray("submissions");
+                                for(int j=0;j<submissionsArray.length();j++){
+                                    newsFeedArray.add(parseNewsItem(submissionsArray.getJSONObject(j),object.getString("name")));
+                                }
+                            }
+
+
+                            JSONArray ownedArray = data.getJSONArray("owned");
+                            for(int i=0;i<ownedArray.length();i++){
+                                object = ownedArray.getJSONObject(i);
+                                submissionsArray = object.getJSONArray("submissions");
+                                for(int j=0;j<submissionsArray.length();j++){
+                                    newsFeedArray.add(parseNewsItem(submissionsArray.getJSONObject(j),object.getString("name")));
+                                }
+                            }
+                            newsFeedProtocol.didReceiveNewsFeed(newsFeedArray);
+
+                        }
+                        catch (Exception e){
+                            newsFeedProtocol.didReceiveNewsFeedError(e.toString());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        newsFeedProtocol.didReceiveNewsFeedError(response);
+                    }
+
+                }
+        );
+
+    }
+
+    private NewsItem parseNewsItem (JSONObject data,String clubname){
+        NewsItem newsItem = new NewsItem();
+        try{
+            newsItem.setUserName(data.getString("username"));
+            newsItem.setAvatarUrl(data.getString("avatar"));
+            newsItem.setClubName(clubname);
+            newsItem.setImageUrl(data.getString("img"));
+            newsItem.setTimestamp(data.getString("added"));
+        }
+        catch (Exception e){}
+
+
+        return newsItem;
+    }
+
 
     private User parseUser(JSONObject jsonObject){
         try{

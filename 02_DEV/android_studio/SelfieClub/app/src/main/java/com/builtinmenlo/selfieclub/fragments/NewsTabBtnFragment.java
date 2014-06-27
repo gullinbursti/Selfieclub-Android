@@ -29,13 +29,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.dataSources.NewsItem;
+import com.builtinmenlo.selfieclub.models.ClubManager;
+import com.builtinmenlo.selfieclub.models.NewsFeedProtocol;
 
-;
+;import java.util.ArrayList;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
 // <[!] class delaration [¡]>
-public class NewsTabBtnFragment extends Fragment {
+public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol{
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
 	//] class properties ]>
@@ -53,6 +56,8 @@ public class NewsTabBtnFragment extends Fragment {
 
 		TextView textView = (TextView) container.findViewById(R.id.fragment_textview);
 		//textView.setText(R.string.verify_message);
+        ClubManager clubManager = new ClubManager();
+        clubManager.requestNews(this,"131820");
 
 		return (inflater.inflate(R.layout.fragment_tab_btn, container, false));
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
@@ -72,4 +77,11 @@ public class NewsTabBtnFragment extends Fragment {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 		super.onDetach();
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
+    public void didReceiveNewsFeed(ArrayList<NewsItem> newsItemArrayList){
+
+    }
+    public void didReceiveNewsFeedError(String errorMessage){
+
+    }
 }
