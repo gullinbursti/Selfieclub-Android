@@ -1,5 +1,7 @@
 package com.builtinmenlo.selfieclub.dataSources;
 
+import org.json.JSONArray;
+
 /**
  * Created by Leonardo on 6/26/14.
  */
@@ -9,6 +11,7 @@ public class NewsItem {
     private String timestamp;
     private String avatarUrl;
     private String imageUrl;
+    private JSONArray status;
 
 
     public String getUserName() {
@@ -49,5 +52,13 @@ public class NewsItem {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public JSONArray getStatus() {
+        return status;
+    }
+
+    public void setStatus(JSONArray status) {
+        this.status = status;
     }
 }

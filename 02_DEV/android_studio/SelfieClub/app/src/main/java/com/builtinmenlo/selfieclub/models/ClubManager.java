@@ -138,6 +138,7 @@ public class ClubManager {
             newsItem.setClubName(clubname);
             newsItem.setImageUrl(data.getString("img"));
             newsItem.setTimestamp(data.getString("added"));
+            newsItem.setStatus(data.getJSONArray("subjects"));
         }
         catch (Exception e){}
 
@@ -160,3 +161,4 @@ public class ClubManager {
         }
     }
 }
+
