@@ -13,7 +13,7 @@
             android:id="@+id/searchBar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/friends_header_background"
+            android:background="@drawable/search_background"
             android:singleLine="true"
             android:gravity="center_vertical"
             android:paddingLeft="40dp"

@@ -4,7 +4,7 @@
     android:id="@+id/row"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
+    android:background="@drawable/common_row_background"
     android:paddingRight="25dp">
 
     <ImageView
@@ -14,7 +14,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_margin="5dp"
-        android:background="@drawable/gray_stroke_gray"/>
+        android:background="@drawable/gray_selection_dot"/>
 
     <ImageView
         android:id="@+id/imgFollowers"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/verify_arrow_grey"/>
+        android:background="@drawable/gray_arrow"/>
 
     <TextView
         android:id="@+id/lblFollowers"
@@ -39,8 +39,8 @@
 
     <com.builtinmenlo.selfieclub.views.SVGImageView
         android:id="@+id/imgAvatar"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_toRightOf="@id/lblFollowers"
@@ -64,11 +64,11 @@
 -->
     <ImageView
         android:id="@+id/imgAvatarCheck"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignRight="@+id/imgAvatar"
         android:layout_alignBottom="@+id/imgAvatar"
-        android:background="@drawable/verified_overlay" />
+        android:background="@drawable/verify_badge" />
 
     <TextView
         android:id="@+id/lblName"
@@ -81,6 +81,7 @@
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@android:color/black"
-        android:textSize="20dp" />
+        android:textSize="12dp"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

@@ -127,15 +127,18 @@ public class UserManager
                                     return rhs.getUpdated().compareTo(lhs.getUpdated());
                                 }
                             });
-                            userClubsProtocol.didReceiveUserClubs(clubsList);
+                            if (userClubsProtocol != null)
+                                userClubsProtocol.didReceiveUserClubs(clubsList);
                         } catch (JSONException e) {
-                            userClubsProtocol.didReceiveUserClubsError(e.toString());
+                            if (userClubsProtocol != null)
+                                userClubsProtocol.didReceiveUserClubsError(e.toString());
                         }
 
                     }
                     @Override
                     public void onFailure(Throwable e, String response){
-                        userClubsProtocol.didReceiveUserClubsError(response);
+                        if (userClubsProtocol != null)
+                            userClubsProtocol.didReceiveUserClubsError(response);
                     }
 
                 }
@@ -167,15 +170,18 @@ public class UserManager
                             FriendsViewData friendsViewData = new FriendsViewData();
                             friendsViewData.setOwner(owner);
                             friendsViewData.setFriends(friends);
-                            userFriendsProtocol.didReceiveFriendsList(friendsViewData);
+                            if (userFriendsProtocol != null)
+                                userFriendsProtocol.didReceiveFriendsList(friendsViewData);
                             }
                         catch (Exception e){
-                            userFriendsProtocol.didReceiveFriendsListError(e.toString());
+                            if (userFriendsProtocol != null)
+                                userFriendsProtocol.didReceiveFriendsListError(e.toString());
                         }
                     }
                     @Override
                     public void onFailure(Throwable e, String response){
-                        userFriendsProtocol.didReceiveFriendsListError(response);
+                        if (userFriendsProtocol != null)
+                            userFriendsProtocol.didReceiveFriendsListError(response);
                     }
 
                 }
