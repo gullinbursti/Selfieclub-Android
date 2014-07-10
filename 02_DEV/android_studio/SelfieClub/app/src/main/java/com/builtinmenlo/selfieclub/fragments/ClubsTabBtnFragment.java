@@ -158,32 +158,42 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol{
 
         @Override
         public int getCount() {
-            return clubs.size();
+            return clubs.size() + 1;
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
-            ViewHolder viewHolder;
-            if (convertView == null) {
+            if (position == 0){
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.clubs_item, parent, false);
+                TextView lblText = (TextView) convertView.findViewById(R.id.lblClubName);
+                lblText.setText("Create a club");
+                ImageView imageView = (ImageView) convertView.findViewById(R.id.imgClub);
+                imageView.setImageResource(R.drawable.selector_add_club);
+            } else {
 
-                viewHolder = new ViewHolder();
-                viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imgClub);
-                convertView.setTag(viewHolder);
+                ViewHolder viewHolder;
+                if (convertView == null) {
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    convertView = inflater.inflate(R.layout.clubs_item, parent, false);
+
+                    viewHolder = new ViewHolder();
+                    viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imgClub);
+                    convertView.setTag(viewHolder);
+                }
+
+                Club club = clubs.get(position - 1);
+
+                viewHolder = (ViewHolder) convertView.getTag();
+                viewHolder.imageURL = club.getClubImage();
+                new DownloadAsyncTask().execute(viewHolder);
+
+                TextView lblText = (TextView) convertView.findViewById(R.id.lblClubName);
+
+                lblText.setText(clubs.get(position).getClubName());
+                //lblText.setText("Hola");
             }
-
-            Club club = clubs.get(position);
-
-            viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.imageURL = club.getClubImage();
-            new DownloadAsyncTask().execute(viewHolder);
-
-            TextView lblText = (TextView) convertView.findViewById(R.id.lblClubName);
-
-            lblText.setText(clubs.get(position).getClubName());
-            //lblText.setText("Hola");
 
             return convertView;
         }
