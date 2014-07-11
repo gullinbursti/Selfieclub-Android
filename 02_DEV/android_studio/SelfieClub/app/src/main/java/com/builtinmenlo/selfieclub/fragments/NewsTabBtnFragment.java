@@ -41,17 +41,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.NewsItem;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.NewsFeedProtocol;
+import com.builtinmenlo.selfieclub.util.ImageDownloader;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -69,7 +68,9 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
+    ImageDownloader downloader;
     ArrayList<NewsItem> news;
+    ImageView[] listImages;
     public ListView lv;
     private MyCustomAdapter adapter;
     private ProgressBar loadingIcon;
@@ -82,16 +83,17 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.news_tab, container, false);
         lv = (ListView) view.findViewById(android.R.id.list);
+        downloader = new ImageDownloader(NewsTabBtnFragment.this.getActivity());
         news = new ArrayList<NewsItem>();
         populate();
 
         ClubManager clubManager = new ClubManager();
         clubManager.requestNews(this, "131820");
 
-        return view;    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+        return view;
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -192,10 +194,10 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
             String status = "<strong>" + newsItem.getUserName() + "</strong> is feeling <strong>";
             for (int i = 0; i < newsItem.getStatus().length(); i++) {
                 try {
-                    if (newsItem.getStatus().length() > 1 && i+1 == newsItem.getStatus().length())
-                        status = status.substring(0,status.length()-2)+" & ";
+                    if (newsItem.getStatus().length() > 1 && i + 1 == newsItem.getStatus().length())
+                        status = status.substring(0, status.length() - 2) + " & ";
                     status += newsItem.getStatus().getString(i);
-                    if (i+1 < newsItem.getStatus().length())
+                    if (i + 1 < newsItem.getStatus().length())
                         status += ", ";
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -214,7 +216,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(rowDate);
 
-            long time = (((Calendar.getInstance().getTimeInMillis() - calendar.getTimeInMillis()) / 1000) % 3600) /60;
+            long time = (((Calendar.getInstance().getTimeInMillis() - calendar.getTimeInMillis()) / 1000) % 3600) / 60;
 
 
             viewHolder.lblTime.setText(String.valueOf(time) + " minutes ago in " + newsItem.getClubName());
@@ -224,7 +226,10 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
             }
 
             if (viewHolder.imgNews != null) {
-                new ImageDownloaderTask(viewHolder.imgNews).execute(newsItem.getImageUrl()+"Tab_640x960.jpg");
+                //viewHolder.imgNews.setImageBitmap(((BitmapDrawable)listImages[position].getDrawable()).getBitmap());
+                //new ImageDownloaderTask(viewHolder.imgNews).execute(newsItem.getImageUrl()+"Tab_640x960.jpg");
+                downloader.DisplayImage(newsItem.getImageUrl() + "Tab_640x960.jpg", String.valueOf(position), getActivity(), viewHolder.imgNews);
+
             }
 
             return convertView;
@@ -267,49 +272,56 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
             }
         }
 
-        Bitmap downloadBitmap(String url) {
-            final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-            final HttpGet getRequest = new HttpGet(url);
-            try {
-                HttpResponse response = client.execute(getRequest);
-                final int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode != HttpStatus.SC_OK) {
-                    Log.w("ImageDownloader", "Error " + statusCode
-                            + " while retrieving bitmap from " + url);
-                    return null;
-                }
 
-                final HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    InputStream inputStream = null;
-                    try {
-                        inputStream = entity.getContent();
-                        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        return bitmap;
-                    } finally {
-                        if (inputStream != null) {
-                            inputStream.close();
-                        }
-                        entity.consumeContent();
+    }
+
+    Bitmap downloadBitmap(String url) {
+        final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
+        final HttpGet getRequest = new HttpGet(url);
+        try {
+            HttpResponse response = client.execute(getRequest);
+            final int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                Log.w("ImageDownloader", "Error " + statusCode
+                        + " while retrieving bitmap from " + url);
+                return null;
+            }
+
+            final HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                InputStream inputStream = null;
+                try {
+                    inputStream = entity.getContent();
+                    final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    return bitmap;
+                } finally {
+                    if (inputStream != null) {
+                        inputStream.close();
                     }
-                }
-            } catch (Exception e) {
-                // Could provide a more explicit error message for IOException or
-                // IllegalStateException
-                getRequest.abort();
-                Log.w("ImageDownloader", "Error while retrieving bitmap from " + url);
-            } finally {
-                if (client != null) {
-                    client.close();
+                    entity.consumeContent();
                 }
             }
-            return null;
+        } catch (Exception e) {
+            // Could provide a more explicit error message for IOException or
+            // IllegalStateException
+            getRequest.abort();
+            Log.w("ImageDownloader", "Error while retrieving bitmap from " + url);
+        } finally {
+            if (client != null) {
+                client.close();
+            }
         }
+        return null;
     }
 
     public void didReceiveNewsFeed(ArrayList<NewsItem> newsItemArrayList) {
         news = newsItemArrayList;
-        adapter.notifyDataSetChanged();;
+        listImages = new ImageView[newsItemArrayList.size()];
+        for (int i = 0; i < newsItemArrayList.size(); i++) {
+            //new ImageDownloaderTask(new ImageView(this.getActivity())).execute(newsItemArrayList.get(i).getImageUrl()+"Tab_640x960.jpg");
+            //listImages[i] = downloadBitmap(newsItemArrayList.get(i).getImageUrl()+"Tab_640x960.jpg");
+        }
+        adapter.notifyDataSetChanged();
 
     }
 

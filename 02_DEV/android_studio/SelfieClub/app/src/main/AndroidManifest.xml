@@ -2,12 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.builtinmenlo.selfieclub" >
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+
 
     <application
         android:allowBackup="true"
@@ -30,6 +25,7 @@
             android:name="com.builtinmenlo.selfieclub.activity.CameraActivity"
             android:parentActivityName="com.builtinmenlo.selfieclub.activity.MainActivity"
             android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
             android:label="@string/empty_string">
 
             <meta-data
@@ -37,5 +33,13 @@
                 android:value="com.builtinmenlo.selfieclub.activity.MainActivity" />
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
 </manifest>
