@@ -54,12 +54,13 @@ public class CameraActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_camera);
-		
+        //setContentView(R.layout.activity_camera);
+        setContentView(R.layout.fragment_camera);
+
 		if (savedInstanceState == null)
 			getSupportFragmentManager().beginTransaction().add(R.id.activity_camera_layout, new CameraFragment(getIntent().getExtras())).commit();
 
-		Log.i("__PAYLOAD as String__", getIntent().getExtras().toString());
+		//Log.i("__PAYLOAD as String__", getIntent().getExtras().toString());
 
 		ActionBar actionBar = getActionBar();
 //		actionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_HOME);
