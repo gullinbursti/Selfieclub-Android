@@ -86,7 +86,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         populate();
 
         FirstRunManager firstRunManager = new FirstRunManager();
-        firstRunManager.registerUser("zero","50687076456");
+        //firstRunManager.registerUser("zero","50687076456");
 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
