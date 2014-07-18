@@ -41,6 +41,7 @@ import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
+import com.tapstream.sdk.*;
 
 import java.lang.reflect.Field;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -113,6 +114,10 @@ public class MainActivity extends Activity {
         notificationsTab.setCustomView(mCustomView);
         notificationsTab.setTabListener(new TabButtonListener(notificationsFragment));
         topNavActionBar.addTab(notificationsTab);
+
+        //Tapstream
+        Config config = new Config();
+        Tapstream.create(getApplication(), "TAPSTREAM_ACCOUNT_NAME", "TAPSTREAM_SDK_SECRET", config);
 
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
