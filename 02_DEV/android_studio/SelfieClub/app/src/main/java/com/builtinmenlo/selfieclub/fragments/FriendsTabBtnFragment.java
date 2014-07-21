@@ -43,6 +43,7 @@ import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
+import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 
@@ -83,6 +84,9 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         lv = (ListView) view.findViewById(android.R.id.list);
         friends = new ArrayList<Friend>();
         populate();
+
+        FirstRunManager firstRunManager = new FirstRunManager();
+        //firstRunManager.registerUser("zero","50687076456");
 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
