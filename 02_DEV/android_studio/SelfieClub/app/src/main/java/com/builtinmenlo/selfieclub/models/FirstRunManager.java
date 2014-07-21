@@ -19,7 +19,7 @@ public class FirstRunManager {
         USERNAME_TAKEN,
         PHONE_TAKEN,
         USERNAME_AND_PHONE_TAKEN,
-        USER_REGISTRATION_ERROR
+        USER_REGISTRATION_ERROR,
     }
 
 
@@ -129,6 +129,76 @@ public class FirstRunManager {
         );
     }
 
+
+
+    public void sendPIN(final PINVerificationProtocol pinVerificationProtocol, String userId,String phoneNumber){
+        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("phone",phoneNumber);
+        RequestParams requestParams = new RequestParams(data);
+        asyncHttpClient.post(Constants.API_ENDPOINT + Constants.UPDATE_PHONE, requestParams, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try {
+                            Boolean result = data.getBoolean("result");
+                            if(result){
+                                pinVerificationProtocol.didSendPIN(result);
+                            }
+                            else{
+                                pinVerificationProtocol.didFailSendingPIN("Phone number is already registered to another user or user does not exist");
+                            }
+
+
+                        } catch (Exception e) {
+                            pinVerificationProtocol.didFailSendingPIN(e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e, String response) {
+                        pinVerificationProtocol.didFailSendingPIN(response);
+                    }
+
+                }
+        );
+
+    }
+
+    public void validatePIN(final PINVerificationProtocol pinVerificationProtocol, String userId, String phone, String pin){
+        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("phone",phone);
+        data.put("pin",pin);
+        RequestParams requestParams = new RequestParams(data);
+        asyncHttpClient.post(Constants.API_ENDPOINT + Constants.UPDATE_PHONE, requestParams, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try {
+                            Boolean result = data.getBoolean("result");
+                            if(result){
+                                pinVerificationProtocol.didValidatePIN(result);
+                            }
+                            else{
+                                pinVerificationProtocol.didFailValidatingPIN("PIN validation failed");
+                            }
+
+
+                        } catch (Exception e) {
+                            pinVerificationProtocol.didFailSendingPIN(e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e, String response) {
+                        pinVerificationProtocol.didFailValidatingPIN(response);
+                    }
+
+                }
+        );
+
+    }
 
 
 
