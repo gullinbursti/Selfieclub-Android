@@ -13,7 +13,6 @@
 /**~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~**/
 
 
-
 package com.builtinmenlo.selfieclub.fragments;
 
 
@@ -35,26 +34,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.dataSources.ActivityItem;
 import com.builtinmenlo.selfieclub.dataSources.Club;
-import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
-
-;import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
 // <[!] class declaration [¡]>
-public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol{
+public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
 
     private GridView gridClubs;
     private ArrayList<Club> clubs;
@@ -62,7 +58,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol{
 
     public ClubsTabBtnFragment() {/*..\(^_^)/..*/}
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.clubs_tab, container, false);
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
@@ -72,27 +68,27 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol{
         populate();
 
         UserManager userManager = new UserManager();
-        userManager.requestUserClubs(this,"131820");
+        userManager.requestUserClubs(this, "131820");
 
 
-		return view;
-	}
+        return view;
+    }
 
 
-	public void onCreate(Bundle savedInstanceState) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onCreate(savedInstanceState);
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    public void onCreate(Bundle savedInstanceState) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onCreate(savedInstanceState);
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-	public void onAttach(Activity activity) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onAttach(activity);
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    public void onAttach(Activity activity) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onAttach(activity);
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-	public void onDetach() {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onDetach();
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    public void onDetach() {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onDetach();
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     private static class ViewHolder {
         ImageView imageView;
@@ -118,7 +114,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol{
         @Override
         protected void onPostExecute(ViewHolder result) {
             if (result.bitmap == null) {
-                result.imageView.setImageResource(R.drawable.ic_launcher);
+                result.imageView.setImageResource(R.drawable.friends_item_image_mask);
             } else {
                 //result.imageView.setImageBitmap(getRoundedCornerBitmap(result.bitmap));
                 result.imageView.setImageBitmap(result.bitmap);
@@ -158,46 +154,58 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol{
 
         @Override
         public int getCount() {
-            return clubs.size();
+            return clubs.size() + 1;
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
+
             ViewHolder viewHolder;
-            if (convertView == null) {
+
+            if (position == 0) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.clubs_item, parent, false);
-
                 viewHolder = new ViewHolder();
+                TextView lblText = (TextView) convertView.findViewById(R.id.lblClubName);
+                lblText.setText("Create a club");
                 viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imgClub);
+                viewHolder.imageView.setImageResource(R.drawable.selector_add_club);
                 convertView.setTag(viewHolder);
+            } else {
+                if (convertView == null) {
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    convertView = inflater.inflate(R.layout.clubs_item, parent, false);
+                    viewHolder = new ViewHolder();
+                    viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imgClub);
+                    convertView.setTag(viewHolder);
+                } else {
+
+                    Club club = clubs.get(position - 1);
+
+                    viewHolder = (ViewHolder) convertView.getTag();
+                    viewHolder.imageURL = club.getClubImage() + "Large_640x1136.jpg";
+                    new DownloadAsyncTask().execute(viewHolder);
+
+                    TextView lblText = (TextView) convertView.findViewById(R.id.lblClubName);
+
+                    lblText.setText(club.getClubName());
+                }
             }
-
-            Club club = clubs.get(position);
-
-            viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.imageURL = club.getClubImage();
-            new DownloadAsyncTask().execute(viewHolder);
-
-            TextView lblText = (TextView) convertView.findViewById(R.id.lblClubName);
-
-            lblText.setText(clubs.get(position).getClubName());
-            //lblText.setText("Hola");
-
             return convertView;
         }
     }
 
 
-    public void didReceiveUserClubs(ArrayList<Club> userClubs){
-    // TODO Add here the rendering on the clubs
-        Log.i(this.getActivity().getClass().getName(),userClubs.toString());
+    public void didReceiveUserClubs(ArrayList<Club> userClubs) {
+        // TODO Add here the rendering on the clubs
+        Log.i(this.getActivity().getClass().getName(), userClubs.toString());
         clubs = userClubs;
         adapter.notifyDataSetChanged();
 
     }
-    public void didReceiveUserClubsError(String errorMessage){
-    //TODO Add here the error management for the get clubs request
+
+    public void didReceiveUserClubsError(String errorMessage) {
+        //TODO Add here the error management for the get clubs request
     }
 }

@@ -13,7 +13,6 @@
 /**~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~**/
 
 
-
 package com.builtinmenlo.selfieclub.activity;
 
 
@@ -50,30 +49,30 @@ import java.lang.reflect.Field;
 public class MainActivity extends Activity {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
-	//] class properties ]>
-	//]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
-	public final static String INTENT_PAYLOAD_AS_STRING = "com.builtinmenlo.selfieclub.activity.INTENT_PAYLOAD_AS_STRING";
+    //] class properties ]>
+    //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
+    public final static String INTENT_PAYLOAD_AS_STRING = "com.builtinmenlo.selfieclub.activity.INTENT_PAYLOAD_AS_STRING";
 
-	Tab friendsTab, clubsTab, newsTab, notificationsTab;
+    Tab friendsTab, clubsTab, newsTab, notificationsTab;
 
-	Fragment friendsFragment = new FriendsTabBtnFragment();
-	Fragment clubsFragment = new ClubsTabBtnFragment();
-	Fragment newsFragment = new NewsTabBtnFragment();
+    Fragment friendsFragment = new FriendsTabBtnFragment();
+    Fragment clubsFragment = new ClubsTabBtnFragment();
+    Fragment newsFragment = new NewsTabBtnFragment();
     Fragment notificationsFragment = new ActivityTabBtnFragment();
-	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
+    //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
-	protected void onCreate(Bundle savedInstanceState) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    protected void onCreate(Bundle savedInstanceState) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         getOverflowMenu();
 
-		Log.i("__LOCAL_CLASS_NAME", this.getLocalClassName()+"]["+this.getClass().toString());
+        Log.i("__LOCAL_CLASS_NAME", this.getLocalClassName() + "][" + this.getClass().toString());
 
-		ActionBar topNavActionBar = getActionBar();
-		topNavActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        ActionBar topNavActionBar = getActionBar();
+        topNavActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         topNavActionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.white)));
 
         LayoutInflater mInflater = LayoutInflater.from(this);
@@ -114,22 +113,24 @@ public class MainActivity extends Activity {
         notificationsTab.setTabListener(new TabButtonListener(notificationsFragment));
         topNavActionBar.addTab(notificationsTab);
 
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
 
-	public void onMainCameraClick(View view) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		Intent intent = new Intent(this, CameraActivity.class);
-		//intent.putExtra(MainActivity.INTENT_PAYLOAD_AS_STRING, String.valueOf(R.string.fpo_textview_hoge));
-		startActivity(intent);
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    public void onMainCameraClick(View view) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        //Intent intent = new Intent(this, CameraActivity.class);
+        Intent intent = new Intent(this, CameraPreview.class);
+        //intent.putExtra(MainActivity.INTENT_PAYLOAD_AS_STRING, String.valueOf(R.string.fpo_textview_hoge));
+        startActivity(intent);
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
 
     private void getOverflowMenu() {
 
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if(menuKeyField != null) {
+            if (menuKeyField != null) {
                 menuKeyField.setAccessible(true);
                 menuKeyField.setBoolean(config, false);
             }
