@@ -26,7 +26,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 
 import com.builtinmenlo.selfieclub.R;
 
@@ -35,7 +35,7 @@ import com.builtinmenlo.selfieclub.R;
 
 
 // <[!] class delaration [¡]>
-public class FirstRunRegistrationFragment extends Fragment {
+public class FirstRunEnterPinFragment extends Fragment {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
 	//] class properties ]>
@@ -43,17 +43,17 @@ public class FirstRunRegistrationFragment extends Fragment {
 	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 	// <*] class constructor [*>
-    public FirstRunRegistrationFragment() {/*..\(^_^)/..*/}
+    public FirstRunEnterPinFragment() {/*..\(^_^)/..*/}
 
 	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
 	//]~=~=~=~=~=~=~=~=~=[>
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-        View view = inflater.inflate(R.layout.first_run_registration, container, false);
+        View view = inflater.inflate(R.layout.first_run_enter_pin, container, false);
 
-        ImageView avatar = (ImageView) view.findViewById(R.id.imgAvatar);
-        avatar.setOnClickListener(new View.OnClickListener() {
+        Button btnSubmit = (Button) view.findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
