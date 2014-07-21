@@ -10,4 +10,5 @@ public final class Constants {
     public static final String CHECK_USERNAMEPASSWORD_PATH = "users/checkNameAndEmail";
     public static final String USER_PATH = "Users.php";
     public static final String GET_CLUB_INFO = "clubs/get";
+    public static final String USER_REGISTRATION = "users/firstruncomplete";
 }

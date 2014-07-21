@@ -17,7 +17,12 @@ public interface FirstRunProtocol {
     public void didValideUsernamePhone(Boolean isValid, String message);
     public void didFailValidatingUsernamePhone(FirstRunManager.FIRSTRUN_ERROR errorType, String message);
 
+    /*
+    Interface methods for registering a new user
+     */
 
+    public void didRegisteredUser(String userId);
+    public void didFailRegisteringUser(FirstRunManager.FIRSTRUN_ERROR errorType, String message);
 
 
 }

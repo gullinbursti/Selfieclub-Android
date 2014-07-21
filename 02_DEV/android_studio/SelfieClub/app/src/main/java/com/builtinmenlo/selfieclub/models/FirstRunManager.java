@@ -18,7 +18,8 @@ public class FirstRunManager {
         USERNAME_PASSWORD_CHECK_ERROR,
         USERNAME_TAKEN,
         PHONE_TAKEN,
-        USERNAME_AND_PHONE_TAKEN
+        USERNAME_AND_PHONE_TAKEN,
+        USER_REGISTRATION_ERROR
     }
 
 
@@ -49,7 +50,7 @@ public class FirstRunManager {
     }
 
 
-    private void usernameAndPhoneCheck(final FirstRunProtocol firstRunProtocol, String userId,String username, String phoneNumber){
+    public void usernameAndPhoneCheck(final FirstRunProtocol firstRunProtocol, String userId,String username, String phoneNumber){
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
@@ -89,6 +90,48 @@ public class FirstRunManager {
                 }
         );
     }
+
+    public void registerUser(final FirstRunProtocol firstRunProtocol,
+                             String userId,
+                             String username,
+                             String email,
+                             String pushNotificationToken,
+                             String avatarUrl){
+        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("action","9");
+        data.put("userID",userId);
+        data.put("username",username);
+        data.put("password",email);
+        data.put("age","0000-00-00 00:00:00");
+        data.put("token",pushNotificationToken);
+        data.put("imgURL",avatarUrl);
+        RequestParams requestParams = new RequestParams(data);
+        asyncHttpClient.post(Constants.API_ENDPOINT + Constants.USER_REGISTRATION, requestParams, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try {
+                            String userId = data.getString("id");
+                            firstRunProtocol.didRegisteredUser(userId);
+
+
+                        } catch (Exception e) {
+                            firstRunProtocol.didFailRegisteringUser(FIRSTRUN_ERROR.USER_REGISTRATION_ERROR,e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e, String response) {
+                        firstRunProtocol.didFailRegisteringUser(FIRSTRUN_ERROR.USER_REGISTRATION_ERROR, response);
+                    }
+
+                }
+        );
+    }
+
+
+
+
 
 
 
