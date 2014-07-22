@@ -7,6 +7,7 @@ import android.provider.ContactsContract;
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.User;
+import com.builtinmenlo.selfieclub.listeners.CountryCodeProtocol;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -16,6 +17,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Leonardo on 6/3/14.
@@ -93,6 +96,16 @@ public class PhoneManager {
         );
     }
 
+    public void getCountryCodes(final CountryCodeProtocol countryCodeProtocol){
+        TreeMap<String,String> countryCodes = new TreeMap<String, String>();
+        countryCodes.put("Costa Rica","+506");
+        countryCodes.put("United States","+1");
+        countryCodes.put("Liechtenstein","+423");
+        countryCodes.put("Australia","+61");
+        countryCodeProtocol.didReceiveContryCodes(countryCodes);
+
+    }
+
     private User parseUser(JSONObject jsonObject){
         try{
             User user = new User();
@@ -105,6 +118,8 @@ public class PhoneManager {
             return null;
         }
     }
+
+
 
 
 }
