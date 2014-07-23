@@ -13,7 +13,6 @@
 /**~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~**/
 
 
-
 package com.builtinmenlo.selfieclub.fragments;
 
 
@@ -22,11 +21,13 @@ package com.builtinmenlo.selfieclub.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -48,25 +49,28 @@ import java.util.TreeMap;
 public class FirstRunCountrySelectorFragment extends Fragment implements CountryCodeProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
-	//] class properties ]>
-	//]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
+    //] class properties ]>
+    //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
+    public static final String EXTRA_CODE = "country_code";
+
+    private Bundle bundle;
     public ListView lv;
     private TreeMap<String, String> codes;
     private MyCustomAdapter adapter;
     private ProgressBar loadingIcon;
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
-	// <*] class constructor [*>
+    // <*] class constructor [*>
     public FirstRunCountrySelectorFragment() {/*..\(^_^)/..*/}
 
-	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
-	//]~=~=~=~=~=~=~=~=~=[>
+    //]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
+    //]~=~=~=~=~=~=~=~=~=[>
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-        PhoneManager phoneManager = new PhoneManager(this.getActivity().getContentResolver());
-        phoneManager.getCountryCodes(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         View view = inflater.inflate(R.layout.first_run_country_selector, container, false);
+
+        bundle = getArguments();
 
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
 
@@ -75,9 +79,18 @@ public class FirstRunCountrySelectorFragment extends Fragment implements Country
         lv = (ListView) view.findViewById(android.R.id.list);
         codes = new TreeMap<String, String>();
 
-		return view;
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+        PhoneManager phoneManager = new PhoneManager(this.getActivity().getContentResolver());
+        phoneManager.getCountryCodes(this);
 
+        hideKeyboard(view);
+        return view;
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
+
+    private void hideKeyboard(View v) {
+        InputMethodManager keyboard = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
 
     public void populate() {
         if (lv != null) {
@@ -91,30 +104,40 @@ public class FirstRunCountrySelectorFragment extends Fragment implements Country
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    //arg1.setBackgroundColor(Color.TRANSPARENT);
+                    Fragment newFragment = new FirstRunRegistrationFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_container, newFragment);
+                    if (bundle == null)
+                        bundle = new Bundle();
+                    String code = codes.get((String) codes.keySet().toArray()[position]);
+
+                    bundle.putString(EXTRA_CODE, code);
+                    newFragment.setArguments(bundle);
+                    transaction.commit();
                 }
             });
         }
     }
 
-	public void onCreate(Bundle savedInstanceState) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onCreate(savedInstanceState);
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    public void onCreate(Bundle savedInstanceState) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onCreate(savedInstanceState);
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-	public void onAttach(Activity activity) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onAttach(activity);
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    public void onAttach(Activity activity) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onAttach(activity);
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-	public void onDetach() {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onDetach();
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    public void onDetach() {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onDetach();
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     @Override
     public void didReceiveContryCodes(TreeMap<String, String> codes) {
-
+        this.codes = codes;
+        populate();
     }
 
     @Override
@@ -163,7 +186,7 @@ public class FirstRunCountrySelectorFragment extends Fragment implements Country
             ViewHolder viewHolder;
             if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                convertView = inflater.inflate(R.layout.friends_item, parent, false);
+                convertView = inflater.inflate(R.layout.country_code_item, parent, false);
 
                 viewHolder = new ViewHolder();
                 viewHolder.lblCountryCodeAndName = (TextView) convertView.findViewById(R.id.lblCountryCodeAndName);
@@ -173,11 +196,11 @@ public class FirstRunCountrySelectorFragment extends Fragment implements Country
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            String code = (String)codes.keySet().toArray()[0];
-            String country = codes.get(code);
+            String country = (String) codes.keySet().toArray()[position];
+            String code = codes.get(country);
 
             viewHolder.imgAddOrCheck.setBackgroundResource(R.drawable.gray_selection_dot);
-                viewHolder.lblCountryCodeAndName.setText(code + " - " + country);
+            viewHolder.lblCountryCodeAndName.setText(code + " - " + country);
 
             return convertView;
         }

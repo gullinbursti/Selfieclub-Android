@@ -22,11 +22,10 @@ package com.builtinmenlo.selfieclub.activity;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.builtinmenlo.selfieclub.R;
@@ -57,24 +56,18 @@ public class FirstRunActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_first_run);
 
         Log.i("__LOCAL_CLASS_NAME", this.getLocalClassName() + "][" + this.getClass().toString());
 
         LayoutInflater mInflater = LayoutInflater.from(this);
 
+        Fragment newFragment = new FirstRunRegistrationFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.commit();
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
-
-
-    public void onMainCameraClick(View view) {
-        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-        //Intent intent = new Intent(this, CameraActivity.class);
-        Intent intent = new Intent(this, CameraPreview.class);
-        //intent.putExtra(MainActivity.INTENT_PAYLOAD_AS_STRING, String.valueOf(R.string.fpo_textview_hoge));
-        startActivity(intent);
-    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
-
 
     private void getOverflowMenu() {
 

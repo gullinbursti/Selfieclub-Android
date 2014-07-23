@@ -1,7 +1,0 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_camera_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.builtinmenlo.selfieclub.activity.CameraActivity"
-    tools:ignore="MergeRootFrame" />

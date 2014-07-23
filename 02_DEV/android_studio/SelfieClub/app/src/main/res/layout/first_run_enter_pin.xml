@@ -5,7 +5,7 @@
 
 
     <TextView
-        android:background="@drawable/notifications_header_background"
+        android:background="@drawable/pin_header_background"
         android:id="@+id/lblRegistration"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
