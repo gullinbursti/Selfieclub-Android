@@ -1,6 +1,8 @@
 package com.builtinmenlo.selfieclub.models;
 
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 
@@ -15,10 +17,15 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+
+import xmlwise.Plist;
 
 /**
  * Created by Leonardo on 6/3/14.
@@ -26,17 +33,9 @@ import java.util.TreeMap;
  */
 public class PhoneManager {
 
-    private ContentResolver contentResolver;
-
-
-
-    public PhoneManager(ContentResolver contentResolver){
-        this.contentResolver = contentResolver;
-    }
-
-    public ArrayList<HashMap<String,String>> getContacts() {
+    public ArrayList<HashMap<String,String>> getContacts(ContentResolver contentResolver) {
         ArrayList<HashMap<String,String>> contactData=new ArrayList<HashMap<String,String>>();
-        ContentResolver cr = this.contentResolver;
+        ContentResolver cr = contentResolver;
         Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
         while (cursor.moveToNext()) {
             try{
@@ -96,13 +95,30 @@ public class PhoneManager {
         );
     }
 
-    public void getCountryCodes(final CountryCodeProtocol countryCodeProtocol){
-        TreeMap<String,String> countryCodes = new TreeMap<String, String>();
-        countryCodes.put("Costa Rica","+506");
-        countryCodes.put("United States","+1");
-        countryCodes.put("Liechtenstein","+423");
-        countryCodes.put("Australia","+61");
-        countryCodeProtocol.didReceiveContryCodes(countryCodes);
+    public Map<String,Object> getCountryCodes(Context context){
+
+        AssetManager assetManager = context.getResources().getAssets();
+        InputStream inputStream = null;
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+        Map<String, Object> properties = null;
+        String xml = null;
+        try {
+            inputStream = assetManager.open("CountryCodes.plist");
+            br = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line=br.readLine())!=null) {
+                sb.append(line);
+            }
+            xml = sb.toString();
+            properties = Plist.fromXml(xml);
+        }
+        catch (Exception e){
+            properties = null;
+        }
+
+        return properties;
 
     }
 

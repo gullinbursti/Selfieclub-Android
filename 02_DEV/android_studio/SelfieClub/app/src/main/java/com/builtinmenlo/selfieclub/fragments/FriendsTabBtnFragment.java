@@ -44,6 +44,7 @@ import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
+import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 
@@ -56,6 +57,7 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -85,8 +87,9 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         friends = new ArrayList<Friend>();
         populate();
 
-        FirstRunManager firstRunManager = new FirstRunManager();
-        //firstRunManager.registerUser("zero","50687076456");
+        PhoneManager phoneManager = new PhoneManager();
+        Map<String,Object> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
+        Log.w("","");
 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
