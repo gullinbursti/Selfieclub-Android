@@ -68,6 +68,7 @@
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="keen-client-api-android-2.0.0-rc1-sources" level="project" />
     <orderEntry type="library" exported="" name="keen-client-api-android-2.0.0-rc1-javadoc" level="project" />
+    <orderEntry type="library" exported="" name="couchbase-lite-android-1.0.0" level="project" />
   </component>
 </module>
 
