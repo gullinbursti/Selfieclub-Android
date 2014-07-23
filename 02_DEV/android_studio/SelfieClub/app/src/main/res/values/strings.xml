@@ -34,7 +34,10 @@
     <string name="menu_rate_app">Rate this app</string>
     <string name="menu_network_status">Network Status</string>
 
-
     <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="title_activity_invite">Invite</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

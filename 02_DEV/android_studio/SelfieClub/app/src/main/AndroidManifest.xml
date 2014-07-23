@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.builtinmenlo.selfieclub">
+    package="com.builtinmenlo.selfieclub" >
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,26 +13,40 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name" >
         <activity
-            android:icon="@android:color/transparent"
             android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label=""
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme">
+            android:icon="@android:color/transparent"
+            android:label=""
+            android:screenOrientation="portrait"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
+            android:name=".activity.FirstRunActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:icon="@android:color/transparent"
-            android:name=".activity.CameraPreview"
-            android:theme="@style/AppTheme"
+            android:label=""
             android:screenOrientation="portrait"
-            android:label="@string/empty_string"></activity>
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.CameraPreview"
+            android:icon="@android:color/transparent"
+            android:label="@string/empty_string"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.Invite"
+            android:label="@string/title_activity_invite" >
+        </activity>
     </application>
 
 </manifest>
