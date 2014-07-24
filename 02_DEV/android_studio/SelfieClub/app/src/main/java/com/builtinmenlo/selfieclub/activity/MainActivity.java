@@ -86,17 +86,17 @@ public class MainActivity extends Activity {
         friendsTab.setTabListener(new TabButtonListener(friendsFragment));
         topNavActionBar.addTab(friendsTab);
 
-        //club invite
-        //Button lv = (Button) findViewById(R.id.button);
-        //Log.i("BUTTON", lv.toString());
-        //lv.setOnClickListener(new View.OnClickListener() {
-         //   @Override
-         //   public void onClick(View view) {
-         //       Intent i = new Intent(getApplicationContext(), Invite.class);
-         //       startActivity(i);
-         //   }
-        //});
-        //club invite */
+        /* club invite
+        Button lv = (Button) findViewById(R.id.button);
+        Log.i("BUTTON", lv.toString());
+        lv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), Invite.class);
+                startActivity(i);
+           }
+        });
+        */
 
         newsTab = topNavActionBar.newTab();
         View newsTabCustomView = mInflater.inflate(R.layout.item_tab_bar, null);
@@ -128,11 +128,11 @@ public class MainActivity extends Activity {
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
 
-    public void onClubInviteClick(View view) {
-        //Log.i("HELLO!!!", "WHERE!!");
-        Intent i = new Intent(getApplicationContext(), Invite.class);
-        startActivity(i);
-    }
+//    public void onClubInviteClick(View view) {
+//        //Log.i("HELLO!!!", "WHERE!!");
+//        Intent i = new Intent(getApplicationContext(), Invite.class);
+//        startActivity(i);
+//    }
 
 
     public void onMainCameraClick(View view) {

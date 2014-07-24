@@ -45,6 +45,12 @@ public class Invite extends Activity {
 
         // Set the ArrayAdapter as the ListView's adapter.
         mainListView.setAdapter( listAdapter );
+
+//        mainListView.setOnItemClickListener(new OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//            }
+//        });
     }
 }
 

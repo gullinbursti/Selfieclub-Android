@@ -22,6 +22,7 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
@@ -43,10 +44,10 @@ import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
-import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
+import com.builtinmenlo.selfieclub.activity.Invite;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -57,8 +58,6 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -133,6 +132,12 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                     //arg1.setBackgroundColor(Color.TRANSPARENT);
+
+//                    Log.i("FRIEND", friends.get(position).getUsername());
+//
+                    Intent i = new Intent(getActivity(), Invite.class);
+//                    i.putExtra("position", position);
+                    startActivity(i);
                 }
             });
         }
