@@ -12,4 +12,5 @@ public final class Constants {
     public static final String GET_CLUB_INFO = "clubs/get";
     public static final String USER_REGISTRATION = "users/firstruncomplete";
     public static final String UPDATE_PHONE = "userPhone/updatePhone";
+    public static final String PHOTO_SUBMIT_PATH = "challenges/create";
 }

@@ -23,6 +23,12 @@ import java.util.HashMap;
  * Created by Leonardo on 6/11/14.
  */
 public class ClubManager {
+    /**
+     * Request the club's info
+     * @param clubInfoProtocol The interface that must be implemented
+     * @param userId User's id
+     * @param clubId Club's id
+     */
     public void requestClubInfo(final ClubInfoProtocol clubInfoProtocol, String userId, String clubId ){
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
@@ -67,6 +73,11 @@ public class ClubManager {
 
     }
 
+    /**
+     * Request the user's news
+     * @param newsFeedProtocol The interface that must be implemented
+     * @param userId User's id
+     */
     public void requestNews(final NewsFeedProtocol newsFeedProtocol, String userId){
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
@@ -129,6 +140,55 @@ public class ClubManager {
                     }
 
                 }
+        );
+
+    }
+
+    /**
+     * Submit a photo into a club
+     * @param photoSubmissionProtocol The interface that must be implemented
+     * @param userId User's id
+     * @param clubId Clubs's id
+     * @param imageUrl Photo url's
+     * @param subjects An arraylist with all the subjects
+     */
+    public void submitPhoto(final PhotoSubmissionProtocol photoSubmissionProtocol,
+                            String userId,
+                            String clubId,
+                            String imageUrl,
+                            ArrayList<String>subjects){
+        JSONArray emotionsJson = new JSONArray(subjects);
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("clubID",clubId);
+        data.put("imgURL",imageUrl);
+        data.put("subjects",emotionsJson.toString());
+        data.put("challengeID","0");
+        data.put("subject","");
+        data.put("targets","");
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.PHOTO_SUBMIT_PATH,requestParams,new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(JSONObject data) {
+                try{
+                    String id = data.getString("id");
+                    if(id!=null)
+                        photoSubmissionProtocol.didSubmittedPhotoInClub(true);
+                    else
+                        photoSubmissionProtocol.didSubmittedPhotoInClub(false);
+                }
+                catch (Exception e){
+                        photoSubmissionProtocol.didFailSubmittingPhotoInClub(e.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable e, String response) {
+                photoSubmissionProtocol.didFailSubmittingPhotoInClub(response);
+            }
+        }
         );
 
     }
