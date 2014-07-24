@@ -33,6 +33,11 @@ import xmlwise.Plist;
  */
 public class PhoneManager {
 
+    /**
+     * Retuens the number list of contacts stored in the phone's address book
+     * @param contentResolver The caller activity's ContentResolver
+     * @return An array list with the contacts
+     */
     public ArrayList<HashMap<String,String>> getContacts(ContentResolver contentResolver) {
         ArrayList<HashMap<String,String>> contactData=new ArrayList<HashMap<String,String>>();
         ContentResolver cr = contentResolver;
@@ -57,6 +62,12 @@ public class PhoneManager {
         return contactData;
     }
 
+    /**
+     * Matches the list of phone numbers with the user's id
+     * @param phoneMatchInterface The interface that must be implemented
+     * @param userId User's id
+     * @param phoneNumbersArray The array of phone numbers separated by |
+     */
     public void matchPhoneNumbers(final PhoneMatchProtocol phoneMatchInterface,String userId, String[] phoneNumbersArray){
         StringBuilder builder = new StringBuilder();
         for(String s : phoneNumbersArray){
@@ -95,14 +106,19 @@ public class PhoneManager {
         );
     }
 
-    public Map<String,Object> getCountryCodes(Context context){
-
+    /**
+     * Returns an array list with all the country phone codes
+     * @param context
+     * @return An array list with all the country phone codes
+     */
+    public ArrayList<HashMap<String,String>> getCountryCodes(Context context){
         AssetManager assetManager = context.getResources().getAssets();
-        InputStream inputStream = null;
-        BufferedReader br = null;
+        InputStream inputStream;
+        BufferedReader br;
         StringBuilder sb = new StringBuilder();
-        Map<String, Object> properties = null;
-        String xml = null;
+        Map<String, Object> properties;
+        String xml;
+        ArrayList listOfCountries=null;
         try {
             inputStream = assetManager.open("CountryCodes.plist");
             br = new BufferedReader(new InputStreamReader(inputStream));
@@ -113,12 +129,14 @@ public class PhoneManager {
             }
             xml = sb.toString();
             properties = Plist.fromXml(xml);
+            listOfCountries = (ArrayList<HashMap<String,String>>)properties.get("data");
+
         }
         catch (Exception e){
-            properties = null;
+
         }
 
-        return properties;
+        return listOfCountries;
 
     }
 

@@ -56,6 +56,7 @@ import org.apache.http.client.methods.HttpGet;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +89,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         populate();
 
         PhoneManager phoneManager = new PhoneManager();
-        Map<String,Object> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
+        ArrayList<HashMap<String,String>> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
         Log.w("","");
 
         return view;
