@@ -74,6 +74,7 @@ public class MainActivity extends Activity {
         Log.i("__LOCAL_CLASS_NAME", this.getLocalClassName() + "][" + this.getClass().toString());
 
         ActionBar topNavActionBar = getActionBar();
+        topNavActionBar.setDisplayShowTitleEnabled(false);
         topNavActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         topNavActionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.white)));
 
