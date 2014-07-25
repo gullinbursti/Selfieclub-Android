@@ -3,6 +3,7 @@ package com.builtinmenlo.selfieclub.util;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -19,5 +20,15 @@ public class Util {
         UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
         String deviceId = deviceUuid.toString();
         return deviceId;
+    }
+
+    public static String generateRandomString(int lenght){
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer(lenght);
+        for (int i=0;i<lenght;i++){
+            sb.append(AB.charAt(random.nextInt(AB.length())));
+        }
+        return sb.toString();
     }
 }

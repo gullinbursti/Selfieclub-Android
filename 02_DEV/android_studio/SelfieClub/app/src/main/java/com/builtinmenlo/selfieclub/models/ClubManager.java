@@ -4,10 +4,14 @@ package com.builtinmenlo.selfieclub.models;
 
 import android.util.Log;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.dataSources.NewsItem;
 import com.builtinmenlo.selfieclub.dataSources.User;
+import com.builtinmenlo.selfieclub.util.Util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -16,6 +20,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -149,14 +154,17 @@ public class ClubManager {
      * @param photoSubmissionProtocol The interface that must be implemented
      * @param userId User's id
      * @param clubId Clubs's id
-     * @param imageUrl Photo url's
+     * @param imageFile The photo's file
      * @param subjects An arraylist with all the subjects
      */
     public void submitPhoto(final PhotoSubmissionProtocol photoSubmissionProtocol,
                             String userId,
                             String clubId,
-                            String imageUrl,
+                            File imageFile,
                             ArrayList<String>subjects){
+        String filename = Util.generateRandomString(40);
+        String imageUrl = Constants.AMAZON_S3_PATH+filename;
+        uploadPhotoToS3(imageFile,filename);
         JSONArray emotionsJson = new JSONArray(subjects);
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
@@ -190,6 +198,14 @@ public class ClubManager {
             }
         }
         );
+
+    }
+
+    public void uploadPhotoToS3(File imageFile, String fileName){
+        AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET));
+        s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
+        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile);
+        s3Client.putObject(por);
 
     }
 
