@@ -2,43 +2,84 @@ package com.builtinmenlo.selfieclub.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.builtinmenlo.selfieclub.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
+
 
 public class Invite extends Activity {
 
-    List<Map<String, String>> planetsList = new ArrayList<Map<String,String>>();
+    //private ListView mainListView ;
+    private ArrayAdapter<String> listAdapter ;
+
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_invite);
+
+        // Find the ListView resource.
+        ListView mainListView = (ListView) findViewById(R.id.listView);
+
+        // Create and populate a List of club names.
+        String[] club = new String[] { "ucdavisx", "selfieclub", "cars", "android",
+                "sports", "holidays", "pictures", "high school"};
+        ArrayList<String> clubList = new ArrayList<String>();
+        clubList.addAll( Arrays.asList(club) );
+
+        // Create ArrayAdapter using the planet list.
+        listAdapter = new ArrayAdapter<String>(this, R.layout.main_listview, clubList);
+
+        // Add more planets. If you passed a String[] instead of a List<String>
+        // into the ArrayAdapter constructor, you must not add more items.
+        // Otherwise an exception will occur.
+        listAdapter.add( "Club one" );
+        listAdapter.add( "Club two" );
+        listAdapter.add( "Club three" );
+        listAdapter.add( "Club four" );
+        listAdapter.add( "Club five" );
+
+        // Set the ArrayAdapter as the ListView's adapter.
+        mainListView.setAdapter( listAdapter );
+
+//        mainListView.setOnItemClickListener(new OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//            }
+//        });
+    }
+}
+
+/*
+public class Invite extends Activity {
+
+    List<Map<String, String>> clubsList = new ArrayList<Map<String,String>>();
 
     private void initList() {
         // We populate the planets
 
-        planetsList.add(createPlanet("planet", "Mercury"));
-        planetsList.add(createPlanet("planet", "Venus"));
-        planetsList.add(createPlanet("planet", "Mars"));
-        planetsList.add(createPlanet("planet", "Jupiter"));
-        planetsList.add(createPlanet("planet", "Saturn"));
-        planetsList.add(createPlanet("planet", "Uranus"));
-        planetsList.add(createPlanet("planet", "Neptune"));
+        clubsList.add(createClub("planet", "Mercury"));
+        clubsList.add(createClub("planet", "Venus"));
+        clubsList.add(createClub("planet", "Mars"));
+        clubsList.add(createClub("planet", "Jupiter"));
+        clubsList.add(createClub("planet", "Saturn"));
+        clubsList.add(createClub("planet", "Uranus"));
+        clubsList.add(createClub("planet", "Neptune"));
 
     }
 
-    private HashMap<String, String> createPlanet(String key, String name) {
-        HashMap<String, String> planet = new HashMap<String, String>();
-        planet.put(key, name);
+    private HashMap<String, String> createClub(String key, String name) {
+        HashMap<String, String> clubs = new HashMap<String, String>();
+        clubs.put(key, name);
 
-        return planet;
+        return clubs;
     }
 
-    SimpleAdapter simpleAdpt = new SimpleAdapter(this, planetsList, android.R.layout.simple_list_item_1, new String[] {"planet"}, new int[] {android.R.id.text1});
+    SimpleAdapter simpleAdpt = new SimpleAdapter(this, clubsList, android.R.layout.simple_list_item_1, new String[] {"planet"}, new int[] {android.R.id.text1});
 
 
     @Override
@@ -57,7 +98,7 @@ public class Invite extends Activity {
         // The row layout that is used during the row creation
         // The keys used to retrieve the data
         // The View id used to show the data. The key number and the view id must match
-        simpleAdpt = new SimpleAdapter(this, planetsList, android.R.layout.simple_list_item_1, new String[] {"planet"}, new int[] {android.R.id.text1});
+        simpleAdpt = new SimpleAdapter(this, clubsList, android.R.layout.simple_list_item_1, new String[] {"planet"}, new int[] {android.R.id.text1});
 
         lv.setAdapter(simpleAdpt);
     }
@@ -82,3 +123,4 @@ public class Invite extends Activity {
         return super.onOptionsItemSelected(item);
     }
 }
+*/

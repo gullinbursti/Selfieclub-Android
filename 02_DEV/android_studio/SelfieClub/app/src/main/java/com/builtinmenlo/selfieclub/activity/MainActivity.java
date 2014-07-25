@@ -86,6 +86,18 @@ public class MainActivity extends Activity {
         friendsTab.setTabListener(new TabButtonListener(friendsFragment));
         topNavActionBar.addTab(friendsTab);
 
+        /* club invite
+        Button lv = (Button) findViewById(R.id.button);
+        Log.i("BUTTON", lv.toString());
+        lv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), Invite.class);
+                startActivity(i);
+           }
+        });
+        */
+
         newsTab = topNavActionBar.newTab();
         View newsTabCustomView = mInflater.inflate(R.layout.item_tab_bar, null);
         TextView newsTitleTextView = (TextView) newsTabCustomView.findViewById(R.id.lblTitleText);
@@ -114,6 +126,13 @@ public class MainActivity extends Activity {
         topNavActionBar.addTab(notificationsTab);
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
+
+//    public void onClubInviteClick(View view) {
+//        //Log.i("HELLO!!!", "WHERE!!");
+//        Intent i = new Intent(getApplicationContext(), Invite.class);
+//        startActivity(i);
+//    }
 
 
     public void onMainCameraClick(View view) {
