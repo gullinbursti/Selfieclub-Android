@@ -206,7 +206,6 @@ public class ClubManager {
         s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
         PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile);
         s3Client.putObject(por);
-
     }
 
     private NewsItem parseNewsItem (JSONObject data,String clubname){
