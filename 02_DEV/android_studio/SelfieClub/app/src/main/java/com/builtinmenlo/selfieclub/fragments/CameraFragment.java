@@ -3,10 +3,10 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
-import android.graphics.Matrix;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 public class CameraFragment extends Fragment implements SurfaceHolder.Callback, OnClickListener, PictureCallback, AutoFocusCallback {
 
     public static final String EXTRA_IMAGE = "image";
+    public static boolean isUsingFrontCamera = false;
 
 
     private SurfaceView mPreview;
@@ -53,10 +54,63 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         super.onDestroyView();
     }
 
+    private Camera openCamera() {
+        stopCamera();
+
+        if (isUsingFrontCamera) {
+            int cameraCount = 0;
+            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+            cameraCount = Camera.getNumberOfCameras();
+            for (int camIdx = 0; camIdx < cameraCount; camIdx++) {
+                Camera.getCameraInfo(camIdx, cameraInfo);
+                if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                    try {
+                        mCamera = Camera.open(camIdx);
+                        mPreview.getHolder().addCallback(this);
+                        mPreview.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+                    } catch (RuntimeException e) {
+                        Log.e(TAG, "Camera failed to open: " + e.getLocalizedMessage());
+                    }
+                }
+            }
+
+        } else {
+            try {
+                mCamera = Camera.open();
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "Failed to Open Camera", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        try {
+            mCamera.setPreviewDisplay(mPreview.getHolder());
+            mCamera.startPreview();
+            mCamera.setDisplayOrientation(90);
+        } catch (IOException e) {
+            Log.e(TAG, "Camera failed to open: " + e.getLocalizedMessage());
+        }
+        return mCamera;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.camera_fragment, container, false);
+
+        view.findViewById(R.id.btnClose).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        view.findViewById(R.id.btnFlip).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isUsingFrontCamera = !isUsingFrontCamera;
+                openCamera();
+            }
+        });
         // get views
         bundle = getArguments();
         mPreview = (SurfaceView) view.findViewById(R.id.camera_surface);
@@ -76,11 +130,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            mCamera = Camera.open();
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), "Failed to Open Camera", Toast.LENGTH_SHORT).show();
-        }
+        openCamera();
     }
 
     private Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
@@ -105,12 +155,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     public void surfaceChanged(SurfaceHolder arg0, int format, int w, int h) {
         // Now that the size is known, set up the camera parameters and begin the preview.
         Camera.Parameters parameters = mCamera.getParameters();
-        Camera.Size size = getBestPreviewSize(w, h, parameters);
+        //Camera.Size size = getBestPreviewSize(w, h, parameters);
         parameters.setPictureFormat(PixelFormat.JPEG);
         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         setFlash(parameters);
         setZoom(parameters);
-        mCamera.setParameters(parameters);
+        //mCamera.setParameters(parameters);
         mCamera.setDisplayOrientation(90);
 
         mCamera.startPreview();
@@ -149,6 +199,18 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         } catch (IOException exception) {
             mCamera.release();
             mCamera = null;
+        }
+    }
+
+    private void stopCamera() {
+        System.out.println("stopCamera method");
+        if (mCamera != null) {
+            mCamera.stopPreview();
+            mCamera.setPreviewCallback(null);
+            mCamera.release();
+            mCamera = null;
+            mPreview.getHolder().removeCallback(this);
+            //mPreview.getHolder() = null;
         }
     }
 

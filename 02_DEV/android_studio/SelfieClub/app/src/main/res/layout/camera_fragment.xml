@@ -6,6 +6,7 @@
     android:id="@+id/camera"
     android:layout_height="fill_parent">
 
+
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -19,6 +20,21 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"></SurfaceView>
     </FrameLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnClose"
+        android:background="@android:color/transparent"
+        android:text="Close" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent"
+        android:id="@+id/btnFlip"
+        android:text="Flip" />
 
     <ImageButton
         android:id="@+id/imagebutton_camera"
