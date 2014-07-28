@@ -1,21 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
+    android:layout_height="fill_parent"
+    android:background="@android:color/white">
 
     <TextView
-        android:background="@drawable/notifications_header_background"
+        android:background="@drawable/registration_header_background"
         android:id="@+id/lblRegistration"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-         />
+        android:layout_height="wrap_content" />
 
-    <include
-        layout="@layout/friends_item"
+    <RelativeLayout
+        android:id="@+id/rowFriend"
+        android:layout_below="@+id/lblRegistration"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_row_background"
+        android:paddingRight="25dp">
+
+        <ImageView
+            android:id="@+id/imgCheckUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/check_mark"
+            android:visibility="invisible" />
+
+
+        <com.builtinmenlo.selfieclub.views.SVGImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/friends_item_image_mask"
+            app:svg_raw_resource="@raw/image" />
+
+        <EditText
+            android:id="@+id/txtUserName"
+            android:layout_marginLeft="15dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/imgCheckUserName"
+            android:layout_toRightOf="@+id/imgAvatar"
+            android:imeOptions="actionNext"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:background="@drawable/first_run_phone_background"
+        android:id="@+id/lblEnterPhone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rowFriend" />
+
+    <EditText
+        android:id="@+id/txtEnterPhone"
+        android:layout_marginLeft="15dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/btnCountrySelect"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:layout_toLeftOf="@+id/imgCheckPhone"
+        android:layout_alignBottom="@+id/lblEnterPhone"
+        android:layout_alignTop="@+id/lblEnterPhone"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:imeOptions="actionDone"
+        android:inputType="phone" />
+
+    <Button
+        android:background="@android:color/transparent"
+        android:id="@+id/btnCountrySelect"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/lblEnterPhone"
+        android:layout_alignTop="@+id/lblEnterPhone"
+        android:textColor="@color/actionbar_text_color"
+        android:text="1"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/imgCheckPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lblRegistration" />
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/btnCountrySelect"
+        android:layout_margin="30dp"
+        android:background="@drawable/check_mark"
+        android:visibility="invisible" />
+
+    <TextView
+        android:background="@drawable/enter_phone_text"
+        android:id="@+id/lblEnterPhoneText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/lblEnterPhone"
+        android:layout_marginTop="25dp" />
 
     <ProgressBar
         android:id="@+id/loadingIcon"

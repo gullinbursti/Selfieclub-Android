@@ -65,6 +65,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
 
         getOverflowMenu();
@@ -72,6 +74,7 @@ public class MainActivity extends Activity {
         Log.i("__LOCAL_CLASS_NAME", this.getLocalClassName() + "][" + this.getClass().toString());
 
         ActionBar topNavActionBar = getActionBar();
+        topNavActionBar.setDisplayShowTitleEnabled(false);
         topNavActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         topNavActionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.white)));
 

@@ -10,33 +10,35 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+    <application android:allowBackup="true">
+
         <activity
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
             android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme">
-            android:icon="@android:color/transparent"
-            android:label=""
-            android:screenOrientation="portrait"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
             android:name=".activity.FirstRunActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:icon="@android:color/transparent"
-            android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme">
+
+
         </activity>
+
         <activity
             android:name=".activity.CameraPreview"
             android:icon="@android:color/transparent"

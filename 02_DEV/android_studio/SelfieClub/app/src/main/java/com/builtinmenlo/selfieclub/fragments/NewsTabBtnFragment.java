@@ -34,7 +34,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -50,7 +49,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
-import org.json.JSONException;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -64,7 +62,7 @@ import java.util.Date;
 
 
 // <[!] class delaration [¡]>
-public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
+public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
@@ -114,10 +112,11 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
     private static class ViewHolder {
         TextView lblStatus;
         TextView lblTime;
-        ImageView imgNews;
+        TextView lblClubName;
+        //ImageView imgNews;
         ImageView imgAvatar;
-        Button btnUpVote;
-        Button btnReply;
+        //Button btnUpVote;
+        //Button btnReply;
     }
 
     public void populate() {
@@ -174,15 +173,16 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
             ViewHolder viewHolder;
             if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                convertView = inflater.inflate(R.layout.news_item, parent, false);
+                convertView = inflater.inflate(R.layout.news_feed_item, parent, false);
 
                 viewHolder = new ViewHolder();
+                viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
                 viewHolder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
                 viewHolder.lblStatus = (TextView) convertView.findViewById(R.id.lblStatus);
-                viewHolder.imgNews = (ImageView) convertView.findViewById(R.id.imgNews);
+                //viewHolder.imgNews = (ImageView) convertView.findViewById(R.id.imgNews);
                 viewHolder.lblTime = (TextView) convertView.findViewById(R.id.lblTime);
-                viewHolder.btnReply = (Button) convertView.findViewById(R.id.btnReply);
-                viewHolder.btnUpVote = (Button) convertView.findViewById(R.id.btnUpVote);
+                //viewHolder.btnReply = (Button) convertView.findViewById(R.id.btnReply);
+                //viewHolder.btnUpVote = (Button) convertView.findViewById(R.id.btnUpVote);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -191,7 +191,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
             NewsItem newsItem = news.get(position);
 
             // viewHolder.lblFollowers.setText(String.valueOf(friend.getFollowers()));
-            String status = "<strong>" + newsItem.getUserName() + "</strong> is feeling <strong>";
+            String status = "<strong>" + newsItem.getUserName() + "</strong>";
+            /*String status = "<strong>" + newsItem.getUserName() + "</strong> is feeling <strong>";
             for (int i = 0; i < newsItem.getStatus().length(); i++) {
                 try {
                     if (newsItem.getStatus().length() > 1 && i + 1 == newsItem.getStatus().length())
@@ -203,7 +204,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
                     e.printStackTrace();
                 }
             }
-            status += "...</strong>";
+            status += "...</strong>";*/
             viewHolder.lblStatus.setText(Html.fromHtml(status));
             SimpleDateFormat from_format = new SimpleDateFormat("yyyy-MM-d HH:mm:ss");
             Date rowDate = null;
@@ -219,16 +220,17 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
             long time = (((Calendar.getInstance().getTimeInMillis() - calendar.getTimeInMillis()) / 1000) % 3600) / 60;
 
 
-            viewHolder.lblTime.setText(String.valueOf(time) + " minutes ago in " + newsItem.getClubName());
+            viewHolder.lblTime.setText(String.valueOf(time) + " m");
+            viewHolder.lblClubName.setText(" in "+newsItem.getClubName());
+
+            /*if (viewHolder.imgAvatar != null) {
+                new ImageDownloaderTask(viewHolder.imgAvatar).execute(newsItem.getAvatarUrl());
+            }*/
 
             if (viewHolder.imgAvatar != null) {
-                new ImageDownloaderTask(viewHolder.imgAvatar).execute(newsItem.getAvatarUrl());
-            }
-
-            if (viewHolder.imgNews != null) {
                 //viewHolder.imgNews.setImageBitmap(((BitmapDrawable)listImages[position].getDrawable()).getBitmap());
                 //new ImageDownloaderTask(viewHolder.imgNews).execute(newsItem.getImageUrl()+"Tab_640x960.jpg");
-                downloader.DisplayImage(newsItem.getImageUrl() + "Tab_640x960.jpg", String.valueOf(position), getActivity(), viewHolder.imgNews);
+                downloader.DisplayImage(newsItem.getImageUrl() + "Tab_640x960.jpg", String.valueOf(position), getActivity(), viewHolder.imgAvatar);
 
             }
 

@@ -17,18 +17,13 @@ package com.builtinmenlo.selfieclub.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.hardware.Camera;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -38,10 +33,10 @@ import android.widget.Toast;
 import com.builtinmenlo.selfieclub.R;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Calendar;
 
 public class CameraPreview extends Activity implements View.OnClickListener {
+
+    public static final String EXTRA_IMAGE = "image";
 
     private SurfaceView preview = null;
     private SurfaceHolder previewHolder = null;
@@ -55,9 +50,7 @@ public class CameraPreview extends Activity implements View.OnClickListener {
     float oldDist = 1f;
     File imageFileName = null;
     File imageFileFolder = null;
-    private MediaScannerConnection msConn;
     Display d;
-    int screenhgt, screenwdh;
     ProgressDialog dialog;
 
 
@@ -138,6 +131,7 @@ public class CameraPreview extends Activity implements View.OnClickListener {
                 parameters.setPreviewSize(size.width, size.height);
                 camera.setParameters(parameters);
                 camera.startPreview();
+                camera.setDisplayOrientation(90);
                 inPreview = true;
             }
         }
@@ -166,79 +160,25 @@ public class CameraPreview extends Activity implements View.OnClickListener {
 
     public void onPictureTake(byte[] data, Camera camera) {
 
-        bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-        mutableBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
-        savePhoto(mutableBitmap);
+        //bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+        //mutableBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
         dialog.dismiss();
+
+        Intent intent = new Intent(this, FirstRunActivity.class);
+        intent.putExtra(EXTRA_IMAGE, data);
+        startActivity(intent);
+        finish();
+
+        /*Fragment newFragment = new FirstRunRegistrationFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        Bundle bundle = new Bundle();
+        bundle.putByteArray(EXTRA_IMAGE, data);
+        newFragment.setArguments(bundle);
+        transaction.commit();*/
     }
 
-
-    class SavePhotoTask extends AsyncTask<byte[], String, String> {
-        @Override
-        protected String doInBackground(byte[]... jpeg) {
-            File photo = new File(Environment.getExternalStorageDirectory(), "photo.jpg");
-            if (photo.exists()) {
-                photo.delete();
-            }
-            try {
-                FileOutputStream fos = new FileOutputStream(photo.getPath());
-                fos.write(jpeg[0]);
-                fos.close();
-            } catch (java.io.IOException e) {
-                Log.e("PictureDemo", "Exception in photoCallback", e);
-            }
-            return (null);
-        }
-    }
-
-
-    public void savePhoto(Bitmap bmp) {
-        imageFileFolder = new File(Environment.getExternalStorageDirectory(), "Rotate");
-        imageFileFolder.mkdir();
-        FileOutputStream out = null;
-        Calendar c = Calendar.getInstance();
-        String date = fromInt(c.get(Calendar.MONTH)) + fromInt(c.get(Calendar.DAY_OF_MONTH)) + fromInt(c.get(Calendar.YEAR)) + fromInt(c.get(Calendar.HOUR_OF_DAY)) + fromInt(c.get(Calendar.MINUTE)) + fromInt(c.get(Calendar.SECOND));
-        imageFileName = new File(imageFileFolder, date.toString() + ".jpg");
-        try {
-            out = new FileOutputStream(imageFileName);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-            scanPhoto(imageFileName.toString());
-            out = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String fromInt(int val) {
-        return String.valueOf(val);
-    }
-
-    public void scanPhoto(final String imageFileName) {
-        msConn = new MediaScannerConnection(CameraPreview.this, new MediaScannerConnection.MediaScannerConnectionClient() {
-            public void onMediaScannerConnected() {
-                msConn.scanFile(imageFileName, null);
-                Log.i("msClient obj  in Photo Utility", "connection established");
-            }
-
-            public void onScanCompleted(String path, Uri uri) {
-                msConn.disconnect();
-                Log.i("msClient obj in Photo Utility", "scan completed");
-            }
-        });
-        msConn.connect();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0) {
-            onBack();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    public void onBack() {
+    public void onMainCameraClick(View view) {
         Log.e("onBack :", "yes");
         camera.takePicture(null, null, photoCallback);
         inPreview = false;
