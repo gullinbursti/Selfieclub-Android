@@ -1,8 +1,11 @@
 package com.builtinmenlo.selfieclub.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -11,8 +14,10 @@ import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.PictureCallback;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -45,6 +50,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     private static final int TEN_DESIRED_ZOOM = 27;
     private static final Pattern COMMA_PATTERN = Pattern.compile(",");
     private static String TAG = "CameraActivity";
+    private static final int SELECT_PICTURE = 1;
+    private String selectedImagePath;
 
     @Override
     public void onDestroyView() {
@@ -113,6 +120,22 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
                 openCamera();
             }
         });
+
+        view.findViewById(R.id.btnGallery)
+                .setOnClickListener(new OnClickListener() {
+
+                    public void onClick(View arg0) {
+
+                        // in onCreate or any event where your want the user to
+                        // select a file
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent,
+                                "Select Picture"), SELECT_PICTURE);
+                    }
+                });
+
         // get views
         bundle = getArguments();
         mPreview = (SurfaceView) view.findViewById(R.id.camera_surface);
@@ -121,6 +144,45 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         mButton = (ImageButton) view.findViewById(R.id.imagebutton_camera);
         mButton.setOnClickListener(this);
         return view;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                selectedImagePath = getPath(selectedImageUri);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 4;//returning null for below statement
+                Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath, options);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                onPictureTaken(byteArray, null);
+            }
+        }
+    }
+
+    /**
+     * helper to retrieve the path of an image URI
+     */
+    public String getPath(Uri uri) {
+        // just some safety built in
+        if( uri == null ) {
+            // TODO perform some logging or show user feedback
+            return null;
+        }
+        // try to retrieve the image from the media store first
+        // this will only work for images selected from gallery
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+        if( cursor != null ){
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        // this is our fallback here
+        return uri.getPath();
     }
 
     @Override

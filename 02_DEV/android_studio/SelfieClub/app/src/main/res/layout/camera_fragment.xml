@@ -36,6 +36,16 @@
         android:id="@+id/btnFlip"
         android:text="Flip" />
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:id="@+id/btnGallery"
+        android:text="Camera Roll" />
+
     <ImageButton
         android:id="@+id/imagebutton_camera"
         style="@style/Widget.AppCompat.Base.ActionButton"
