@@ -19,6 +19,7 @@ package com.builtinmenlo.selfieclub.activity;
 //] includes [!]>
 //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
 
+import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
@@ -57,6 +58,9 @@ public class FirstRunActivity extends Activity {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_run);
+
+        ActionBar topNavActionBar = getActionBar();
+        topNavActionBar.setDisplayShowTitleEnabled(false);
 
         Log.i("__LOCAL_CLASS_NAME", this.getLocalClassName() + "][" + this.getClass().toString());
 

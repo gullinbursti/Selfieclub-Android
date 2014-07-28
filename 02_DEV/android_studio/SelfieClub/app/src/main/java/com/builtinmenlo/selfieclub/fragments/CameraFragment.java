@@ -97,6 +97,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.camera_fragment, container, false);
 
+        isUsingFrontCamera = true;
+
         view.findViewById(R.id.btnClose).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
