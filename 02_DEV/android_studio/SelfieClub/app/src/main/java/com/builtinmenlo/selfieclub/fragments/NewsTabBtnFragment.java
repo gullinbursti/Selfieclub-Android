@@ -83,7 +83,7 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_tab, container, false);
         lv = (ListView) view.findViewById(android.R.id.list);
-        downloader = new ImageDownloader(NewsTabBtnFragment.this.getActivity());
+        downloader = new ImageDownloader(NewsTabBtnFragment.this.getActivity(), "news");
         news = new ArrayList<NewsItem>();
         populate();
 

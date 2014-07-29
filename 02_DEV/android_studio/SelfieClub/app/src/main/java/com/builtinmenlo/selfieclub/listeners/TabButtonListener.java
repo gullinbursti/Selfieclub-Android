@@ -23,9 +23,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
+import android.graphics.Typeface;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,6 +57,7 @@ public class TabButtonListener implements ActionBar.TabListener {
         ImageView redDot = (ImageView) tabLayout.findViewById(R.id.imgRedDot);
         if (tabLayout != null && redDot == null) {
             ((TextView) tabLayout.findViewById(R.id.lblTitleText)).setTextColor(Color.parseColor("#005de9"));
+            ((TextView) tabLayout.findViewById(R.id.lblTitleText)).setTypeface(Typeface.DEFAULT_BOLD);
         } else {
             if (redDot != null) {
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.fade_in);
@@ -74,6 +73,7 @@ public class TabButtonListener implements ActionBar.TabListener {
         ImageView redDot = (ImageView) tabLayout.findViewById(R.id.imgRedDot);
         if (tabLayout != null && redDot == null) {
             ((TextView) tabLayout.findViewById(R.id.lblTitleText)).setTextColor(Color.parseColor("#bababa"));
+            ((TextView) tabLayout.findViewById(R.id.lblTitleText)).setTypeface(Typeface.DEFAULT);
         } else {
             if (redDot != null) {
                 fragmentTransaction.setCustomAnimations(R.anim.fade_out,R.anim.slide_out);
