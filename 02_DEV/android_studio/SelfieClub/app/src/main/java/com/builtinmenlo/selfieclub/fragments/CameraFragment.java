@@ -1,5 +1,6 @@
 package com.builtinmenlo.selfieclub.fragments;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -99,6 +100,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         return mCamera;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        final ActionBar actionBar = getActivity().getActionBar();
+        actionBar.show();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,10 +113,19 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
         isUsingFrontCamera = true;
 
+        final ActionBar actionBar = getActivity().getActionBar();
+        actionBar.hide();
+
         view.findViewById(R.id.btnClose).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Fragment newFragment = new FirstRunRegistrationFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, newFragment);
+                if (bundle == null)
+                    bundle = new Bundle();
+                newFragment.setArguments(bundle);
+                transaction.commit();
             }
         });
 
@@ -125,9 +141,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
                 .setOnClickListener(new OnClickListener() {
 
                     public void onClick(View arg0) {
-
-                        // in onCreate or any event where your want the user to
-                        // select a file
                         Intent intent = new Intent();
                         intent.setType("image/*");
                         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -229,7 +242,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
         mCamera.startPreview();
         // mCamera.autoFocus(this);
-
     }
 
     private Camera.Size getBestPictureSize(int width, int height) {
@@ -252,12 +264,10 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
             }
         }
         return (result);
-
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
         try {
             mCamera.setPreviewDisplay(holder);
         } catch (IOException exception) {
@@ -284,16 +294,13 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         mCamera.setPreviewCallback(null);
         mCamera.release();
         mCamera = null;
-
     }
 
     @Override
     public void onClick(View arg0) {
         mButton.setEnabled(false);
         // mButton.setText("Please Wait..");
-
         mCamera.autoFocus(this);
-
     }
 
     @Override
@@ -341,8 +348,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     private void setFlash(Camera.Parameters parameters) {
         // FIXME: This is a hack to turn the flash off on the Samsung Galaxy.
-        // And this is a hack-hack to work around a different value on the
-        // Behold II
+        // And this is a hack-hack to work around a different value on the Behold II
         if (Build.MODEL.contains("Behold II")) {
             parameters.set("flash-value", 1);
         } else {
@@ -353,14 +359,11 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     }
 
     private void setZoom(Camera.Parameters parameters) {
-
         String zoomSupportedString = parameters.get("zoom-supported");
         if (zoomSupportedString != null && !Boolean.parseBoolean(zoomSupportedString)) {
             return;
         }
-
         int tenDesiredZoom = TEN_DESIRED_ZOOM;
-
         String maxZoomString = parameters.get("max-zoom");
         if (maxZoomString != null) {
             try {
@@ -372,7 +375,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
                 Log.w(TAG, "Bad max-zoom: " + maxZoomString);
             }
         }
-
         String takingPictureZoomMaxString = parameters.get("taking-picture-zoom-max");
         if (takingPictureZoomMaxString != null) {
             try {
@@ -415,5 +417,4 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
             parameters.set("taking-picture-zoom", tenDesiredZoom);
         }
     }
-
 }

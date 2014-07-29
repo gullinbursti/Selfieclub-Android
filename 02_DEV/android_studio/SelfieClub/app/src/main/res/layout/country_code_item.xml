@@ -5,7 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/common_row_background"
-    android:padding="25dp">
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
 
     <ImageView
         android:id="@+id/imgAddOrCheck"
