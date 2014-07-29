@@ -29,6 +29,150 @@ import java.util.HashMap;
  */
 public class ClubManager {
     /**
+     * Joins a user in the club
+     * @param clubJoinProtocol The interface that must be implemented
+     * @param userId User's id
+     * @param clubId Club's id
+     * @param ownedId Owner's id
+     */
+    public void joinClub(final ClubJoinProtocol clubJoinProtocol,
+                         String userId,
+                         String clubId,
+                         String ownedId){
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String,String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("clubID",clubId);
+        data.put("ownerID",ownedId);
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.JOIN_CLUB_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try{
+                            clubJoinProtocol.didJoinClub(data.getBoolean("result"));
+
+
+                        }
+                        catch (Exception e){
+                            clubJoinProtocol.didFailJoiningClub(e.toString());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        clubJoinProtocol.didFailJoiningClub(response);
+                    }
+
+                }
+        );
+    }
+
+    /**
+     * Sends club invites
+     * @param clubInviteProtocol The protocol that must be implemeted
+     * @param userId User's id
+     * @param clubId Club's id
+     * @param users An array list with the friends user ids
+     * @param nonUsers Delimited list of non-app contacts — specified by {F_NAME L_NAME}:::{PHONE}:: and delimited by   three pipes |||
+     */
+    public void sendClubInvite(final ClubInviteProtocol clubInviteProtocol,
+                               String userId,
+                               String clubId,
+                               ArrayList<String>users,
+                               ArrayList<HashMap<String,String>>nonUsers){
+        String usersStr="";
+        if(users.size()>0){
+            usersStr=users.get(0);
+            if(users.size()>1){
+                for(int i=1;i<users.size();i++){
+                    usersStr=usersStr+","+users.get(i);
+                }
+            }
+        }
+        String nonUsersStr="";
+        if(nonUsers.size()>0){
+            HashMap<String,String>buffer = nonUsers.get(0);
+            nonUsersStr=buffer.get("name")+":::"+buffer.get("phone")+"::";
+            if(nonUsers.size()>1){
+                for(int i=1;i<nonUsers.size();i++){
+                    buffer = nonUsers.get(i);
+                    nonUsersStr=nonUsersStr+"|||"+buffer.get("name")+":::"+buffer.get("phone")+"::";
+                }
+            }
+        }
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String,String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("clubID",clubId);
+        data.put("users",usersStr);
+        data.put("nonUsers",nonUsersStr);
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.INVITE_CLUB_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try{
+                            clubInviteProtocol.didSendCubInvite(data.getBoolean("result"));
+
+
+                        }
+                        catch (Exception e){
+                            clubInviteProtocol.didFailSendingClubInvite(e.toString());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        clubInviteProtocol.didFailSendingClubInvite(response);
+                    }
+
+                }
+        );
+
+
+
+
+    }
+
+    /**
+     * Create's a new club
+     * @param userId Owner id
+     * @param clubName Club's name
+     * @param clubDescription Club's description
+     * @param clubImageUrl
+     */
+    public void createClub(final CreateClubProtocol createClubProtocol,String userId, String clubName, String clubDescription, String clubImageUrl){
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String,String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("name",clubName);
+        data.put("description",clubDescription);
+        data.put("imgURL",clubImageUrl);
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.CREATE_CLUB_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try{
+                            if(data!=null) {
+                                createClubProtocol.didCreateClub();
+                            }
+
+
+                        }
+                        catch (Exception e){
+                            createClubProtocol.didFailCreatingClub(e.toString());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        createClubProtocol.didFailCreatingClub(response);
+                    }
+
+                }
+        );
+
+    }
+
+
+
+    /**
      * Request the club's info
      * @param clubInfoProtocol The interface that must be implemented
      * @param userId User's id
