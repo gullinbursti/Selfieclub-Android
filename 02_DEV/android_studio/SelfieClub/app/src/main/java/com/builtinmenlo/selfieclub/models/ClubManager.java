@@ -310,16 +310,18 @@ public class ClubManager {
                             String clubId,
                             File imageFile,
                             ArrayList<String>subjects){
-        //Resize large image
+
         String uniqueString = Util.generateUniqueString(context);
         String imageUrl = Constants.AMAZON_S3_PATH + uniqueString;
+        //Upload large image
         String largeFilename = uniqueString+"_Large_640x1136.jpg";
-        String largeImageUrl = Constants.AMAZON_S3_PATH+largeFilename;
         File largeImage = Util.resizeImage(Util.IMAGE_SIZES.LARGE_640x1136,imageFile,context);
         uploadPhotoToS3(largeImage,largeFilename);
-
-
-
+        //Upload tab image
+        String tabFilename = uniqueString+"_Tab_640x960.jpg";
+        File tabImage = Util.resizeImage(Util.IMAGE_SIZES.TAB_640x960,imageFile,context);
+        uploadPhotoToS3(tabImage,tabFilename);
+        //Notify the server
         JSONArray emotionsJson = new JSONArray(subjects);
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
