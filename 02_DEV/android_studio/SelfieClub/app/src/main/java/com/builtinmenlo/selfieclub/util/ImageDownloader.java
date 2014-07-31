@@ -8,7 +8,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.builtinmenlo.selfieclub.R;
 
@@ -29,6 +31,8 @@ public class ImageDownloader {
 
     private File cacheDir;
 
+    ProgressBar loading;
+
     public ImageDownloader(Context context, String directory) {
         //Make the background thread low priority. This way it will not affect the UI performance
         photoLoaderThread.setPriority(Thread.NORM_PRIORITY - 1);
@@ -46,13 +50,18 @@ public class ImageDownloader {
     //final int stub_id = R.drawable.ic_launcher;
     final int stub_id = android.R.color.transparent;
 
-    public void DisplayImage(String url, String profilePic, Activity activity, ImageView imageView) {
-        if (cache.containsKey(url))
+    public void DisplayImage(String url, String profilePic, Activity activity, ImageView imageView, ProgressBar loading) {
+        this.loading = loading;
+        if (cache.containsKey(url)) {
             imageView.setImageBitmap(cache.get(url));
-        else {
+            if (loading != null) {
+                loading.setVisibility(View.INVISIBLE);
+            }
+        } else {
             queuePhoto(url, activity, imageView, profilePic);
             imageView.setImageResource(stub_id);
         }
+
     }
 
     private void queuePhoto(String url, Activity activity, ImageView imageView, String profilePic) {
@@ -205,6 +214,9 @@ public class ImageDownloader {
                 imageView.setImageBitmap(bitmap);
             else
                 imageView.setImageResource(stub_id);
+            if (loading != null) {
+                loading.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

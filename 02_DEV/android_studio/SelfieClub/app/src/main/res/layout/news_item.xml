@@ -5,18 +5,35 @@
     android:layout_height="wrap_content"
     android:background="@drawable/news_row_background_large">
 
-    <com.builtinmenlo.selfieclub.views.RoundedImageView
-        android:id="@+id/imgAvatar"
+    <RelativeLayout
         android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_margin="10dp" />
+        android:layout_toRightOf="@id/lblFollowers"
+        android:layout_margin="10dp"
+        android:id="@+id/relAvatar"
+        android:layout_height="24dp">
+
+        <com.builtinmenlo.selfieclub.views.RoundedImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/friends_item_image_mask"/>
+
+        <ProgressBar
+            android:id="@+id/loadingImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            style="@android:style/Widget.ProgressBar.Small.Inverse" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/lblStatus"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imgAvatar"
-        android:layout_toRightOf="@+id/imgAvatar"
+        android:layout_alignBottom="@+id/relAvatar"
+        android:layout_toRightOf="@+id/relAvatar"
         android:singleLine="false"
         android:textColor="@android:color/black" />
 
@@ -25,7 +42,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lblStatus"
-        android:layout_toRightOf="@+id/imgAvatar"
+        android:layout_toRightOf="@+id/relAvatar"
         android:singleLine="true"
         android:textColor="#bababa"
         android:textSize="10sp" />
@@ -51,13 +68,13 @@
             android:id="@+id/btnUpVote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_news_up_vote_selector"/>
+            android:background="@drawable/btn_news_up_vote_selector" />
 
         <Button
             android:id="@+id/btnReply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_news_reply_selector"/>
+            android:background="@drawable/btn_news_reply_selector" />
     </LinearLayout>
 
 </RelativeLayout>

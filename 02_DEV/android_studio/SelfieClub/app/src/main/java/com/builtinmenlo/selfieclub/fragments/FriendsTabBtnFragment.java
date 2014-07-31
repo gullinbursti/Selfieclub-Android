@@ -121,6 +121,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         ImageView imgAddOrCheck;
         ImageView imgAvatarCheck;
         ImageView imgAvatar;
+        ProgressBar imgLoading;
     }
 
     public void populate() {
@@ -192,6 +193,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
                 //viewHolder.imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
                 viewHolder.imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
                 viewHolder.imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
+                viewHolder.imgLoading = (ProgressBar) convertView.findViewById(R.id.loadingImage);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -221,7 +223,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
             if (viewHolder.imgAvatar != null) {
                 //new ImageDownloaderTask(viewHolder.imgAvatar).execute(friend.getAvatarUrl());
-                downloader.DisplayImage(friend.getAvatarUrl(), String.valueOf(position), getActivity(), viewHolder.imgAvatar);
+                downloader.DisplayImage(friend.getAvatarUrl(), String.valueOf(position), getActivity(), viewHolder.imgAvatar, viewHolder.imgLoading);
 
             }
 

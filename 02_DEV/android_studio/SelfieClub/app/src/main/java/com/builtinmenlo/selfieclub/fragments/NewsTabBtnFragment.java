@@ -117,6 +117,7 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
         ImageView imgAvatar;
         //Button btnUpVote;
         //Button btnReply;
+        ProgressBar loadingImage;
     }
 
     public void populate() {
@@ -181,6 +182,7 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
                 viewHolder.lblStatus = (TextView) convertView.findViewById(R.id.lblStatus);
                 //viewHolder.imgNews = (ImageView) convertView.findViewById(R.id.imgNews);
                 viewHolder.lblTime = (TextView) convertView.findViewById(R.id.lblTime);
+                viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
                 //viewHolder.btnReply = (Button) convertView.findViewById(R.id.btnReply);
                 //viewHolder.btnUpVote = (Button) convertView.findViewById(R.id.btnUpVote);
                 convertView.setTag(viewHolder);
@@ -230,7 +232,7 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
             if (viewHolder.imgAvatar != null) {
                 //viewHolder.imgNews.setImageBitmap(((BitmapDrawable)listImages[position].getDrawable()).getBitmap());
                 //new ImageDownloaderTask(viewHolder.imgNews).execute(newsItem.getImageUrl()+"Tab_640x960.jpg");
-                downloader.DisplayImage(newsItem.getImageUrl() + "Tab_640x960.jpg", String.valueOf(position), getActivity(), viewHolder.imgAvatar);
+                downloader.DisplayImage(newsItem.getImageUrl() + "Tab_640x960.jpg", String.valueOf(position), getActivity(), viewHolder.imgAvatar, viewHolder.loadingImage);
 
             }
 
