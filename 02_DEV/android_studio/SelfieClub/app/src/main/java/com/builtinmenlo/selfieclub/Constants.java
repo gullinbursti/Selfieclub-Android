@@ -23,4 +23,5 @@ public final class Constants {
     public static final String AMAZON_S3_SECRET = "XLFSr4XgGptznyEny3rw3BA//CrMWf7IJlqD7gAQ";
     public static final String AMAZON_S3_BUCKET = "hotornot-challenges";
 
+
 }

@@ -2,6 +2,8 @@ package com.builtinmenlo.selfieclub.models;
 
 
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -296,19 +298,28 @@ public class ClubManager {
     /**
      * Submit a photo into a club
      * @param photoSubmissionProtocol The interface that must be implemented
+     * @param context Activity context. Used to grab de UIID
      * @param userId User's id
      * @param clubId Clubs's id
      * @param imageFile The photo's file
      * @param subjects An arraylist with all the subjects
      */
     public void submitPhoto(final PhotoSubmissionProtocol photoSubmissionProtocol,
+                            Context context,
                             String userId,
                             String clubId,
                             File imageFile,
                             ArrayList<String>subjects){
-        String filename = Util.generateRandomString(40);
-        String imageUrl = Constants.AMAZON_S3_PATH+filename;
-        uploadPhotoToS3(imageFile,filename);
+        //Resize large image
+        String uniqueString = Util.generateUniqueString(context);
+        String imageUrl = Constants.AMAZON_S3_PATH + uniqueString;
+        String largeFilename = uniqueString+"_Large_640x1136.jpg";
+        String largeImageUrl = Constants.AMAZON_S3_PATH+largeFilename;
+        File largeImage = Util.resizeImage(Util.IMAGE_SIZES.LARGE_640x1136,imageFile,context);
+        uploadPhotoToS3(largeImage,largeFilename);
+
+
+
         JSONArray emotionsJson = new JSONArray(subjects);
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
