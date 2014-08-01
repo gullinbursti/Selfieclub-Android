@@ -16,12 +16,14 @@ public final class Constants {
     public static final String CREATE_CLUB_PATH = "clubs/create";
     public static final String INVITE_CLUB_PATH = "clubs/invite";
     public static final String JOIN_CLUB_PATH = "clubs/join";
-
     //Amazon S3
     public static final String AMAZON_S3_PATH = "https://d1fqnfrnudpaz6.cloudfront.net/";
     public static final String AMAZON_S3_KEY = "AKIAIHUQ42RE7R7CIMEA";
     public static final String AMAZON_S3_SECRET = "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";
     public static final String AMAZON_S3_BUCKET = "hotornot-challenges";
+    //Pico Candy
+    public static final String PICOCANDY_APP_ID = "1df5644d9e94";
+    public static final String PICOCANDY_API_KEY = "8Xzg4rCwWpwHfNCPLBvV";
 
 
 }
