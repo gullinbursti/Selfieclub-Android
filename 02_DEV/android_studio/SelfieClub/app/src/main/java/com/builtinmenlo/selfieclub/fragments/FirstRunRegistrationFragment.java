@@ -141,7 +141,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
         PicoCandyManager picoCandyManager = new PicoCandyManager();
         picoCandyManager.registerApp(this.getActivity().getApplicationContext());
-        //picoCandyManager.getCurrentUser();
+        picoCandyManager.getCurrentUser();
         ArrayList<String> ids = new ArrayList<String>();
         ids.add("824");
         ids.add("827");
