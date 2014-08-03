@@ -42,8 +42,9 @@ import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.CameraPreview;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
+import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 
-;
+;import java.util.ArrayList;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -137,6 +138,16 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             }
         });
 
+
+        PicoCandyManager picoCandyManager = new PicoCandyManager();
+        picoCandyManager.registerApp(this.getActivity().getApplicationContext());
+        //picoCandyManager.getCurrentUser();
+        ArrayList<String> ids = new ArrayList<String>();
+        ids.add("824");
+        ids.add("827");
+        ids.add("823");
+        ids.add("813");
+        picoCandyManager.getContentGroups(ids);
 
         return view;
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯

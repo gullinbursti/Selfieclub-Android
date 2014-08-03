@@ -1,6 +1,7 @@
 package com.builtinmenlo.selfieclub.models;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.picocandy.android.PicoManager;
@@ -31,12 +32,12 @@ public class PicoCandyManager {
                 contentHelper.fetchContentGroup(ids.get(i),new PCContentHelper.FetchContentGroupListener() {
                     @Override
                     public void onSuccess(PCContentGroup pcContentGroup) {
-
+                        Log.w("ContentGroups",pcContentGroup.toString());
                     }
 
                     @Override
                     public void onFail(String s) {
-
+                        Log.w("Content",s);
                     }
                 });
             }
