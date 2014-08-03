@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -26,6 +27,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -156,7 +158,14 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         mPreview.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         mButton = (ImageButton) view.findViewById(R.id.imagebutton_camera);
         mButton.setOnClickListener(this);
+        hideKeyboard(view);
         return view;
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
+
+    private void hideKeyboard(View v) {
+        InputMethodManager keyboard = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

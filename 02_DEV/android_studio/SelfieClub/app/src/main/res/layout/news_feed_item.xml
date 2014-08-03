@@ -7,16 +7,31 @@
     android:background="@drawable/news_feed_background_row_a">
 
 
+    <RelativeLayout
+        android:layout_width="48dp"
+        android:layout_toRightOf="@id/lblFollowers"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:id="@+id/relAvatar"
+        android:layout_height="48dp">
+
     <com.builtinmenlo.selfieclub.views.SVGImageView
         android:id="@+id/imgAvatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_margin="10dp"
-        android:layout_toRightOf="@id/lblFollowers"
-        android:layout_centerVertical="true"
         android:scaleType="fitXY"
         android:src="@drawable/friends_item_image_mask"
         app:svg_raw_resource="@raw/image" />
+
+    <ProgressBar
+        android:id="@+id/loadingImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        style="@android:style/Widget.ProgressBar.Small.Inverse" />
+
+        </RelativeLayout>
 
     <TextView
         android:id="@+id/lblTime"
@@ -47,7 +62,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/imgAvatar"
+        android:layout_toRightOf="@+id/relAvatar"
         android:singleLine="false"
         android:textColor="@android:color/black" />
 

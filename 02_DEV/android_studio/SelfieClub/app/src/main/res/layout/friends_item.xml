@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/row"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/common_row_background"
-    android:paddingRight="25dp">
+    android:paddingRight="25dp"
+    tools:showIn="@layout/notifications_tab">
 
     <ImageView
         android:id="@+id/imgAddOrCheck"
@@ -14,7 +16,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_margin="5dp"
-        android:background="@drawable/gray_selection_dot"/>
+        android:background="@drawable/gray_selection_dot" />
 
     <ImageView
         android:id="@+id/imgFollowers"
@@ -22,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/gray_arrow"/>
+        android:background="@drawable/gray_arrow" />
 
     <TextView
         android:id="@+id/lblFollowers"
@@ -33,55 +35,68 @@
         android:singleLine="true"
         android:textColor="#dadada"
         android:text="0"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
 
 
-    <com.builtinmenlo.selfieclub.views.SVGImageView
-        android:id="@+id/imgAvatar"
+    <RelativeLayout
         android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_toRightOf="@id/lblFollowers"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/friends_item_image_mask"
-        app:svg_raw_resource="@raw/image" />
-    <!--
-    <ImageView
-        android:id="@+id/imgAvatar"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_toRightOf="@id/lblFollowers"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/friends_item_image_mask"/>
--->
-    <ImageView
-        android:id="@+id/imgAvatarCheck"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignRight="@+id/imgAvatar"
-        android:layout_alignBottom="@+id/imgAvatar"
-        android:background="@drawable/verify_badge" />
+        android:id="@+id/relAvatar"
+        android:layout_height="48dp">
+
+        <com.builtinmenlo.selfieclub.views.SVGImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/friends_item_image_mask"
+            app:svg_raw_resource="@raw/image" />
+
+
+        <!--
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/lblFollowers"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/friends_item_image_mask"/>
+    -->
+        <ImageView
+            android:id="@+id/imgAvatarCheck"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/verify_badge" />
+
+        <ProgressBar
+            android:id="@+id/loadingImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            style="@android:style/Widget.ProgressBar.Small.Inverse" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/lblName"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="15dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/imgAddOrCheck"
-        android:layout_toRightOf="@+id/imgAvatar"
+        android:layout_toRightOf="@+id/relAvatar"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@android:color/black"
         android:textSize="12dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
 </RelativeLayout>
