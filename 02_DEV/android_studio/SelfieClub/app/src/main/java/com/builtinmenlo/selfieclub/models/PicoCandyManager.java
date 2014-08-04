@@ -37,6 +37,7 @@ public class PicoCandyManager {
 
                     @Override
                     public void onFail(String s) {
+
                         Log.w("Content",s);
                     }
                 });
