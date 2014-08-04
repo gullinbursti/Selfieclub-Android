@@ -23,7 +23,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +36,8 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
+import com.builtinmenlo.selfieclub.fragments.CameraFragment;
+import com.builtinmenlo.selfieclub.fragments.CameraStep2Fragment;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
@@ -139,11 +141,12 @@ public class MainActivity extends Activity {
 
 
     public void onMainCameraClick(View view) {
-        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-        //Intent intent = new Intent(this, CameraActivity.class);
-        Intent intent = new Intent(this, CameraPreview.class);
-        //intent.putExtra(MainActivity.INTENT_PAYLOAD_AS_STRING, String.valueOf(R.string.fpo_textview_hoge));
-        startActivity(intent);
+        CameraFragment newFragment = new CameraFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        newFragment.setNextView(new CameraStep2Fragment());
+        //newFragment.setBackView(getFragmentManager().g);
+        transaction.commit();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
 

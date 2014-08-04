@@ -3,8 +3,8 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.builtinmenlo.selfieclub.activity.CameraActivity" >
 
-    <item android:id="@+id/action_camera_menu"
-          android:title="@string/empty_string"
+    <item android:id="@+id/action_menu_next"
+          android:title="Next"
           android:orderInCategory="100"
-          app:showAsAction="never" />
+          app:showAsAction="always" />
 </menu>

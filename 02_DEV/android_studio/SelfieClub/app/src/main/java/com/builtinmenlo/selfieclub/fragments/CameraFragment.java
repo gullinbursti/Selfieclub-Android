@@ -46,6 +46,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     public static boolean isUsingFrontCamera = false;
 
 
+
     private SurfaceView mPreview;
     private Bundle bundle;
     private Camera mCamera;
@@ -55,6 +56,17 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     private static String TAG = "CameraActivity";
     private static final int SELECT_PICTURE = 1;
     private String selectedImagePath;
+
+    private Fragment backView;
+    private Fragment nextView;
+
+    public void setBackView(Fragment backView) {
+        this.backView = backView;
+    }
+
+    public void setNextView(Fragment nextView) {
+        this.nextView = nextView;
+    }
 
     @Override
     public void onDestroyView() {
@@ -121,7 +133,11 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         view.findViewById(R.id.btnClose).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment = new FirstRunRegistrationFragment();
+                Fragment newFragment;
+                if (backView == null)
+                    newFragment = new FirstRunRegistrationFragment();
+                else
+                    newFragment = backView;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
                 if (bundle == null)
@@ -314,7 +330,11 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
-        Fragment newFragment = new FirstRunRegistrationFragment();
+        Fragment newFragment;
+        if (nextView == null)
+            newFragment = new FirstRunRegistrationFragment();
+        else
+            newFragment = nextView;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
         if (bundle == null)
@@ -426,4 +446,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
             parameters.set("taking-picture-zoom", tenDesiredZoom);
         }
     }
+
+    // inflate for action bar
+
 }

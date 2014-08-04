@@ -22,12 +22,16 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -53,6 +57,17 @@ public class CameraStep2Fragment extends Fragment {
     private ProgressBar loadingIcon;
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
+    private Fragment backView;
+    private Fragment nextView;
+
+    public void setBackView(Fragment backView) {
+        this.backView = backView;
+    }
+
+    public void setNextView(Fragment nextView) {
+        this.nextView = nextView;
+    }
+
     // <*] class constructor [*>
     public CameraStep2Fragment() {/*..\(^_^)/..*/}
 
@@ -61,7 +76,7 @@ public class CameraStep2Fragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-        View view = inflater.inflate(R.layout.first_run_country_selector, container, false);
+        View view = inflater.inflate(R.layout.camera_step_2, container, false);
 
         bundle = getArguments();
         byte[] avatarImage = null;
@@ -107,5 +122,39 @@ public class CameraStep2Fragment extends Fragment {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onDetach();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_camera, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    // handle click events for action bar items
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.action_menu_next:
+                Fragment newFragment = new CameraFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, newFragment);
+                if (bundle == null)
+                    bundle = new Bundle();
+                newFragment.setArguments(bundle);
+                transaction.commit();
+                return true;
+
+            /*case R.id.copyLink:
+                showToast("Copy link was clicked.");
+                return true;
+
+            case R.id.share:
+                showToast("Share was clicked.");
+                return true;*/
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }

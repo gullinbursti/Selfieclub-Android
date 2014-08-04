@@ -7,17 +7,34 @@
     android:background="@android:color/transparent"
     android:padding="10dp">
 
-    <com.builtinmenlo.selfieclub.views.SVGImageView
-        android:id="@+id/imgClub"
+    <RelativeLayout
         android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_centerHorizontal="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/friends_item_image_mask"
-        app:svg_raw_resource="@raw/image" />
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:id="@+id/relClub"
+        android:layout_height="96dp">
+
+        <com.builtinmenlo.selfieclub.views.SVGImageView
+            android:id="@+id/imgClub"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/friends_item_image_mask"
+            app:svg_raw_resource="@raw/image" />
+
+        <ProgressBar
+            android:id="@+id/loadingImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            style="@android:style/Widget.ProgressBar.Small.Inverse" />
+
+    </RelativeLayout>
 
     <TextView
-        android:layout_below="@+id/imgClub"
+        android:layout_below="@+id/relClub"
         android:id="@+id/lblClubName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
