@@ -22,32 +22,46 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.CameraPreview;
+import com.builtinmenlo.selfieclub.dataSources.Club;
+import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
+import com.builtinmenlo.selfieclub.models.UserManager;
+import com.builtinmenlo.selfieclub.util.ImageDownloader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
 // <[!] class delaration [¡]>
-public class CameraStep3Fragment extends Fragment {
+public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
-    public static final String EXTRA_CODE = "country_code";
+    private ImageDownloader downloader;
+    private ListView listClubs;
+    private ArrayList<Club> clubs;
+    private MyCustomAdapter adapter;
 
     private Bundle bundle;
     private ProgressBar loadingIcon;
@@ -76,9 +90,17 @@ public class CameraStep3Fragment extends Fragment {
 
         bundle = getArguments();
         byte[] avatarImage = null;
-        if (bundle!= null) {
+        if (bundle != null) {
             avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
         }
+
+        downloader = new ImageDownloader(getActivity(), "camera_clubs");
+        listClubs = (ListView) view.findViewById(android.R.id.list);
+        clubs = new ArrayList<Club>();
+        populate();
+
+        UserManager userManager = new UserManager();
+        userManager.requestUserClubs(this, "131820");
 
         final ActionBar actionBar = getActivity().getActionBar();
         actionBar.hide();
@@ -114,38 +136,91 @@ public class CameraStep3Fragment extends Fragment {
         actionBar.show();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_camera, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+    private static class ViewHolder {
+        ImageView imgClub;
+        ProgressBar loadingImage;
+        TextView lblClubName;
     }
 
-    // handle click events for action bar items
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void populate() {
+        if (listClubs != null) {
+            adapter = new MyCustomAdapter(getActivity(), R.layout.camera_step3_item, clubs);
+            listClubs.post(new Runnable() {
+                public void run() {
+                    listClubs.setAdapter(adapter);
+                }
+            });
 
-        switch (item.getItemId()) {
+            listClubs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            case R.id.action_menu_next:
-                Fragment newFragment = new CameraFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, newFragment);
-                if (bundle == null)
-                    bundle = new Bundle();
-                newFragment.setArguments(bundle);
-                transaction.commit();
-                return true;
-
-            /*case R.id.copyLink:
-                showToast("Copy link was clicked.");
-                return true;
-
-            case R.id.share:
-                showToast("Share was clicked.");
-                return true;*/
-            default:
-                return super.onOptionsItemSelected(item);
+                public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                    //if (arg1.findViewById(R.id.imgAddOrCheck).getBackground().equals(getResources().getDrawable(R.drawable.green_selection_dot)))
+                    arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+                    //arg1.setBackgroundColor(Color.TRANSPARENT);
+                }
+            });
         }
+    }
+
+    private class MyCustomAdapter extends ArrayAdapter<Club> {
+
+        public MyCustomAdapter(Context context, int textViewResourceId, List<Club> list) {
+            super(context, textViewResourceId, list);
+
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return clubs.size() + 1;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
+
+            if (convertView == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                convertView = inflater.inflate(R.layout.camera_step3_item, parent, false);
+                viewHolder = new ViewHolder();
+                viewHolder.imgClub = (ImageView) convertView.findViewById(R.id.imgClub);
+                viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
+                viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            if (position >= clubs.size()){
+                viewHolder.lblClubName.setText("Select All");
+                Bitmap image = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
+                image.eraseColor(Color.TRANSPARENT);
+                viewHolder.imgClub.setImageBitmap(image);
+            } else {
+                Club club = clubs.get(position);
+                //new DownloadAsyncTask().execute(viewHolder);
+                downloader.DisplayImage(club.getClubImage() + "Large_640x1136.jpg", String.valueOf(position), getActivity(), viewHolder.imgClub, viewHolder.loadingImage);
+                viewHolder.lblClubName.setText(club.getClubName());
+            }
+
+            return convertView;
+        }
+    }
+
+    public void didReceiveUserClubs(ArrayList<Club> userClubs) {
+        // TODO Add here the rendering on the clubs
+        Log.i(this.getActivity().getClass().getName(), userClubs.toString());
+        clubs = userClubs;
+        adapter.notifyDataSetChanged();
+
+    }
+
+    public void didReceiveUserClubsError(String errorMessage) {
+        //TODO Add here the error management for the get clubs request
     }
 
 }

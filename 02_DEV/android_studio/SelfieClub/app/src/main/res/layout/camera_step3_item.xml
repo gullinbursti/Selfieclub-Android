@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/row"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/common_row_background"
+   >
+
+    <ImageView
+        android:id="@+id/imgAddOrCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/gray_selection_dot" />
+
+
+    <RelativeLayout
+        android:layout_width="48dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/relClub"
+        android:layout_height="48dp">
+
+        <com.builtinmenlo.selfieclub.views.SVGImageView
+            android:id="@+id/imgClub"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/friends_item_image_mask"
+            app:svg_raw_resource="@raw/image" />
+
+        <ProgressBar
+            android:id="@+id/loadingImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            style="@android:style/Widget.ProgressBar.Small.Inverse" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/lblClubName"
+        android:layout_marginLeft="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/imgAddOrCheck"
+        android:layout_toRightOf="@+id/relClub"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@android:color/black"
+        android:textSize="12dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
