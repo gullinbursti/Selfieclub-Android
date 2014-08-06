@@ -5,15 +5,49 @@
     android:layout_height="fill_parent"
     android:background="@android:color/white">
 
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#F8F8F8"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_back_button"
+            android:id="@+id/btnBack"/>
+
+        <TextView
+            android:id="@+id/lblTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="How do you feel?"
+            android:layout_centerInParent="true"/>
+
+        <Button
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/actionbar_text_color"
+            android:text="Next"
+            android:id="@+id/btnNext"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent" />
+    </RelativeLayout>
+
 
     <RelativeLayout
-        android:id="@+id/rowFriend"
-        android:layout_below="@+id/lblRegistration"
+        android:id="@+id/rowAvatar"
+        android:layout_below="@+id/topBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        >
+        android:layout_margin="40dp">
 
 
         <com.builtinmenlo.selfieclub.views.SVGImageView
@@ -28,6 +62,14 @@
             android:src="@drawable/friends_item_image_mask"
             app:svg_raw_resource="@raw/image" />
 
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgCursor"
+            android:background="@drawable/cursor"
+            android:layout_alignParentRight="true" />
+
         <TextView
             android:id="@+id/lblIsFeeling"
             android:layout_marginLeft="15dp"
@@ -35,13 +77,13 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/imgAvatar"
-            android:gravity="center_vertical"
+            android:layout_toLeftOf="@+id/imgCursor"
             android:textColor="@android:color/black"
             android:textSize="24sp"
-            android:text="- is feeling..."/>
+            android:text="- is feeling..." />
+
 
     </RelativeLayout>
-
 
 
     <ProgressBar

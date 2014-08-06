@@ -45,8 +45,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     public static final String EXTRA_IMAGE = "image";
     public static boolean isUsingFrontCamera = false;
 
-
-
     private SurfaceView mPreview;
     private Bundle bundle;
     private Camera mCamera;

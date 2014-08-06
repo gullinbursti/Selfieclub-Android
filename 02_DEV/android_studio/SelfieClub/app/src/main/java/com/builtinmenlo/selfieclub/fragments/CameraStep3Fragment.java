@@ -24,8 +24,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +32,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.builtinmenlo.selfieclub.R;
@@ -45,7 +42,7 @@ import com.builtinmenlo.selfieclub.activity.CameraPreview;
 
 
 // <[!] class delaration [¡]>
-public class CameraStep2Fragment extends Fragment {
+public class CameraStep3Fragment extends Fragment {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
@@ -68,29 +65,14 @@ public class CameraStep2Fragment extends Fragment {
     }
 
     // <*] class constructor [*>
-    public CameraStep2Fragment() {/*..\(^_^)/..*/}
+    public CameraStep3Fragment() {/*..\(^_^)/..*/}
 
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
     //]~=~=~=~=~=~=~=~=~=[>
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        final ActionBar actionBar = getActivity().getActionBar();
-        actionBar.show();
-    }
-
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-        View view = inflater.inflate(R.layout.camera_step_2, container, false);
-
-        final ActionBar actionBar = getActivity().getActionBar();
-        actionBar.hide();
-
-        /*final ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setTitle("How do I feel?");
-        actionBar.setBackgroundDrawable(new ColorDrawable());*/
+        View view = inflater.inflate(R.layout.camera_step_3, container, false);
 
         bundle = getArguments();
         byte[] avatarImage = null;
@@ -98,39 +80,12 @@ public class CameraStep2Fragment extends Fragment {
             avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
         }
 
-        ImageView avatar = (ImageView) view.findViewById(R.id.imgAvatar);
-        if (avatarImage != null){
-            Bitmap bmp = BitmapFactory.decodeByteArray(avatarImage, 0, avatarImage.length);
-            avatar.setImageBitmap(bmp);
-        }
+        final ActionBar actionBar = getActivity().getActionBar();
+        actionBar.hide();
 
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
-
-        view.findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CameraFragment newFragment = new CameraFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, newFragment);
-                newFragment.setNextView(new CameraStep2Fragment());
-                transaction.commit();
-            }
-        });
-
-        view.findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment newFragment = new CameraStep3Fragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, newFragment);
-                if (bundle == null)
-                    bundle = new Bundle();
-                newFragment.setArguments(bundle);
-                transaction.commit();
-            }
-        });
 
         hideKeyboard(view);
         return view;
@@ -151,6 +106,13 @@ public class CameraStep2Fragment extends Fragment {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onAttach(activity);
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        final ActionBar actionBar = getActivity().getActionBar();
+        actionBar.show();
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
