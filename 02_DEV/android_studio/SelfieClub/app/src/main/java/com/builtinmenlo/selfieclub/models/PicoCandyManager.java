@@ -29,10 +29,18 @@ public class PicoCandyManager {
         contentGroupsList = new ArrayList<PCContentGroup>();
     }
 
+    /**
+     * Returns the list of stikers. You need to requests the stickers first
+     * @return An array list of PCContent
+     */
     public ArrayList<PCContent> getStickerList(){
         return stickerList;
     }
 
+    /**
+     * Returns the list of PC groups
+     * @return An array list of PCContentGroup
+     */
     public ArrayList<PCContentGroup> getContentGroupsList(){
         return contentGroupsList;
     }
@@ -53,7 +61,12 @@ public class PicoCandyManager {
         return PicoUser.currentUser();
     }
 
-    public void requestStickers(final StikersProtocol stikersProtocol, final ArrayList<String> ids){
+    public void requestStickers(final StikersProtocol stikersProtocol){
+        final ArrayList<String> ids = new ArrayList<String>();
+        ids.add("883");
+        ids.add("884");
+        ids.add("885");
+        ids.add("886");
         PCContentHelper contentHelper = new PCContentHelper();
             final ArrayList<PCContentGroup> contentGroupArrayList = new ArrayList<PCContentGroup>();
             for(int i=0;i<ids.size();i++){
@@ -79,7 +92,7 @@ public class PicoCandyManager {
             }
     }
 
-    public void parseStickers(StikersProtocol stikersProtocol, ArrayList<PCContentGroup>contentGroupsList){
+    private void parseStickers(StikersProtocol stikersProtocol, ArrayList<PCContentGroup>contentGroupsList){
         for (int i=0;i<contentGroupsList.size();i++){
             PCContentGroup pcContentGroup = contentGroupsList.get(i);
             this.contentGroupsList.add(pcContentGroup);
@@ -92,5 +105,23 @@ public class PicoCandyManager {
         stikersProtocol.didReceiveStickers(contentGroupsList,stickerList);
     }
 
+    /**
+     * Returns a PC stiker given the name
+     * @param name
+     * @return PCContent stiker
+     */
+    public PCContent getStickerByName(String name){
+        PCContent sticker = null;
+        String filename;
+        for (int i=0; i<this.stickerList.size();i++){
+            filename = this.stickerList.get(i).getName();
+            String[] tokens = filename.split("\\.");
+            if(name.equalsIgnoreCase(tokens[0])) {
+                sticker = this.stickerList.get(i);
+                break;
+            }
+        }
+        return sticker;
+    }
 
 }

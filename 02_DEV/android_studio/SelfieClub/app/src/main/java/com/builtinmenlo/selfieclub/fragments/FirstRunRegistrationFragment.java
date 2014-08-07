@@ -145,18 +145,15 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
         PicoCandyManager picoCandyManager = PicoCandyManager.sharedInstance();
         picoCandyManager.registerApp(this.getActivity().getApplicationContext());
-        ArrayList<String> ids = new ArrayList<String>();
-        ids.add("883");
-        ids.add("884");
-        ids.add("885");
-        ids.add("886");
-        picoCandyManager.requestStickers(this,ids);
+        picoCandyManager.requestStickers(this);
 
         return view;
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList,ArrayList<PCContent> stickerList){
         Log.w("","");
+        PicoCandyManager picoCandyManager = PicoCandyManager.sharedInstance();
+        picoCandyManager.getStickerByName("happy");
     }
 	public void onCreate(Bundle savedInstanceState) {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
