@@ -2,6 +2,8 @@ package com.builtinmenlo.selfieclub.models;
 
 
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -28,6 +30,150 @@ import java.util.HashMap;
  * Created by Leonardo on 6/11/14.
  */
 public class ClubManager {
+    /**
+     * Joins a user in the club
+     * @param clubJoinProtocol The interface that must be implemented
+     * @param userId User's id
+     * @param clubId Club's id
+     * @param ownedId Owner's id
+     */
+    public void joinClub(final ClubJoinProtocol clubJoinProtocol,
+                         String userId,
+                         String clubId,
+                         String ownedId){
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String,String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("clubID",clubId);
+        data.put("ownerID",ownedId);
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.JOIN_CLUB_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try{
+                            clubJoinProtocol.didJoinClub(data.getBoolean("result"));
+
+
+                        }
+                        catch (Exception e){
+                            clubJoinProtocol.didFailJoiningClub(e.toString());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        clubJoinProtocol.didFailJoiningClub(response);
+                    }
+
+                }
+        );
+    }
+
+    /**
+     * Sends club invites
+     * @param clubInviteProtocol The protocol that must be implemeted
+     * @param userId User's id
+     * @param clubId Club's id
+     * @param users An array list with the friends user ids
+     * @param nonUsers Delimited list of non-app contacts — specified by {F_NAME L_NAME}:::{PHONE}:: and delimited by   three pipes |||
+     */
+    public void sendClubInvite(final ClubInviteProtocol clubInviteProtocol,
+                               String userId,
+                               String clubId,
+                               ArrayList<String>users,
+                               ArrayList<HashMap<String,String>>nonUsers){
+        String usersStr="";
+        if(users.size()>0){
+            usersStr=users.get(0);
+            if(users.size()>1){
+                for(int i=1;i<users.size();i++){
+                    usersStr=usersStr+","+users.get(i);
+                }
+            }
+        }
+        String nonUsersStr="";
+        if(nonUsers.size()>0){
+            HashMap<String,String>buffer = nonUsers.get(0);
+            nonUsersStr=buffer.get("name")+":::"+buffer.get("phone")+"::";
+            if(nonUsers.size()>1){
+                for(int i=1;i<nonUsers.size();i++){
+                    buffer = nonUsers.get(i);
+                    nonUsersStr=nonUsersStr+"|||"+buffer.get("name")+":::"+buffer.get("phone")+"::";
+                }
+            }
+        }
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String,String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("clubID",clubId);
+        data.put("users",usersStr);
+        data.put("nonUsers",nonUsersStr);
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.INVITE_CLUB_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try{
+                            clubInviteProtocol.didSendCubInvite(data.getBoolean("result"));
+
+
+                        }
+                        catch (Exception e){
+                            clubInviteProtocol.didFailSendingClubInvite(e.toString());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        clubInviteProtocol.didFailSendingClubInvite(response);
+                    }
+
+                }
+        );
+
+
+
+
+    }
+
+    /**
+     * Create's a new club
+     * @param userId Owner id
+     * @param clubName Club's name
+     * @param clubDescription Club's description
+     * @param clubImageUrl
+     */
+    public void createClub(final CreateClubProtocol createClubProtocol,String userId, String clubName, String clubDescription, String clubImageUrl){
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String,String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        data.put("name",clubName);
+        data.put("description",clubDescription);
+        data.put("imgURL",clubImageUrl);
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.CREATE_CLUB_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try{
+                            if(data!=null) {
+                                createClubProtocol.didCreateClub();
+                            }
+
+
+                        }
+                        catch (Exception e){
+                            createClubProtocol.didFailCreatingClub(e.toString());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        createClubProtocol.didFailCreatingClub(response);
+                    }
+
+                }
+        );
+
+    }
+
+
+
     /**
      * Request the club's info
      * @param clubInfoProtocol The interface that must be implemented
@@ -152,19 +298,30 @@ public class ClubManager {
     /**
      * Submit a photo into a club
      * @param photoSubmissionProtocol The interface that must be implemented
+     * @param context Activity context. Used to grab de UIID
      * @param userId User's id
      * @param clubId Clubs's id
      * @param imageFile The photo's file
      * @param subjects An arraylist with all the subjects
      */
     public void submitPhoto(final PhotoSubmissionProtocol photoSubmissionProtocol,
+                            Context context,
                             String userId,
                             String clubId,
                             File imageFile,
                             ArrayList<String>subjects){
-        String filename = Util.generateRandomString(40);
-        String imageUrl = Constants.AMAZON_S3_PATH+filename;
-        uploadPhotoToS3(imageFile,filename);
+
+        String uniqueString = Util.generateUniqueString(context);
+        String imageUrl = Constants.AMAZON_S3_PATH + uniqueString;
+        //Upload large image
+        String largeFilename = uniqueString+"_Large_640x1136.jpg";
+        File largeImage = Util.resizeImage(Util.IMAGE_SIZES.LARGE_640x1136,imageFile,context);
+        uploadPhotoToS3(largeImage,largeFilename);
+        //Upload tab image
+        String tabFilename = uniqueString+"_Tab_640x960.jpg";
+        File tabImage = Util.resizeImage(Util.IMAGE_SIZES.TAB_640x960,imageFile,context);
+        uploadPhotoToS3(tabImage,tabFilename);
+        //Notify the server
         JSONArray emotionsJson = new JSONArray(subjects);
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();

@@ -29,8 +29,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 
-;
+;import java.util.ArrayList;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -59,7 +60,6 @@ public class FirstRunEnterPinFragment extends Fragment {
 
             }
         });
-
 		return view;
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 

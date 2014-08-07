@@ -1,10 +1,10 @@
 apply plugin: 'android'
 
 android {
-    compileSdkVersion 16
+    compileSdkVersion 19
     buildToolsVersion '19.1.0'
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 10
         targetSdkVersion 19
         versionCode 1
         versionName '1.0'
@@ -17,6 +17,24 @@ android {
     }
     productFlavors {
     }
+    packagingOptions {
+        exclude 'LICENSE'
+        exclude 'LICENSE.txt'
+        exclude 'NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/ASL2.0'
+        exclude 'asm-license.txt'
+    }
+    repositories {
+        flatDir {
+            dir 'libs'
+        }
+        mavenCentral()
+        maven {
+            url "http://files.couchbase.com/maven2/"
+        }
+    }
 }
 
 
@@ -27,10 +45,20 @@ dependencies {
     compile files('libs/android-async-http-1.4.4.jar')
     compile files('libs/xmlwise-1_2.jar')
     compile files('libs/tapjoyconnectlibrary.jar')
-    compile files('libs/couchbase-lite-java-core-1.0.0.jar')
-    compile files('libs/couchbase-lite-java-core-1.0.0.jar')
     compile files('libs/aws-android-sdk-2.0.5-core-no-third-party.jar')
     compile files('libs/aws-android-sdk-2.0.5-s3.jar')
-    compile files('libs/couchbase-lite-android-1.0.0.jar')
+    compile files('libs/picasso-2.3.3.jar')
+    compile files('libs/commons-io-2.4.jar')
+    compile files('libs/commons-codec-1.2.jar')
+
+    compile(name: 'picocandy-android-sdk-0.5.1', ext: 'aar')
+    compile(name: 'stickerintentmanager-0.5', ext: 'aar')
+    compile 'com.fasterxml.jackson.core:jackson-core:2.2.+'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.+'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.2.+'
+    compile 'com.couchbase.lite:couchbase-lite-android:1.0.0'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.0.+'
+
+
 }
 

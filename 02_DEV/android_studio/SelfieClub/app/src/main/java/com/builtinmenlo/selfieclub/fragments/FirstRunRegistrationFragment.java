@@ -27,6 +27,7 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,13 +43,17 @@ import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.CameraPreview;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
+import com.builtinmenlo.selfieclub.models.PicoCandyManager;
+import com.builtinmenlo.selfieclub.models.StikersProtocol;
+import com.picocandy.android.data.PCContent;
+import com.picocandy.android.data.PCContentGroup;
 
-;
+;import java.util.ArrayList;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
 // <[!] class delaration [¡]>
-public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol {
+public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol,StikersProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
 	//] class properties ]>
@@ -138,10 +143,18 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         });
 
 
+        PicoCandyManager picoCandyManager = PicoCandyManager.sharedInstance();
+        picoCandyManager.registerApp(this.getActivity().getApplicationContext());
+        picoCandyManager.requestStickers(this);
+
         return view;
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-
+    public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList,ArrayList<PCContent> stickerList){
+        Log.w("","");
+        PicoCandyManager picoCandyManager = PicoCandyManager.sharedInstance();
+        picoCandyManager.getStickerByName("happy");
+    }
 	public void onCreate(Bundle savedInstanceState) {
 	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 		super.onCreate(savedInstanceState);
