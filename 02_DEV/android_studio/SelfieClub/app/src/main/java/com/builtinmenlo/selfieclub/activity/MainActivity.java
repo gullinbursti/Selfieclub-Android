@@ -36,7 +36,8 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
-import com.builtinmenlo.selfieclub.fragments.CameraStep3Fragment;
+import com.builtinmenlo.selfieclub.fragments.CameraFragment;
+import com.builtinmenlo.selfieclub.fragments.CameraStep2Fragment;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
@@ -140,15 +141,11 @@ public class MainActivity extends Activity {
 
 
     public void onMainCameraClick(View view) {
-        CameraStep3Fragment newFragment = new CameraStep3Fragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, newFragment);
-        transaction.commit();
-        /*CameraFragment newFragment = new CameraFragment();
+        CameraFragment newFragment = new CameraFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
         newFragment.setNextView(new CameraStep2Fragment());
-        transaction.commit();*/
+        transaction.commit();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
 
