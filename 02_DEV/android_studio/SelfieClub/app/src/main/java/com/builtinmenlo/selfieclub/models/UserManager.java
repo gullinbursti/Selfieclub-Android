@@ -8,9 +8,14 @@ import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +23,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import com.loopj.android.http.*;
 
 
 /**
@@ -186,7 +190,6 @@ public class UserManager
 
                 }
         );
-
     }
 
     private ActivityItem parseActivityItem(JSONObject jsonObject, User user){
@@ -224,7 +227,6 @@ public class UserManager
                 case 11:
                     activityItem.setMessage(user.getUsername()+ " joined  "+jsonObject.getString("club_name"));
             }
-
 
         }
         catch (Exception e){

@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
+<!--
         <EditText
             android:id="@+id/searchBar"
             android:layout_width="fill_parent"
@@ -18,7 +18,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="40dp"
             android:paddingRight="60dp"
-            android:hint="@string/search_friends_hint"/>
+            android:hint="@string/search_friends_hint"/>-->
 
         <!--<Button-->
             <!--android:layout_width="wrap_content"-->
@@ -33,10 +33,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
             android:layout_weight="1"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
             android:fastScrollEnabled="true"
             android:fillViewport="true"
             android:listSelector="#00000000"
