@@ -118,6 +118,14 @@ public class Club {
         this.clubSubmissions = clubSubmissions;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
     public enum ClubType{
         USER_GENERATED,
         FEATURED,
@@ -143,4 +151,5 @@ public class Club {
     private JSONArray clubPendingMembers;
     private JSONArray clubBlockedMembers;
     private JSONArray clubSubmissions;
+    private boolean selected;
 }

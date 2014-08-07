@@ -154,62 +154,93 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
             listClubs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    //if (arg1.findViewById(R.id.imgAddOrCheck).getBackground().equals(getResources().getDrawable(R.drawable.green_selection_dot)))
-                    arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
-                    //arg1.setBackgroundColor(Color.TRANSPARENT);
+                    if (position >= clubs.size()) {
+                        if (arg1.findViewById(R.id.imgAddOrCheck).getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.gray_selection_dot).getConstantState()))
+                            for (Club club : clubs) {
+                                club.setSelected(true);
+                            }
+                         else
+                            for (Club club : clubs) {
+                                club.setSelected(false);
+                            }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                            if (clubs.get(position).isSelected()) {
+                                arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+                                clubs.get(position).setSelected(false);
+                            } else {
+                                arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+                                clubs.get(position).setSelected(true);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        private class MyCustomAdapter extends ArrayAdapter<Club> {
+
+            public MyCustomAdapter(Context context, int textViewResourceId, List<Club> list) {
+                super(context, textViewResourceId, list);
+
+            }
+
+            @Override
+            public void notifyDataSetChanged() {
+                super.notifyDataSetChanged();
+            }
+
+            @Override
+            public int getCount() {
+                return clubs.size() + 1;
+            }
+
+            @Override
+            public View getView(final int position, View convertView, ViewGroup parent) {
+                ViewHolder viewHolder;
+
+                if (convertView == null) {
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    convertView = inflater.inflate(R.layout.camera_step3_item, parent, false);
+                    viewHolder = new ViewHolder();
+                    viewHolder.imgClub = (ImageView) convertView.findViewById(R.id.imgClub);
+                    viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
+                    viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
+                    convertView.setTag(viewHolder);
+                } else {
+                    viewHolder = (ViewHolder) convertView.getTag();
                 }
-            });
-        }
-    }
 
-    private class MyCustomAdapter extends ArrayAdapter<Club> {
+                if (position >= clubs.size()){
+                    viewHolder.lblClubName.setText("Select All");
+                    Bitmap image = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
+                    image.eraseColor(Color.TRANSPARENT);
+                    boolean allSelected = true;
+                    for (Club club:clubs){
+                        if (!club.isSelected()) {
+                            allSelected = false;
+                            break;
+                        }
+                    }
+                    if (allSelected)
+                        convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+                    else
+                        convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+                    viewHolder.imgClub.setImageBitmap(image);
+                } else {
+                    Club club = clubs.get(position);
+                    if (club.isSelected())
+                        convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+                    else
+                        convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+                    //new DownloadAsyncTask().execute(viewHolder);
+                    downloader.DisplayImage(club.getClubImage() + "Large_640x1136.jpg", String.valueOf(position), getActivity(), viewHolder.imgClub, viewHolder.loadingImage);
+                    viewHolder.lblClubName.setText(club.getClubName());
+                }
 
-        public MyCustomAdapter(Context context, int textViewResourceId, List<Club> list) {
-            super(context, textViewResourceId, list);
-
-        }
-
-        @Override
-        public void notifyDataSetChanged() {
-            super.notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return clubs.size() + 1;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-
-            if (convertView == null) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                convertView = inflater.inflate(R.layout.camera_step3_item, parent, false);
-                viewHolder = new ViewHolder();
-                viewHolder.imgClub = (ImageView) convertView.findViewById(R.id.imgClub);
-                viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
-                viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+                return convertView;
             }
-
-            if (position >= clubs.size()){
-                viewHolder.lblClubName.setText("Select All");
-                Bitmap image = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
-                image.eraseColor(Color.TRANSPARENT);
-                viewHolder.imgClub.setImageBitmap(image);
-            } else {
-                Club club = clubs.get(position);
-                //new DownloadAsyncTask().execute(viewHolder);
-                downloader.DisplayImage(club.getClubImage() + "Large_640x1136.jpg", String.valueOf(position), getActivity(), viewHolder.imgClub, viewHolder.loadingImage);
-                viewHolder.lblClubName.setText(club.getClubName());
-            }
-
-            return convertView;
         }
-    }
 
     public void didReceiveUserClubs(ArrayList<Club> userClubs) {
         // TODO Add here the rendering on the clubs
