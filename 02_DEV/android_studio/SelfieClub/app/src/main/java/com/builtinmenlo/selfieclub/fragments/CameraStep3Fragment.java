@@ -22,6 +22,7 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -108,6 +109,17 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
+
+        view.findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CameraFragment newFragment = new CameraFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, newFragment);
+                newFragment.setNextView(new CameraStep2Fragment());
+                transaction.commit();
+            }
+        });
 
         hideKeyboard(view);
         return view;
