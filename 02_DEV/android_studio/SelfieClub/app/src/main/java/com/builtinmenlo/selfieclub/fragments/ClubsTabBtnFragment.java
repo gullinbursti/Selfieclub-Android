@@ -24,6 +24,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,12 +35,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
+import com.builtinmenlo.selfieclub.util.ImageDownloader;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -55,6 +58,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
     private GridView gridClubs;
     private ArrayList<Club> clubs;
     private MyCustomAdapter adapter;
+    private ImageDownloader downloader;
 
     public ClubsTabBtnFragment() {/*..\(^_^)/..*/}
 
@@ -62,13 +66,14 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
         View view = inflater.inflate(R.layout.clubs_tab, container, false);
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
+        downloader = new ImageDownloader(getActivity(), "clubs");
 
         gridClubs = (GridView) view.findViewById(R.id.gridMenu);
         clubs = new ArrayList<Club>();
         populate();
 
         UserManager userManager = new UserManager();
-        userManager.requestUserClubs(this, "131820");
+        userManager.requestUserClubs(this, "151159");
 
 
         return view;
@@ -94,6 +99,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
         ImageView imageView;
         String imageURL;
         Bitmap bitmap;
+        ProgressBar loadingImage;
     }
 
     private class DownloadAsyncTask extends AsyncTask<ViewHolder, Void, ViewHolder> {
@@ -171,6 +177,8 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
                 lblText.setText("Create a club");
                 viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imgClub);
                 viewHolder.imageView.setImageResource(R.drawable.selector_add_club);
+                viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
+                viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                 convertView.setTag(viewHolder);
             } else {
                 if (convertView == null) {
@@ -178,6 +186,11 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
                     convertView = inflater.inflate(R.layout.clubs_item, parent, false);
                     viewHolder = new ViewHolder();
                     viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imgClub);
+                    Bitmap image = Bitmap.createBitmap(96, 96, Bitmap.Config.ARGB_8888);
+                    image.eraseColor(Color.TRANSPARENT);
+                    viewHolder.imageView.setImageBitmap(image);
+                    viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
+                    viewHolder.loadingImage.setVisibility(View.VISIBLE);
                     convertView.setTag(viewHolder);
                 } else {
 
@@ -185,7 +198,8 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
 
                     viewHolder = (ViewHolder) convertView.getTag();
                     viewHolder.imageURL = club.getClubImage() + "Large_640x1136.jpg";
-                    new DownloadAsyncTask().execute(viewHolder);
+                    //new DownloadAsyncTask().execute(viewHolder);
+                    downloader.DisplayImage(viewHolder.imageURL, String.valueOf(position), getActivity(), viewHolder.imageView, viewHolder.loadingImage);
 
                     TextView lblText = (TextView) convertView.findViewById(R.id.lblClubName);
 

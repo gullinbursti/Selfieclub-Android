@@ -41,12 +41,6 @@
         </activity>
 
         <activity
-            android:name=".activity.CameraPreview"
-            android:icon="@android:color/transparent"
-            android:label="@string/empty_string"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".activity.Invite"
             android:label="@string/title_activity_invite" >
         </activity>

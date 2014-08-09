@@ -88,7 +88,7 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
         populate();
 
         ClubManager clubManager = new ClubManager();
-        clubManager.requestNews(this, "131820");
+        clubManager.requestNews(this, "151159");
 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯

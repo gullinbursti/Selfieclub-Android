@@ -4,7 +4,7 @@ package com.builtinmenlo.selfieclub;
  * Created by Leonardo on 5/29/14.
  */
 public final class Constants {
-    public static final String API_ENDPOINT = "http://api-stage.letsvolley.com/api/devint/";
+    public static final String API_ENDPOINT = "http://volley-api.devint.selfieclubapp.com/master/";
     public static final String GET_ACTIVITY_PATH = "users/getactivity";
     public static final String GET_USERCLUBS_PATH = "users/getclubs";
     public static final String CHECK_USERNAMEPASSWORD_PATH = "users/checkNameAndEmail";
