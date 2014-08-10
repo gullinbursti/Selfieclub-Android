@@ -34,12 +34,14 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.TextView;
 
+import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
+import com.builtinmenlo.selfieclub.models.KeenManager;
 
 import java.lang.reflect.Field;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -189,5 +191,12 @@ public class MainActivity extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        KeenManager keenManager = KeenManager.sharedInstance();
+        keenManager.initialize(this.getApplicationContext());
+        keenManager.trackEvent(Constants.KEEN_EVENT_RESUMEBACKGROUND);
     }
 }

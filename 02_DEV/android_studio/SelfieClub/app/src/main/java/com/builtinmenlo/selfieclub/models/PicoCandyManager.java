@@ -1,7 +1,7 @@
 package com.builtinmenlo.selfieclub.models;
 
 import android.content.Context;
-import android.util.Log;
+
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.picocandy.android.PicoManager;

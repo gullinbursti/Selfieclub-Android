@@ -78,6 +78,7 @@
     <orderEntry type="library" exported="" name="jackson-databind-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-asl-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" name="keen-client-api-android-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="keen-client-api-android-2.0.0-rc1-sources" level="project" />
     <orderEntry type="library" exported="" name="keen-client-api-android-2.0.0-rc1-javadoc" level="project" />
     <orderEntry type="library" exported="" name="couchbase-lite-java-core-1.0.0" level="project" />

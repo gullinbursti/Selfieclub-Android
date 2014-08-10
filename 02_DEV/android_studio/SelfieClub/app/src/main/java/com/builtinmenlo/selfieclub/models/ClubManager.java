@@ -51,6 +51,10 @@ public class ClubManager {
                     @Override
                     public void onSuccess(JSONObject data) {
                         try{
+                            //track event
+                            KeenManager keenManager = KeenManager.sharedInstance();
+                            keenManager.trackEvent(Constants.KEEN_EVENT_JOINCLUB);
+
                             clubJoinProtocol.didJoinClub(data.getBoolean("result"));
 
 
@@ -112,6 +116,11 @@ public class ClubManager {
                     @Override
                     public void onSuccess(JSONObject data) {
                         try{
+                            //track the event
+                            KeenManager keenManager = KeenManager.sharedInstance();
+                            keenManager.trackEvent(Constants.KEEN_EVENT_INVITECLUB);
+
+
                             clubInviteProtocol.didSendCubInvite(data.getBoolean("result"));
 
 
@@ -153,6 +162,9 @@ public class ClubManager {
                     public void onSuccess(JSONObject data) {
                         try{
                             if(data!=null) {
+                                //track event
+                                KeenManager keenManager = KeenManager.sharedInstance();
+                                keenManager.trackEvent(Constants.KEEN_EVENT_CREATECLUB);
                                 createClubProtocol.didCreateClub();
                             }
 
