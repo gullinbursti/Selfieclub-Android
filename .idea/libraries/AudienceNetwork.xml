@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="AudienceNetwork">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/facebook-android-sdk-3.16/AudienceNetwork/bin/AudienceNetwork.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

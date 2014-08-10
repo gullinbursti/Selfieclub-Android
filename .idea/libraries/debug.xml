@@ -1,0 +1,30 @@
+<component name="libraryTable">
+  <library name="debug">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/commons-codec-1.2-3c4f8fdbe6f9c3a0690f37ada194e2c279625fcb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-fe930dc68beb1e566675ce71b270d4091c6c249b.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/classes-91818f78fce3c257ab97643d19c5a8b7f38094b1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/classes-4d1d59568cfcaa30900f5b1a10eebd01742674ad.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.2.4-ee682e02a482fb554cd19f5e6fc6140546bc2204.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/classes-6ae2fdc787c1ff9330fc0de6af666061688d055e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/jackson-mapper-asl-1.9.2-e3d81b975a6d54e72dc9850c14076db5a9ec7d7c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/aws-android-sdk-2.0.5-core-no-third-party-b97f0d40498af231989cb34bc54843cb2f69344c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.4-d73b8d93394bea7fb81b12d14833789aa5de0779.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/picasso-2.3.3-72f55c2cca0e7d386206aaae66731674c5b80164.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/jackson-core-asl-1.9.2-fb49050113ad1f7a0127b132962cb6b1cae41003.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/keen-client-api-android-2.0.0-rc1-sources-2c4f8f21a87f8a6213e2d7100c641545dd47873e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/jackson-core-2.2.4-fb49bf09d2a99ab79b7b28b56e54f4987b3bc758.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/jackson-databind-2.2.4-0cfb54ff2164ae1ab55678e3a4381a264f6e66e6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/tapjoyconnectlibrary-d8d9db53a55025b89bc836244c619987ab5ed5a6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/couchbase-lite-java-core-1.0.0-bbc0adb6d2acbcdb7f8d1086c4da097ff801d93d.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/classes-0eee55b97c0fc940ec9c4c23ec691982b7f34148.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/xmlwise-1_2-24813459dfd3e3b036757cfb74b884d9cb256947.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/aws-android-sdk-2.0.5-s3-8663f4671d0f10dff5ff66d3facb98e8eed3612e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/annotations-13.0-4d96902a668ce99cebd8067df69a48caf96a6dd8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/keen-client-api-android-2.0.0-rc1-javadoc-22c1f8285e008da345f5eacfd42e6bd3de22184a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/build/intermediates/pre-dexed/debug/classes-0fd8ec66495395a5d6d81d97d3ca63256048cea4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

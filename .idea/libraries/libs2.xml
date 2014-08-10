@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="libs2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/aws-android-sdk-2.0.5-s3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/tapjoyconnectlibrary.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/android-async-http-1.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/keen-client-api-android-2.0.0-rc1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/aws-android-sdk-2.0.5-core-no-third-party.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/picasso-2.3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/commons-codec-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/annotations-13.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/keen-client-api-android-2.0.0-rc1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/02_DEV/android_studio/SelfieClub/app/libs/xmlwise-1_2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
