@@ -165,6 +165,7 @@ public class ClubManager {
                                 //track event
                                 KeenManager keenManager = KeenManager.sharedInstance();
                                 keenManager.trackEvent(Constants.KEEN_EVENT_CREATECLUB);
+
                                 createClubProtocol.didCreateClub();
                             }
 

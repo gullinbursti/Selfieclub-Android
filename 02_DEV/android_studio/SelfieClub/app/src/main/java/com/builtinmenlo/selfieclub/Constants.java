@@ -50,6 +50,7 @@ public final class Constants {
     public static final String KEEN_EVENT_STICKERBOARD_SELECT = "Sticker board select";
     public static final String KEEN_EVENT_STICKERBOARD_SWIPE = "Sticker board swipe";
     public static final String KEEN_EVENT_STICKERBOARD_GLOBAL = "Sticker board global button";
-    
-
+    public static final String KEEN_EVENT_SELECT_CLUB_STEP3 = "Select club step 3";
+    public static final String KEEN_EVENT_CAMERA_STATUS_UPDATE = "Camera status update";
+    public static final String KEEN_EVENT_NEWSFEED_AVATARUSER_TAP = "Newsfeed avatar user tap";
 }
