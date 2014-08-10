@@ -4,7 +4,7 @@ android {
     compileSdkVersion 19
     buildToolsVersion '19.1.0'
     defaultConfig {
-        minSdkVersion 10
+        minSdkVersion 11
         targetSdkVersion 19
         versionCode 1
         versionName '1.0'
@@ -50,7 +50,7 @@ dependencies {
     compile files('libs/picasso-2.3.3.jar')
     compile files('libs/commons-io-2.4.jar')
     compile files('libs/commons-codec-1.2.jar')
-
+    compile 'io.keen:keen-client-api-android:2.0.1@aar'
     compile(name: 'picocandy-android-sdk-0.5.1', ext: 'aar')
     compile(name: 'stickerintentmanager-0.5', ext: 'aar')
     compile 'com.fasterxml.jackson.core:jackson-core:2.2.+'
