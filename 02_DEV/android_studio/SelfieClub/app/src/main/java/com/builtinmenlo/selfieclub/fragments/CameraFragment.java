@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.PictureCallback;
@@ -255,11 +254,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     public void surfaceChanged(SurfaceHolder arg0, int format, int w, int h) {
         // Now that the size is known, set up the camera parameters and begin the preview.
         Camera.Parameters parameters = mCamera.getParameters();
-        //Camera.Size size = getBestPreviewSize(w, h, parameters);
-        parameters.setPictureFormat(PixelFormat.JPEG);
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        setFlash(parameters);
-        setZoom(parameters);
+        Camera.Size size = getBestPreviewSize(w, h, parameters);
+        parameters.setPreviewSize(size.width, size.height);
+        //parameters.setPictureFormat(PixelFormat.JPEG);
+        //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        //setFlash(parameters);
+        //setZoom(parameters);
         //mCamera.setParameters(parameters);
         mCamera.setDisplayOrientation(90);
 

@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class Invite extends Activity {
+public class
+        Invite extends Activity {
 
     //private ListView mainListView ;
     private ArrayAdapter<String> listAdapter ;

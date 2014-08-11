@@ -26,7 +26,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnClose"
         android:background="@android:color/transparent"
-        android:text="Close" />
+        android:text="Close"
+        android:textStyle="bold"
+        android:layout_margin="5dp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -34,7 +36,9 @@
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
         android:id="@+id/btnFlip"
-        android:text="Flip" />
+        android:text="Flip"
+        android:textStyle="bold"
+        android:layout_margin="5dp"/>
 
 
     <Button
@@ -44,7 +48,9 @@
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
         android:id="@+id/btnGallery"
-        android:text="Camera Roll" />
+        android:textStyle="bold"
+        android:text="Camera Roll"
+        android:layout_margin="5dp"/>
 
     <ImageButton
         android:id="@+id/imagebutton_camera"
@@ -53,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="5dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/selector_camera_button"
         android:contentDescription="@string/accessibility_imagebutton_maincamera" />
 
