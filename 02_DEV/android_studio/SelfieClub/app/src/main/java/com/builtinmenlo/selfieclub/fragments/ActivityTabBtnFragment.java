@@ -38,6 +38,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
@@ -218,6 +219,8 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
         ImageView imgAddOrCheck = (ImageView) getActivity().findViewById(R.id.imgAddOrCheck);
         ImageView imgAvatarCheck = (ImageView) getActivity().findViewById(R.id.imgAvatarCheck);
 
+        ProgressBar imgLoading = (ProgressBar) getActivity().findViewById(R.id.loadingImage);
+        imgLoading.setVisibility(View.INVISIBLE);
 
         // lblFollowers.setText(String.valueOf(friend.getFollowers()));
         lblName.setText(owner.getUsername());
