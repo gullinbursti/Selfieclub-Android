@@ -43,6 +43,8 @@ import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -167,7 +169,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
         public View getView(final int position, View convertView, ViewGroup parent) {
 
 
-            ViewHolder viewHolder;
+            final ViewHolder viewHolder;
 
             if (position == 0) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -181,7 +183,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
                 viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                 convertView.setTag(viewHolder);
             } else {
-                if (convertView == null) {
+                //if (convertView == null) {
                     LayoutInflater inflater = getActivity().getLayoutInflater();
                     convertView = inflater.inflate(R.layout.clubs_item, parent, false);
                     viewHolder = new ViewHolder();
@@ -192,19 +194,33 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
                     viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
                     viewHolder.loadingImage.setVisibility(View.VISIBLE);
                     convertView.setTag(viewHolder);
-                } else {
+                //} else {
 
                     Club club = clubs.get(position - 1);
 
-                    viewHolder = (ViewHolder) convertView.getTag();
+                    //viewHolder = (ViewHolder) convertView.getTag();
                     viewHolder.imageURL = club.getClubImage() + "Large_640x1136.jpg";
                     //new DownloadAsyncTask().execute(viewHolder);
-                    downloader.DisplayImage(viewHolder.imageURL, String.valueOf(position), getActivity(), viewHolder.imageView, viewHolder.loadingImage);
+                    //downloader.DisplayImage(viewHolder.imageURL, String.valueOf(position), getActivity(), viewHolder.imageView, viewHolder.loadingImage);
+                    Picasso.with(getActivity()).load(viewHolder.imageURL).into(viewHolder.imageView, new Callback() {
+
+                        @Override
+                        public void onSuccess() {
+                            viewHolder.imageView.setVisibility(View.VISIBLE);
+                            viewHolder.loadingImage.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            viewHolder.imageView.setVisibility(View.VISIBLE);
+                            viewHolder.loadingImage.setVisibility(View.INVISIBLE);
+                        }
+                    });
 
                     TextView lblText = (TextView) convertView.findViewById(R.id.lblClubName);
 
                     lblText.setText(club.getClubName());
-                }
+                //}
             }
             return convertView;
         }

@@ -41,14 +41,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.Invite;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
-import com.builtinmenlo.selfieclub.activity.Invite;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Callback;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -181,8 +183,8 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
-            ViewHolder viewHolder;
-            if (convertView == null) {
+            final ViewHolder viewHolder;
+            //if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.friends_item, parent, false);
 
@@ -195,9 +197,9 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
                 viewHolder.imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
                 viewHolder.imgLoading = (ProgressBar) convertView.findViewById(R.id.loadingImage);
                 convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
+            //} else {
+                //viewHolder = (ViewHolder) convertView.getTag();
+            //}
 
             Friend friend = friends.get(position);
 
@@ -222,9 +224,20 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
 
             if (viewHolder.imgAvatar != null) {
-                //new ImageDownloaderTask(viewHolder.imgAvatar).execute(friend.getAvatarUrl());
-                downloader.DisplayImage(friend.getAvatarUrl(), String.valueOf(position), getActivity(), viewHolder.imgAvatar, viewHolder.imgLoading);
+                Picasso.with(getActivity()).load(friend.getAvatarUrl()).into(viewHolder.imgAvatar, new Callback() {
 
+                    @Override
+                    public void onSuccess() {
+                        viewHolder.imgAvatar.setVisibility(View.VISIBLE);
+                        viewHolder.imgLoading.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        viewHolder.imgAvatar.setVisibility(View.VISIBLE);
+                        viewHolder.imgLoading.setVisibility(View.INVISIBLE);
+                    }
+                });
             }
 
             return convertView;
@@ -235,6 +248,13 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         friends = friendsViewData.getFriends();
         owner = friendsViewData.getOwner();
         adapter.notifyDataSetChanged();
+        /*if (friendsViewData.getFriends().size() > 8) {
+            lv.setSelection(8);
+        } else {
+            lv.setSelection(friendsViewData.getFriends().size());
+        }
+        lv.smoothScrollToPosition(0);*/
+
     }
 
     public void didReceiveFriendsListError(String errorMessage) {

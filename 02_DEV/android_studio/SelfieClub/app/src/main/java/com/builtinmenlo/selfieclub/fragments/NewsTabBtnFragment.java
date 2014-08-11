@@ -44,6 +44,8 @@ import com.builtinmenlo.selfieclub.dataSources.NewsItem;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.NewsFeedProtocol;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -171,8 +173,8 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
-            ViewHolder viewHolder;
-            if (convertView == null) {
+            final ViewHolder viewHolder;
+            //if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.news_feed_item, parent, false);
 
@@ -186,9 +188,9 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
                 //viewHolder.btnReply = (Button) convertView.findViewById(R.id.btnReply);
                 //viewHolder.btnUpVote = (Button) convertView.findViewById(R.id.btnUpVote);
                 convertView.setTag(viewHolder);
-            } else {
+            /*} else {
                 viewHolder = (ViewHolder) convertView.getTag();
-            }
+            }*/
 
             NewsItem newsItem = news.get(position);
 
@@ -232,8 +234,21 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
             if (viewHolder.imgAvatar != null) {
                 //viewHolder.imgNews.setImageBitmap(((BitmapDrawable)listImages[position].getDrawable()).getBitmap());
                 //new ImageDownloaderTask(viewHolder.imgNews).execute(newsItem.getImageUrl()+"Tab_640x960.jpg");
-                downloader.DisplayImage(newsItem.getImageUrl() + "Tab_640x960.jpg", String.valueOf(position), getActivity(), viewHolder.imgAvatar, viewHolder.loadingImage);
+                //downloader.DisplayImage(newsItem.getImageUrl() + "Tab_640x960.jpg", String.valueOf(position), getActivity(), viewHolder.imgAvatar, viewHolder.loadingImage);
+                Picasso.with(getActivity()).load(newsItem.getImageUrl() + "Tab_640x960.jpg").into(viewHolder.imgAvatar, new Callback() {
 
+                    @Override
+                    public void onSuccess() {
+                        viewHolder.imgAvatar.setVisibility(View.VISIBLE);
+                        viewHolder.loadingImage.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        viewHolder.imgAvatar.setVisibility(View.VISIBLE);
+                        viewHolder.loadingImage.setVisibility(View.INVISIBLE);
+                    }
+                });
             }
 
             return convertView;
