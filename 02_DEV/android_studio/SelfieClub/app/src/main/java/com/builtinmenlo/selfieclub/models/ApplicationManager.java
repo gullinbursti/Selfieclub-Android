@@ -34,4 +34,24 @@ public class ApplicationManager {
         settings.edit().putBoolean("firstRun",firstRun).apply();
 
     }
+
+    /**
+     * Retrieves the userId from the phone's settings
+     * @return
+     */
+    public String getUserId(){
+        SharedPreferences settings = this.activity.getPreferences(Context.MODE_PRIVATE);
+        String userId = settings.getString("userId","");
+        return userId;
+    }
+
+    /**
+     * Saves the user id into the phone's settings
+     * @param userId 
+     */
+    public void setUserId(String userId){
+        SharedPreferences setting = this.activity.getPreferences(Context.MODE_PRIVATE);
+        setting.edit().putString("userId",userId);
+    }
+
 }
