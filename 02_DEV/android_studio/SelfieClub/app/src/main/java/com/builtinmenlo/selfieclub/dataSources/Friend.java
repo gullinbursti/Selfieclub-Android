@@ -5,6 +5,7 @@ package com.builtinmenlo.selfieclub.dataSources;
  */
 public class Friend extends User {
     private int state;
+    private boolean selected;
 
     public int getState() {
         return state;
@@ -12,5 +13,13 @@ public class Friend extends User {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }
