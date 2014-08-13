@@ -24,14 +24,14 @@ public class SCDialog extends DialogFragment {
         builder.setMessage(this.getMessage())
                 .setPositiveButton(this.positiveButtonTitle, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(scDialogProtocol != null)
-                            scDialogProtocol.didClickedButton(getTag(),1);
+                        if(getScDialogProtocol() != null)
+                            getScDialogProtocol().didClickedButton(getTag(), 1);
                     }
                 })
                 .setNegativeButton(this.negativeButtonTitle, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(scDialogProtocol != null)
-                            scDialogProtocol.didClickedButton(getTag(),0);
+                        if(getScDialogProtocol() != null)
+                            getScDialogProtocol().didClickedButton(getTag(), 0);
                     }
                 });
         // Create the AlertDialog object and return it
@@ -61,5 +61,13 @@ public class SCDialog extends DialogFragment {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public SCDialogProtocol getScDialogProtocol() {
+        return scDialogProtocol;
+    }
+
+    public void setScDialogProtocol(SCDialogProtocol scDialogProtocol) {
+        this.scDialogProtocol = scDialogProtocol;
     }
 }

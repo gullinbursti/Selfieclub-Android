@@ -22,7 +22,6 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
@@ -41,10 +40,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.activity.Invite;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
+import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
@@ -60,18 +59,17 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-;
-//]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
-// <[!] class delaration [¡]>
-public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol {
+public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol,SCDialogProtocol {
     public ListView lv;
     public ArrayList<Friend> friends;
     public User owner;
     private MyCustomAdapter adapter;
     private ProgressBar loadingIcon;
     private ImageDownloader downloader;
+    private Friend selectedFriend;
+    private static String INVITE_FRIEND_TAG = "invite_friend";
 
     public FriendsTabBtnFragment() {/*..\(^_^)/..*/}
 
@@ -132,13 +130,8 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             lv.setOnItemClickListener(new OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    Friend friend = friends.get(position);
-                    String message = String.format(getResources().getString(R.string.invite_friend_dialog),friend.getUsername());
-                    SCDialog dialog = new SCDialog();
-                    dialog.setMessage(message);
-                    dialog.setPositiveButtonTitle(getResources().getString(R.string.yes_button_title));
-                    dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));
-                    dialog.show(getFragmentManager(),"dialog");
+                    selectedFriend = friends.get(position);
+                    showinviteFriendDialog(selectedFriend);
                 }
             });
         }
@@ -330,6 +323,26 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             return null;
         }
 
+    }
+
+    //Invite methods
+
+    private void showinviteFriendDialog(Friend friend){
+        String message = String.format(getResources().getString(R.string.invite_friend_dialog),friend.getUsername());
+        SCDialog dialog = new SCDialog();
+        dialog.setScDialogProtocol(this);
+        dialog.setMessage(message);
+        dialog.setPositiveButtonTitle(getResources().getString(R.string.yes_button_title));
+        dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));
+        dialog.show(getFragmentManager(),INVITE_FRIEND_TAG);
+    }
+
+    public void didClickedButton(String dialogTag, int buttonIndex){
+        if(dialogTag.equalsIgnoreCase(INVITE_FRIEND_TAG)){
+            if(buttonIndex==1){
+                Log.w("","invite "+selectedFriend.getUsername());
+            }
+        }
     }
 
 }
