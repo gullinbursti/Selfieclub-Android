@@ -37,13 +37,13 @@ import android.widget.TextView;
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
-import com.builtinmenlo.selfieclub.fragments.CameraFragment;
-import com.builtinmenlo.selfieclub.fragments.CameraStep2Fragment;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
+import com.builtinmenlo.selfieclub.fragments.NewCameraStep2Fragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
 import com.builtinmenlo.selfieclub.models.KeenManager;
+import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 
 import java.lang.reflect.Field;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -72,6 +72,9 @@ public class MainActivity extends Activity {
 
 
         setContentView(R.layout.activity_main);
+
+        PicoCandyManager manager = PicoCandyManager.sharedInstance();
+        manager.registerApp(getApplicationContext());
 
         getOverflowMenu();
 
@@ -143,10 +146,12 @@ public class MainActivity extends Activity {
 
 
     public void onMainCameraClick(View view) {
-        CameraFragment newFragment = new CameraFragment();
+        //CameraFragment newFragment = new CameraFragment();
+        NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
-        newFragment.setNextView(new CameraStep2Fragment());
+        //newFragment.setNextView(new CameraStep2Fragment());
+        //newFragment.setNextView(new NewCameraStep2Fragment());
         transaction.commit();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
