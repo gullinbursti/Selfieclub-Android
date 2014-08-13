@@ -45,7 +45,6 @@ import com.builtinmenlo.selfieclub.activity.Invite;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
-import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
@@ -60,7 +59,6 @@ import org.apache.http.client.methods.HttpGet;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -92,10 +90,6 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         lv = (ListView) view.findViewById(android.R.id.list);
         friends = new ArrayList<Friend>();
         populate();
-
-        PhoneManager phoneManager = new PhoneManager();
-        ArrayList<HashMap<String,String>> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
-        Log.w("","");
 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
@@ -138,13 +132,13 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             lv.setOnItemClickListener(new OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    //arg1.setBackgroundColor(Color.TRANSPARENT);
-
-//                    Log.i("FRIEND", friends.get(position).getUsername());
-//
-                    Intent i = new Intent(getActivity(), Invite.class);
-//                    i.putExtra("position", position);
-                    startActivity(i);
+                    Friend friend = friends.get(position);
+                    String message = String.format(getResources().getString(R.string.invite_friend_dialog),friend.getUsername());
+                    SCDialog dialog = new SCDialog();
+                    dialog.setMessage(message);
+                    dialog.setPositiveButtonTitle(getResources().getString(R.string.yes_button_title));
+                    dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));
+                    dialog.show(getFragmentManager(),"dialog");
                 }
             });
         }

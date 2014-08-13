@@ -43,6 +43,7 @@ import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.KeenManager;
 
 import java.lang.reflect.Field;
@@ -93,18 +94,6 @@ public class MainActivity extends Activity {
         friendsTab.setTabListener(new TabButtonListener(friendsFragment));
         topNavActionBar.addTab(friendsTab);
 
-        /* club invite
-        Button lv = (Button) findViewById(R.id.button);
-        Log.i("BUTTON", lv.toString());
-        lv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), Invite.class);
-                startActivity(i);
-           }
-        });
-        */
-
         newsTab = topNavActionBar.newTab();
         View newsTabCustomView = mInflater.inflate(R.layout.item_tab_bar, null);
         TextView newsTitleTextView = (TextView) newsTabCustomView.findViewById(R.id.lblTitleText);
@@ -131,6 +120,10 @@ public class MainActivity extends Activity {
         notificationsTab.setCustomView(mCustomView);
         notificationsTab.setTabListener(new TabButtonListener(notificationsFragment));
         topNavActionBar.addTab(notificationsTab);
+
+        //TODO Use a real userId
+        ApplicationManager applicationManager = new ApplicationManager(this);
+        applicationManager.setUserId("151159");
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 

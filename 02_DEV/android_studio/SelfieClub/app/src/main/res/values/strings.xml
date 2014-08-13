@@ -40,4 +40,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="yes_button_title">YES</string>
+    <string name="no_button_title">NO</string>
+
+    <!-- Dialog messages -->
+    <string name="invite_friend_dialog">Invite %s to my Selfieclub</string>
+
 </resources>
