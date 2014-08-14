@@ -44,16 +44,17 @@ import com.builtinmenlo.selfieclub.activity.CameraPreview;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
-import com.builtinmenlo.selfieclub.models.StikersProtocol;
 import com.picocandy.android.data.PCContent;
 import com.picocandy.android.data.PCContentGroup;
 
-;import java.util.ArrayList;
+import java.util.ArrayList;
+
+;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
 // <[!] class delaration [¡]>
-public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol,StikersProtocol {
+public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
 	//] class properties ]>
@@ -141,11 +142,6 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
                 return false;
             }
         });
-
-
-        PicoCandyManager picoCandyManager = PicoCandyManager.sharedInstance();
-        picoCandyManager.registerApp(this.getActivity().getApplicationContext());
-        picoCandyManager.requestStickers(this);
 
         return view;
 	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯

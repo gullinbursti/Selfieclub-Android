@@ -40,10 +40,6 @@
 
         </activity>
 
-        <activity
-            android:name=".activity.Invite"
-            android:label="@string/title_activity_invite" >
-        </activity>
     </application>
 
 </manifest>

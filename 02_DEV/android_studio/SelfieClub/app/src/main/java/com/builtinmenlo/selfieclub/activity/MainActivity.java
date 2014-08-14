@@ -73,8 +73,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        PicoCandyManager manager = PicoCandyManager.sharedInstance();
-        manager.registerApp(getApplicationContext());
+        PicoCandyManager.sharedInstance().registerApp(getApplicationContext());
 
         getOverflowMenu();
 

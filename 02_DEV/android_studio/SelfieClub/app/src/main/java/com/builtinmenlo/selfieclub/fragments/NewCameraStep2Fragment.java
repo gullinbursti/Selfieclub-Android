@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.CameraPreview;
+import com.builtinmenlo.selfieclub.dataSources.Emoticon;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.StikersProtocol;
 import com.picocandy.android.data.PCContent;
@@ -58,7 +59,7 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
     //] class properties ]>
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     public ListView lv;
-    public ArrayList<PCContent> emoticons;
+    public ArrayList<Emoticon> emoticons;
     private MyCustomAdapter adapter;
 
     private Bundle bundle;
@@ -98,11 +99,10 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
         actionBar.hide();
 
         lv = (ListView) view.findViewById(android.R.id.list);
-        emoticons = new ArrayList<PCContent>();
+        emoticons = new ArrayList<Emoticon>();
         populate();
 
-        PicoCandyManager manager = PicoCandyManager.sharedInstance();
-        manager.requestStickers(this);
+        PicoCandyManager.sharedInstance().requestStickers(this);
 
         bundle = getArguments();
         byte[] avatarImage = null;
@@ -178,6 +178,13 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                    if (emoticons.get(position).isSelected()) {
+                        arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+                        emoticons.get(position).setSelected(false);
+                    } else {
+                        arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+                        emoticons.get(position).setSelected(true);
+                    }
                 }
             });
         }
@@ -187,9 +194,9 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
     private class MyCustomAdapter extends BaseAdapter {
 
         private LayoutInflater layoutInflater;
-        private ArrayList<PCContent> listData;
+        private ArrayList<Emoticon> listData;
 
-        public MyCustomAdapter(Context context, ArrayList<PCContent> listData) {
+        public MyCustomAdapter(Context context, ArrayList<Emoticon> listData) {
             this.listData = listData;
             layoutInflater = LayoutInflater.from(context);
         }
@@ -220,7 +227,7 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
             final ViewHolder viewHolder;
             //if (convertView == null) {
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            convertView = inflater.inflate(R.layout.friends_item, parent, false);
+            convertView = inflater.inflate(R.layout.camera_step_2_item, parent, false);
 
             viewHolder = new ViewHolder();
             viewHolder.imgEmoticon = (ImageView) convertView.findViewById(R.id.imgEmoticon);
@@ -230,11 +237,11 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
             convertView.setTag(viewHolder);
 
 
-            PCContent emoticon = emoticons.get(position);
+            Emoticon emoticon = emoticons.get(position);
 
-            viewHolder.lblName.setText(emoticon.getName());
+            viewHolder.lblName.setText(emoticon.getContent().getName());
 
-            Picasso.with(getActivity()).load(emoticon.getSmall_image()).into(viewHolder.imgEmoticon, new Callback() {
+            Picasso.with(getActivity()).load(emoticon.getContent().getSmall_image()).into(viewHolder.imgEmoticon, new Callback() {
 
                 @Override
                 public void onSuccess() {
@@ -249,14 +256,15 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
                 }
             });
 
-
             return convertView;
         }
     }
 
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
-        emoticons = stickerList;
+        for (PCContent sticker:stickerList)
+                emoticons.add(new Emoticon(sticker));
+        //emoticons = stickerList;
         adapter.notifyDataSetChanged();
     }
 }
