@@ -141,16 +141,6 @@ public class Util {
         }
     }
 
-
-    private static boolean arrayContainsInt(int array[], int val, int x) {
-        for(int i = 0; i < x; i++) {
-            if(array[i] == val) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Returns an array of unique ramdom numbers
      * @param count Number of items
@@ -173,6 +163,15 @@ public class Util {
             randoms[x] = thisTry;
         }
         return randoms;
+    }
+
+    private static boolean arrayContainsInt(int array[], int val, int x) {
+        for(int i = 0; i < x; i++) {
+            if(array[i] == val) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -42,6 +42,8 @@ import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
+import com.builtinmenlo.selfieclub.models.ClubInviteProtocol;
+import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
@@ -61,7 +63,7 @@ import java.util.List;
 
 
 // <[!] class declaration [¡]>
-public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,SCDialogProtocol {
+public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,SCDialogProtocol,ClubInviteProtocol {
 
     private GridView gridClubs;
     private ArrayList<Club> clubs;
@@ -276,8 +278,34 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         String clubId = selectedClub.getClubId();
         PhoneManager phoneManager = new PhoneManager();
         ArrayList<HashMap<String,String>> contactsList = phoneManager.getContacts(this.getActivity().getContentResolver());
-        int[] randomNumbers = Util.randomNumbers(Constants.NUMBER_OF_RANDOM_FRIENDS,0,contactsList.size());
+        HashMap<String,String> contact;
+        ArrayList<HashMap<String,String>> friendsToInvite = new ArrayList<HashMap<String, String>>();
+        ArrayList<String> registeredFriends = new ArrayList<String>();
+        if(contactsList.size()>Constants.NUMBER_OF_RANDOM_FRIENDS){
+            int[] randomNumbers = Util.randomNumbers(Constants.NUMBER_OF_RANDOM_FRIENDS,0,contactsList.size());
+            for(int i=0;i<randomNumbers.length;i++){
+                contact = contactsList.get(randomNumbers[i]);
+                friendsToInvite.add(contact);
+            }
+        }
+        else {
+            for (int i=0;i<contactsList.size();i++){
+                contact = contactsList.get(i);
+                friendsToInvite.add(contact);
+            }
+        }
 
+        ClubManager clubManager = new ClubManager();
+        clubManager.sendClubInvite(this,userId,clubId,registeredFriends,friendsToInvite);
+
+
+    }
+
+    public void didSendCubInvite(Boolean response){
+        Util.playDefaultNotificationSound(getActivity().getApplicationContext());
+    }
+    public void didFailSendingClubInvite(String errorMessage){
+        Log.w(this.getClass().getName(),"Failed inviting friends");
     }
 
 }
