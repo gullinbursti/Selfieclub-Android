@@ -142,5 +142,37 @@ public class Util {
     }
 
 
+    private static boolean arrayContainsInt(int array[], int val, int x) {
+        for(int i = 0; i < x; i++) {
+            if(array[i] == val) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns an array of unique ramdom numbers
+     * @param count Number of items
+     * @param minInclusive Inclusive lower number
+     * @param maxNonInclusive Exclusive max number
+     * @return
+     */
+    public static int[] randomNumbers(int count, int minInclusive, int maxNonInclusive) {
+        int randoms[] = new int[count];
+        Random rand = new Random();
+        int impossibleValue = minInclusive - 1;
+        for(int i = 0; i < randoms.length; i++) {
+            randoms[i] = impossibleValue;
+        }
+        for(int x = 0; x < count; x++) {
+            int thisTry = impossibleValue;
+            while(thisTry == impossibleValue || arrayContainsInt(randoms, thisTry, x)) {
+                thisTry = (int)(rand.nextFloat() * (float)(maxNonInclusive - minInclusive)) + minInclusive;
+            }
+            randoms[x] = thisTry;
+        }
+        return randoms;
+    }
 
 }

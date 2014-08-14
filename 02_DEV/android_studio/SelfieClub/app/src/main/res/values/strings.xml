@@ -45,5 +45,6 @@
 
     <!-- Dialog messages -->
     <string name="invite_friend_dialog">Invite %s to my Selfieclub</string>
+    <string name="invite_random_friends_dialog">To enter the club please invite some friends!</string>
 
 </resources>

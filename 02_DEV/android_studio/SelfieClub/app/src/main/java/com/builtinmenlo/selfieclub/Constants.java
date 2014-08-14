@@ -4,7 +4,7 @@ package com.builtinmenlo.selfieclub;
  * Created by Leonardo on 5/29/14.
  */
 public final class Constants {
-
+    //Endpoints
     public static final Boolean PLAYSTOREBUILD = false; //this is used for debug and tracking. It must be set to true before building the apk for the store
     public static final String API_ENDPOINT = "http://volley-api.devint.selfieclubapp.com/master/";
     public static final String GET_ACTIVITY_PATH = "users/getactivity";
@@ -54,4 +54,6 @@ public final class Constants {
     public static final String KEEN_EVENT_SELECT_CLUB_STEP3 = "Select club step 3";
     public static final String KEEN_EVENT_CAMERA_STATUS_UPDATE = "Camera status update";
     public static final String KEEN_EVENT_NEWSFEED_AVATARUSER_TAP = "Newsfeed avatar user tap";
+    //Invite
+    public static final int NUMBER_OF_RANDOM_FRIENDS = 10;
 }

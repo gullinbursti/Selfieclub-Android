@@ -38,16 +38,22 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Club;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
+import com.builtinmenlo.selfieclub.models.PhoneManager;
+import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
+import com.builtinmenlo.selfieclub.util.Util;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 ;
@@ -55,12 +61,16 @@ import java.util.List;
 
 
 // <[!] class declaration [¡]>
-public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
+public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,SCDialogProtocol {
 
     private GridView gridClubs;
     private ArrayList<Club> clubs;
     private MyCustomAdapter adapter;
     private ImageDownloader downloader;
+    private Club selectedClub;
+    private static String INVITE_RANDOM_FRIENDS_TAG = "invite_random_friends";
+
+
 
     public ClubsTabBtnFragment() {/*..\(^_^)/..*/}
 
@@ -142,7 +152,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
             gridClubs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    //arg1.setBackgroundColor(Color.TRANSPARENT);
+                    showInviteDialog(clubs.get(position));
                 }
             });
         }
@@ -238,4 +248,36 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol {
     public void didReceiveUserClubsError(String errorMessage) {
         //TODO Add here the error management for the get clubs request
     }
+
+    //Dialog protocol
+    public void didClickedButton(String dialogTag, int buttonIndex){
+        if(dialogTag.equalsIgnoreCase(INVITE_RANDOM_FRIENDS_TAG)){
+            if(buttonIndex==1){
+                inviteRandomFriends();
+            }
+        }
+    }
+    //Invite 10 friends club
+
+    public void showInviteDialog(Club club){
+        selectedClub = club;
+        String message = getResources().getString(R.string.invite_random_friends_dialog);
+        SCDialog dialog = new SCDialog();
+        dialog.setScDialogProtocol(this);
+        dialog.setMessage(message);
+        dialog.setPositiveButtonTitle(getResources().getString(R.string.yes_button_title));
+        dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));
+        dialog.show(getFragmentManager(),INVITE_RANDOM_FRIENDS_TAG);
+    }
+
+    public void inviteRandomFriends(){
+        ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
+        String userId = applicationManager.getUserId();
+        String clubId = selectedClub.getClubId();
+        PhoneManager phoneManager = new PhoneManager();
+        ArrayList<HashMap<String,String>> contactsList = phoneManager.getContacts(this.getActivity().getContentResolver());
+        int[] randomNumbers = Util.randomNumbers(Constants.NUMBER_OF_RANDOM_FRIENDS,0,contactsList.size());
+
+    }
+
 }
