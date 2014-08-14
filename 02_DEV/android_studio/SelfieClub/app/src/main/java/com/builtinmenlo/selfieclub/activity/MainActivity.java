@@ -36,6 +36,7 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.CameraFragment;
 import com.builtinmenlo.selfieclub.fragments.CameraStep2Fragment;
@@ -45,13 +46,16 @@ import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.KeenManager;
+import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
+import com.builtinmenlo.selfieclub.models.UserManager;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
 // <[!] class delaration [¡]>
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements UserClubsProtocol{
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
@@ -124,16 +128,14 @@ public class MainActivity extends Activity {
         //TODO Use a real userId
         ApplicationManager applicationManager = new ApplicationManager(this);
         applicationManager.setUserId("151159");
+        applicationManager.setUserName("matt2");
+
+        //Request the user's personal club
+        UserManager userManager = new UserManager();
+        String userId =applicationManager.getUserId();
+        userManager.requestUserClubs(this,userId);
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
-
-
-//    public void onClubInviteClick(View view) {
-//        //Log.i("HELLO!!!", "WHERE!!");
-//        Intent i = new Intent(getApplicationContext(), Invite.class);
-//        startActivity(i);
-//    }
-
 
     public void onMainCameraClick(View view) {
         CameraFragment newFragment = new CameraFragment();
@@ -171,18 +173,6 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
-            /*case R.id.refresh:
-                showToast("Refresh was clicked.");
-                return true;
-
-            case R.id.copyLink:
-                showToast("Copy link was clicked.");
-                return true;
-
-            case R.id.share:
-                showToast("Share was clicked.");
-                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -193,5 +183,21 @@ public class MainActivity extends Activity {
         KeenManager keenManager = KeenManager.sharedInstance();
         keenManager.initialize(this.getApplicationContext());
         keenManager.trackEvent(Constants.KEEN_EVENT_RESUMEBACKGROUND);
+    }
+
+    public void didReceiveUserClubs(ArrayList<Club> userClubs){
+        //Looks for the user's personal club
+        ApplicationManager applicationManager = new ApplicationManager(this);
+        String username = applicationManager.getUserName();
+        for (int i=0;i<userClubs.size();i++){
+            Club club = userClubs.get(i);
+            if(username.equalsIgnoreCase(club.getClubName())){
+                applicationManager.setUserPersonalClubId(club.getClubId());
+                break;
+            }
+        }
+    }
+    public void didReceiveUserClubsError(String errorMessage){
+        Log.e("MainActivity","Error getting the clubs");
     }
 }

@@ -18,21 +18,20 @@ public class ApplicationManager {
     }
 
     public  boolean isFirstRun(){
-        SharedPreferences settings = this.activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
         Boolean response = settings.getBoolean("firstRun",true);
         if(response){
             //Log event
             KeenManager keenManager = KeenManager.sharedInstance();
-            keenManager.initialize(this.activity.getApplicationContext());
+            keenManager.initialize(activity.getApplicationContext());
             keenManager.trackEvent(Constants.KEEN_EVENT_FRESHBOOT);
         }
         return response;
     }
 
     public void setFirstRun(boolean firstRun){
-        SharedPreferences settings = this.activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
         settings.edit().putBoolean("firstRun",firstRun).apply();
-
     }
 
     /**
@@ -40,7 +39,7 @@ public class ApplicationManager {
      * @return
      */
     public String getUserId(){
-        SharedPreferences settings = this.activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
         String userId = settings.getString("userId","");
         return userId;
     }
@@ -50,8 +49,41 @@ public class ApplicationManager {
      * @param userId 
      */
     public void setUserId(String userId){
-        SharedPreferences setting = this.activity.getPreferences(Context.MODE_PRIVATE);
-        setting.edit().putString("userId",userId);
+        SharedPreferences setting = activity.getPreferences(Context.MODE_PRIVATE);
+        setting.edit().putString("userId",userId).apply();
+
+    }
+
+    public void setUserName(String userName){
+        SharedPreferences setting = activity.getPreferences(Context.MODE_PRIVATE);
+        setting.edit().putString("userName",userName).apply();
+    }
+
+    public String getUserName(){
+        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
+        String userId = settings.getString("userName","");
+        return userId;
+    }
+
+
+    /**
+     * Returns the personal group id
+     * @return
+     */
+    public String getUserPersonalClubId(){
+        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
+        String userPersonalClubId = settings.getString("userPersonalClubId","");
+        return userPersonalClubId;
+    }
+
+    /**
+     * Saves the personal club id
+     * @param userPersonalClubId personal club id
+     */
+    public void setUserPersonalClubId(String userPersonalClubId){
+        SharedPreferences setting = activity.getPreferences(Context.MODE_PRIVATE);
+        setting.edit().putString("userPersonalClubId",userPersonalClubId).apply();
+        setting.edit().commit();
     }
 
 }

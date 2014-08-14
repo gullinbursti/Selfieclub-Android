@@ -325,6 +325,14 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
     }
 
+    public void didClickedButton(String dialogTag, int buttonIndex){
+        if(dialogTag.equalsIgnoreCase(INVITE_FRIEND_TAG)){
+            if(buttonIndex==1){
+                Log.w("","invite "+selectedFriend.getUsername());
+            }
+        }
+    }
+
     //Invite methods
 
     private void showinviteFriendDialog(Friend friend){
@@ -337,12 +345,6 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         dialog.show(getFragmentManager(),INVITE_FRIEND_TAG);
     }
 
-    public void didClickedButton(String dialogTag, int buttonIndex){
-        if(dialogTag.equalsIgnoreCase(INVITE_FRIEND_TAG)){
-            if(buttonIndex==1){
-                Log.w("","invite "+selectedFriend.getUsername());
-            }
-        }
-    }
+
 
 }
