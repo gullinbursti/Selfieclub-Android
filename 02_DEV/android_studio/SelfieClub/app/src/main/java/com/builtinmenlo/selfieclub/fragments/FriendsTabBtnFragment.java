@@ -40,13 +40,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
+import com.builtinmenlo.selfieclub.models.ClubInviteProtocol;
+import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
+import com.builtinmenlo.selfieclub.util.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Callback;
 
@@ -55,13 +60,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
-
-public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol,SCDialogProtocol {
+public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol,SCDialogProtocol,ClubInviteProtocol {
     public ListView lv;
     public ArrayList<Friend> friends;
     public User owner;
@@ -328,7 +334,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     public void didClickedButton(String dialogTag, int buttonIndex){
         if(dialogTag.equalsIgnoreCase(INVITE_FRIEND_TAG)){
             if(buttonIndex==1){
-                Log.w("","invite "+selectedFriend.getUsername());
+                inviteFriend();
             }
         }
     }
@@ -345,6 +351,23 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         dialog.show(getFragmentManager(),INVITE_FRIEND_TAG);
     }
 
+    public void inviteFriend(){
+        ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
+        String userId = applicationManager.getUserId();
+        String clubId = applicationManager.getUserPersonalClubId();
+        ArrayList<String> friends = new ArrayList<String>();
+        friends.add(selectedFriend.getUserId());
+        ArrayList<HashMap<String,String>> nonUsers = new ArrayList<HashMap<String, String>>();
+        ClubManager clubManager = new ClubManager();
+        clubManager.sendClubInvite(this,userId,clubId,friends,nonUsers);
+    }
 
+    public void didSendCubInvite(Boolean response){
+        Util.playDefaultNotificationSound(getActivity().getApplicationContext());
+    }
+    public void didFailSendingClubInvite(String errorMessage){
+        Log.w(getClass().getName(),"Failed inviting user");
+
+    }
 
 }
