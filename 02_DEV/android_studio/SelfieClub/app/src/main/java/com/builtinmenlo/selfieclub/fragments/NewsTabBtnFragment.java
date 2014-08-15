@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -43,7 +44,11 @@ import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.NewsItem;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.NewsFeedProtocol;
+import com.builtinmenlo.selfieclub.models.PicoCandyManager;
+import com.builtinmenlo.selfieclub.models.StikersProtocol;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
+import com.picocandy.android.data.PCContent;
+import com.picocandy.android.data.PCContentGroup;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -51,6 +56,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
+import org.json.JSONException;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -64,7 +70,7 @@ import java.util.Date;
 
 
 // <[!] class delaration [¡]>
-public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
+public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, StikersProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
@@ -89,8 +95,8 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
         news = new ArrayList<NewsItem>();
         populate();
 
-        ClubManager clubManager = new ClubManager();
-        clubManager.requestNews(this, "151159");
+        PicoCandyManager.sharedInstance().requestStickers(this);
+
 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
@@ -112,6 +118,7 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
     }
 
     private static class ViewHolder {
+        LinearLayout listStickers;
         TextView lblStatus;
         TextView lblTime;
         TextView lblClubName;
@@ -175,26 +182,42 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
 
             final ViewHolder viewHolder;
             //if (convertView == null) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                convertView = inflater.inflate(R.layout.news_feed_item, parent, false);
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            convertView = inflater.inflate(R.layout.news_feed_item, parent, false);
 
-                viewHolder = new ViewHolder();
-                viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
-                viewHolder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
-                viewHolder.lblStatus = (TextView) convertView.findViewById(R.id.lblStatus);
-                //viewHolder.imgNews = (ImageView) convertView.findViewById(R.id.imgNews);
-                viewHolder.lblTime = (TextView) convertView.findViewById(R.id.lblTime);
-                viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
-                //viewHolder.btnReply = (Button) convertView.findViewById(R.id.btnReply);
-                //viewHolder.btnUpVote = (Button) convertView.findViewById(R.id.btnUpVote);
-                convertView.setTag(viewHolder);
+            viewHolder = new ViewHolder();
+            viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
+            viewHolder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
+            viewHolder.lblStatus = (TextView) convertView.findViewById(R.id.lblStatus);
+            //viewHolder.imgNews = (ImageView) convertView.findViewById(R.id.imgNews);
+            viewHolder.lblTime = (TextView) convertView.findViewById(R.id.lblTime);
+            viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
+            viewHolder.listStickers = (LinearLayout) convertView.findViewById(R.id.listStickers);
+            //viewHolder.btnReply = (Button) convertView.findViewById(R.id.btnReply);
+            //viewHolder.btnUpVote = (Button) convertView.findViewById(R.id.btnUpVote);
+            convertView.setTag(viewHolder);
             /*} else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }*/
 
             NewsItem newsItem = news.get(position);
 
-            // viewHolder.lblFollowers.setText(String.valueOf(friend.getFollowers()));
+            for (int i = 0; i < newsItem.getStatus().length(); i++) {
+                try {
+                    //PicoCandyManager.sharedInstance().getStickerByName(newsItem.getStatus().getString(i));
+                    ImageView imgSticker = new ImageView(getActivity());
+                    viewHolder.listStickers.addView(imgSticker);
+                    //Picasso.with(getActivity()).load("http://id-cube.com/wp-content/uploads/2013/12/chicago-bulls-logo-52098.jpg").into(imgSticker);
+                    if (newsItem.getStatus() != null && newsItem.getStatus().length() > 0) {
+                        PCContent sticker = PicoCandyManager.sharedInstance().getStickerByName(newsItem.getStatus().getString(i));
+                        if (sticker != null)
+                            Picasso.with(getActivity()).load(sticker.getSmall_image()).into(imgSticker);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
             String status = "<strong>" + newsItem.getUserName() + "</strong>";
             /*String status = "<strong>" + newsItem.getUserName() + "</strong> is feeling <strong>";
             for (int i = 0; i < newsItem.getStatus().length(); i++) {
@@ -225,16 +248,13 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
 
 
             viewHolder.lblTime.setText(String.valueOf(time) + " m");
-            viewHolder.lblClubName.setText(" in "+newsItem.getClubName());
+            viewHolder.lblClubName.setText(" in " + newsItem.getClubName());
 
             /*if (viewHolder.imgAvatar != null) {
                 new ImageDownloaderTask(viewHolder.imgAvatar).execute(newsItem.getAvatarUrl());
             }*/
 
             if (viewHolder.imgAvatar != null) {
-                //viewHolder.imgNews.setImageBitmap(((BitmapDrawable)listImages[position].getDrawable()).getBitmap());
-                //new ImageDownloaderTask(viewHolder.imgNews).execute(newsItem.getImageUrl()+"Tab_640x960.jpg");
-                //downloader.DisplayImage(newsItem.getImageUrl() + "Tab_640x960.jpg", String.valueOf(position), getActivity(), viewHolder.imgAvatar, viewHolder.loadingImage);
                 Picasso.with(getActivity()).load(newsItem.getImageUrl() + "Tab_640x960.jpg").into(viewHolder.imgAvatar, new Callback() {
 
                     @Override
@@ -336,15 +356,17 @@ public class  NewsTabBtnFragment extends Fragment implements NewsFeedProtocol {
     public void didReceiveNewsFeed(ArrayList<NewsItem> newsItemArrayList) {
         news = newsItemArrayList;
         listImages = new ImageView[newsItemArrayList.size()];
-        for (int i = 0; i < newsItemArrayList.size(); i++) {
-            //new ImageDownloaderTask(new ImageView(this.getActivity())).execute(newsItemArrayList.get(i).getImageUrl()+"Tab_640x960.jpg");
-            //listImages[i] = downloadBitmap(newsItemArrayList.get(i).getImageUrl()+"Tab_640x960.jpg");
-        }
         adapter.notifyDataSetChanged();
 
     }
 
     public void didReceiveNewsFeedError(String errorMessage) {
 
+    }
+
+    @Override
+    public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
+        ClubManager clubManager = new ClubManager();
+        clubManager.requestNews(this, "151159");
     }
 }
