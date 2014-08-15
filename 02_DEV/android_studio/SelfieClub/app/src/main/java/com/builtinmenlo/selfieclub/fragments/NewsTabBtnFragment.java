@@ -21,6 +21,7 @@ package com.builtinmenlo.selfieclub.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -141,7 +142,13 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    //arg1.setBackgroundColor(Color.TRANSPARENT);
+                    Fragment newFragment = new CameraFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_container, newFragment);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(TimelineFragment.EXTRA_NEWS_ITEM, news.get(position));
+                    newFragment.setArguments(bundle);
+                    transaction.commit();
                 }
             });
         }
@@ -204,10 +211,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
 
             for (int i = 0; i < newsItem.getStatus().length(); i++) {
                 try {
-                    //PicoCandyManager.sharedInstance().getStickerByName(newsItem.getStatus().getString(i));
                     ImageView imgSticker = new ImageView(getActivity());
                     viewHolder.listStickers.addView(imgSticker);
-                    //Picasso.with(getActivity()).load("http://id-cube.com/wp-content/uploads/2013/12/chicago-bulls-logo-52098.jpg").into(imgSticker);
                     if (newsItem.getStatus() != null && newsItem.getStatus().length() > 0) {
                         PCContent sticker = PicoCandyManager.sharedInstance().getStickerByName(newsItem.getStatus().getString(i));
                         if (sticker != null)

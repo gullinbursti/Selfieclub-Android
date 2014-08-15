@@ -2,10 +2,13 @@ package com.builtinmenlo.selfieclub.dataSources;
 
 import org.json.JSONArray;
 
+import java.io.Serializable;
+
 /**
  * Created by Leonardo on 6/26/14.
  */
-public class NewsItem {
+public class NewsItem implements Serializable {
+
     private String userName;
     private String clubName;
     private String timestamp;

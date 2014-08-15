@@ -72,14 +72,15 @@
         android:layout_height="fill_parent"
         android:layout_toRightOf="@id/relAvatar"
         android:layout_below="@+id/lblTime">
-    <LinearLayout
-        android:id="@+id/listStickers"
-        android:orientation="horizontal"
-        android:scaleType="fitXY"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
 
-        android:layout_margin="10dp" />
+        <LinearLayout
+            android:id="@+id/listStickers"
+            android:orientation="horizontal"
+            android:scaleType="fitXY"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+
+            android:layout_margin="10dp" />
     </HorizontalScrollView>
     <!--<LinearLayout
         android:layout_width="fill_parent"
