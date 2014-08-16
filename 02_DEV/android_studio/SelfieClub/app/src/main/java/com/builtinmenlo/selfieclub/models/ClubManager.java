@@ -3,12 +3,8 @@ package com.builtinmenlo.selfieclub.models;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.dataSources.NewsItem;
@@ -136,10 +132,6 @@ public class ClubManager {
 
                 }
         );
-
-
-
-
     }
 
     /**
@@ -184,8 +176,6 @@ public class ClubManager {
         );
 
     }
-
-
 
     /**
      * Request the club's info
@@ -310,14 +300,14 @@ public class ClubManager {
 
     /**
      * Submit a photo into a club
-     * @param photoSubmissionProtocol The interface that must be implemented
+     * @param clubPhotoSubmissionProtocol The interface that must be implemented
      * @param context Activity context. Used to grab de UIID
      * @param userId User's id
      * @param clubId Clubs's id
      * @param imageFile The photo's file
      * @param subjects An arraylist with all the subjects
      */
-    public void submitPhoto(final PhotoSubmissionProtocol photoSubmissionProtocol,
+    public void submitPhoto(final ClubPhotoSubmissionProtocol clubPhotoSubmissionProtocol,
                             Context context,
                             String userId,
                             String clubId,
@@ -325,15 +315,15 @@ public class ClubManager {
                             ArrayList<String>subjects){
 
         String uniqueString = Util.generateUniqueString(context);
-        String imageUrl = Constants.AMAZON_S3_PATH + uniqueString;
+        final String imageUrl = Constants.AMAZON_S3_PATH + uniqueString;
         //Upload large image
         String largeFilename = uniqueString+"_Large_640x1136.jpg";
         File largeImage = Util.resizeImage(Util.IMAGE_SIZES.LARGE_640x1136,imageFile,context);
-        uploadPhotoToS3(largeImage,largeFilename);
+        Util.uploadPhotoToS3(largeImage, largeFilename);
         //Upload tab image
         String tabFilename = uniqueString+"_Tab_640x960.jpg";
         File tabImage = Util.resizeImage(Util.IMAGE_SIZES.TAB_640x960,imageFile,context);
-        uploadPhotoToS3(tabImage,tabFilename);
+        Util.uploadPhotoToS3(tabImage, tabFilename);
         //Notify the server
         JSONArray emotionsJson = new JSONArray(subjects);
         AsyncHttpClient client = new AsyncHttpClient();
@@ -346,38 +336,47 @@ public class ClubManager {
         data.put("subject","");
         data.put("targets","");
         RequestParams requestParams = new RequestParams(data);
-        client.post(Constants.API_ENDPOINT+Constants.PHOTO_SUBMIT_PATH,requestParams,new JsonHttpResponseHandler() {
+        client.post(Constants.API_ENDPOINT+Constants.CLUB_PHOTO_SUBMIT,requestParams,new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(JSONObject data) {
                 try{
                     String id = data.getString("id");
-                    if(id!=null)
-                        photoSubmissionProtocol.didSubmittedPhotoInClub(true);
+                    if(id!=null){
+                        AsyncHttpClient client1 = new AsyncHttpClient();
+                        HashMap<String,String> data1 = new HashMap<String, String>();
+                        data1.put("imageURL",imageUrl);
+                        RequestParams requestParams1 = new RequestParams(data1);
+                        client1.post(Constants.API_ENDPOINT+Constants.CLUB_PHOTO_SUBMIT_VALIDATION,requestParams1,new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(JSONObject data) {
+                                clubPhotoSubmissionProtocol.didSubmittedPhotoInClub(true);
+                            }
+                             @Override
+                             public void onFailure(Throwable e, String response) {
+                                clubPhotoSubmissionProtocol.didFailSubmittingPhotoInClub(response);
+                                }
+                                }
+                        );
+
+                    }
+
                     else
-                        photoSubmissionProtocol.didSubmittedPhotoInClub(false);
+                        clubPhotoSubmissionProtocol.didSubmittedPhotoInClub(false);
                 }
                 catch (Exception e){
-                        photoSubmissionProtocol.didFailSubmittingPhotoInClub(e.toString());
+                        clubPhotoSubmissionProtocol.didFailSubmittingPhotoInClub(e.toString());
                 }
 
             }
 
             @Override
             public void onFailure(Throwable e, String response) {
-                photoSubmissionProtocol.didFailSubmittingPhotoInClub(response);
+                clubPhotoSubmissionProtocol.didFailSubmittingPhotoInClub(response);
             }
         }
         );
 
     }
-
-    public void uploadPhotoToS3(File imageFile, String fileName){
-        AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET));
-        s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
-        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile);
-        s3Client.putObject(por);
-    }
-
     private NewsItem parseNewsItem (JSONObject data,String clubname){
         NewsItem newsItem = new NewsItem();
         try{

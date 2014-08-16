@@ -9,6 +9,10 @@ import android.net.Uri;
 import android.telephony.TelephonyManager;
 
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.builtinmenlo.selfieclub.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -112,6 +116,7 @@ public class Util {
         return imageFile;
     }
 
+
     public static void playDefaultNotificationSound(Context context){
         Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -166,12 +171,20 @@ public class Util {
     }
 
     private static boolean arrayContainsInt(int array[], int val, int x) {
-        for(int i = 0; i < x; i++) {
-            if(array[i] == val) {
+        for (int i = 0; i < x; i++) {
+            if (array[i] == val) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static void uploadPhotoToS3(File imageFile, String fileName){
+        AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET));
+        s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
+        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile);
+        s3Client.putObject(por);
+
     }
 
 }

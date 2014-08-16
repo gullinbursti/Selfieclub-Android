@@ -149,6 +149,96 @@ public class UserManager
         );
     }
 
+    public void requestOtherUserClubs(final OtherUserClubsProtocol userClubsProtocol, String userId){
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("userID",userId);
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.GET_USERCLUBS_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+
+                        try {
+                            ArrayList<Club> clubsList = parseUserClubs(data);
+                            Collections.sort(clubsList,new Comparator<Club>() {
+                                @Override
+                                public int compare(Club lhs, Club rhs) {
+                                    return rhs.getUpdated().compareTo(lhs.getUpdated());
+                                }
+                            });
+                            if (userClubsProtocol != null)
+                                userClubsProtocol.didFindOtherUserClubs(clubsList);
+                        } catch (JSONException e) {
+                            if (userClubsProtocol != null)
+                                userClubsProtocol.didFailOtherUserClubs(e.toString());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+                        if (userClubsProtocol != null)
+                            userClubsProtocol.didFailOtherUserClubs(e.toString());
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response) {
+                        if (userClubsProtocol != null)
+                            userClubsProtocol.didFailOtherUserClubs(response);
+                    }
+                    @Override
+                    public void onFailure(Throwable e, JSONArray errorResponse) {
+                        if (userClubsProtocol != null)
+                            userClubsProtocol.didFailOtherUserClubs(errorResponse.toString());
+                    }
+
+
+                }
+        );
+    }
+
+
+
+    /**
+     * Search for users by username
+     * @param userFinderProtocol
+     * @param username
+     */
+    public void findUserByUsername(final UserFinderProtocol userFinderProtocol, final String username){
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("username",username);
+        data.put("action","1");
+        RequestParams requestParams = new RequestParams(data);
+        client.post(Constants.API_ENDPOINT+Constants.SEARCH_PATH,requestParams,new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONArray data) {
+                        JSONObject result=null;
+                        for(int i=0;i<data.length();i++){
+                            try{
+                                JSONObject item = data.getJSONObject(i);
+                                String itemUsername = item.getString("username");
+                                if(username.equalsIgnoreCase(itemUsername)){
+                                    result=item;
+                                    break;
+                                }
+                            }
+                            catch (Exception e){
+                                userFinderProtocol.didFailFindingUser(e.toString());
+                            }
+
+                        }
+                        userFinderProtocol.didFindUser(result);
+                    }
+                    @Override
+                    public void onFailure(Throwable e, String response){
+                        userFinderProtocol.didFailFindingUser(response);
+                    }
+
+                }
+        );
+    }
+
     public void requestFriends(final UserFriendsProtocol userFriendsProtocol, String userId, String phoneNumbers){
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();

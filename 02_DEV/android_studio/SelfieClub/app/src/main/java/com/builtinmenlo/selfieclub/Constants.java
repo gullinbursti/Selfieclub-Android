@@ -11,10 +11,12 @@ public final class Constants {
     public static final String GET_USERCLUBS_PATH = "users/getclubs";
     public static final String CHECK_USERNAMEPASSWORD_PATH = "users/checkNameAndEmail";
     public static final String USER_PATH = "Users.php";
+    public static final String SEARCH_PATH = "Search.php";
     public static final String GET_CLUB_INFO = "clubs/get";
     public static final String USER_REGISTRATION = "users/firstruncomplete";
     public static final String UPDATE_PHONE = "userPhone/updatePhone";
-    public static final String PHOTO_SUBMIT_PATH = "challenges/create";
+    public static final String CLUB_PHOTO_SUBMIT = "challenges/create";
+    public static final String CLUB_PHOTO_SUBMIT_VALIDATION = "/challenges/processimages";
     public static final String CREATE_CLUB_PATH = "clubs/create";
     public static final String INVITE_CLUB_PATH = "clubs/invite";
     public static final String JOIN_CLUB_PATH = "clubs/join";
