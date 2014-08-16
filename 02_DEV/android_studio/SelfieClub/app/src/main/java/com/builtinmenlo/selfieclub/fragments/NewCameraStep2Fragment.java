@@ -39,6 +39,8 @@ import android.widget.TextView;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.CameraPreview;
 import com.builtinmenlo.selfieclub.dataSources.Emoticon;
+import com.builtinmenlo.selfieclub.models.ClubManager;
+import com.builtinmenlo.selfieclub.models.PhotoSubmissionProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.StikersProtocol;
@@ -54,7 +56,7 @@ import java.util.ArrayList;
 
 
 // <[!] class delaration [¡]>
-public class NewCameraStep2Fragment extends Fragment implements StikersProtocol, SCDialogProtocol {
+public class NewCameraStep2Fragment extends Fragment implements StikersProtocol, SCDialogProtocol, PhotoSubmissionProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
@@ -143,7 +145,8 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
                 if (!selected){
                     showNoEmoticonDialog();
                 }else{
-
+                    ClubManager manager = new ClubManager();
+                    //manager.submitPhoto(this,getActivity(),);
                 }
                 /*Fragment newFragment = new CameraStep3Fragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -300,5 +303,15 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
 
             }
         }
+    }
+
+    @Override
+    public void didSubmittedPhotoInClub(Boolean result){
+
+    }
+
+    @Override
+    public void didFailSubmittingPhotoInClub(String message){
+
     }
 }
