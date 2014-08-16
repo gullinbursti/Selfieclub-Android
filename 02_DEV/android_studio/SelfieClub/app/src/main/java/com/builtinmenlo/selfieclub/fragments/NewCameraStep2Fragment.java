@@ -40,6 +40,7 @@ import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.CameraPreview;
 import com.builtinmenlo.selfieclub.dataSources.Emoticon;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
+import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.StikersProtocol;
 import com.picocandy.android.data.PCContent;
 import com.picocandy.android.data.PCContentGroup;
@@ -53,7 +54,7 @@ import java.util.ArrayList;
 
 
 // <[!] class delaration [¡]>
-public class NewCameraStep2Fragment extends Fragment implements StikersProtocol {
+public class NewCameraStep2Fragment extends Fragment implements StikersProtocol, SCDialogProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
@@ -68,6 +69,9 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
 
     private Fragment backView;
     private Fragment nextView;
+
+    private static String NO_EMOTICON_TAG = "no_emoticon";
+
 
     public void setBackView(Fragment backView) {
         this.backView = backView;
@@ -129,13 +133,25 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
         view.findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment = new CameraStep3Fragment();
+                boolean selected = false;
+                for (Emoticon emoticon:emoticons){
+                    if (emoticon.isSelected()){
+                        selected = true;
+                        break;
+                    }
+                }
+                if (!selected){
+                    showNoEmoticonDialog();
+                }else{
+
+                }
+                /*Fragment newFragment = new CameraStep3Fragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
                 if (bundle == null)
                     bundle = new Bundle();
                 newFragment.setArguments(bundle);
-                transaction.commit();
+                transaction.commit();*/
             }
         });
 
@@ -143,6 +159,15 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
+    private void showNoEmoticonDialog(){
+        String message = "You need to select an emotion!";
+        SCDialog dialog = new SCDialog();
+        dialog.setScDialogProtocol(this);
+        dialog.setMessage(message);
+        dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        //dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));
+        dialog.show(getFragmentManager(),NO_EMOTICON_TAG);
+    }
 
     private void hideKeyboard(View v) {
         InputMethodManager keyboard = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -266,5 +291,14 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol 
                 emoticons.add(new Emoticon(sticker));
         //emoticons = stickerList;
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void didClickedButton(String dialogTag, int buttonIndex){
+        if(dialogTag.equalsIgnoreCase(NO_EMOTICON_TAG)){
+            if(buttonIndex==1){
+
+            }
+        }
     }
 }

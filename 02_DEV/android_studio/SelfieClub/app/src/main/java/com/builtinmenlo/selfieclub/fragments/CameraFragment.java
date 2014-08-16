@@ -132,7 +132,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
             public void onClick(View view) {
                 Fragment newFragment;
                 if (backView == null)
-                    newFragment = new FirstRunRegistrationFragment();
+                    newFragment = new FriendsTabBtnFragment();
+                    //newFragment = new FirstRunRegistrationFragment();
                 else
                     newFragment = backView;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -260,7 +261,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         //setFlash(parameters);
         //setZoom(parameters);
-        mCamera.setParameters(parameters);
+        //mCamera.setParameters(parameters);
         mCamera.setDisplayOrientation(90);
 
         mCamera.startPreview();
