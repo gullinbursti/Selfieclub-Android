@@ -58,7 +58,5 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.2.+'
     compile 'com.couchbase.lite:couchbase-lite-android:1.0.0'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.0.+'
-
-
 }
 

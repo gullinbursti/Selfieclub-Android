@@ -13,7 +13,6 @@
 /**~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~**/
 
 
-
 package com.builtinmenlo.selfieclub.fragments;
 
 
@@ -24,8 +23,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -35,12 +32,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.activity.CameraPreview;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
@@ -57,22 +52,22 @@ import java.util.ArrayList;
 public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
-	//] class properties ]>
+    //] class properties ]>
     private Bundle bundle;
     private ProgressDialog dialog;
     private static String freeUserId;
     private FirstRunManager manager;
-	//]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
-	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
+    //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
+    //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
-	// <*] class constructor [*>
+    // <*] class constructor [*>
     public FirstRunRegistrationFragment() {/*..\(^_^)/..*/}
 
-	//]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
-	//]~=~=~=~=~=~=~=~=~=[>
+    //]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
+    //]~=~=~=~=~=~=~=~=~=[>
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         View view = inflater.inflate(R.layout.first_run_registration, container, false);
 
         bundle = getArguments();
@@ -83,14 +78,19 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         manager = new FirstRunManager();
         manager.requestFreeUserId(this);
 
-        String countryCode = null;
-        byte[] avatarImage = null;
-        if (getArguments()!= null) {
+        String countryCode = "";
+        String username = "";
+        //byte[] avatarImage = null;
+        if (getArguments() != null) {
             countryCode = getArguments().getString(FirstRunCountrySelectorFragment.EXTRA_CODE);
-            avatarImage = getArguments().getByteArray(CameraPreview.EXTRA_IMAGE);
+            username = getArguments().getString(FirstRunCountrySelectorFragment.EXTRA_USERNAME);
+            //avatarImage = getArguments().getByteArray(CameraPreview.EXTRA_IMAGE);
         }
 
-        ImageView avatar = (ImageView) view.findViewById(R.id.imgAvatar);
+
+
+
+        /*ImageView avatar = (ImageView) view.findViewById(R.id.imgAvatar);
         if (avatarImage != null){
             Bitmap bmp = BitmapFactory.decodeByteArray(avatarImage, 0, avatarImage.length);
             avatar.setImageBitmap(bmp);
@@ -109,8 +109,11 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
                 newFragment.setArguments(bundle);
                 transaction.commit();
             }
-        });
+        });*/
 
+        final EditText txtUsername = (EditText) view.findViewById(R.id.txtUserName);
+        if (username != null)
+            txtUsername.setText(username);
 
         final Button btnCountrySelector = (Button) view.findViewById(R.id.btnCountrySelect);
         if (countryCode != null)
@@ -123,48 +126,56 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
                 transaction.replace(R.id.fragment_container, newFragment);
                 if (bundle == null)
                     bundle = new Bundle();
+                bundle.putString(FirstRunCountrySelectorFragment.EXTRA_USERNAME,txtUsername.getText().toString());
                 newFragment.setArguments(bundle);
                 transaction.commit();
             }
         });
 
-        final EditText txtUsername = (EditText) view.findViewById(R.id.txtUserName);
         final EditText txtPhone = (EditText) view.findViewById(R.id.txtEnterPhone);
         txtPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-                if ( actionId == EditorInfo.IME_ACTION_DONE ||
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this,freeUserId,txtUsername.getText().toString(),btnCountrySelector.getText().toString()+txtPhone.getText().toString());
+                    //manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this,freeUserId,txtUsername.getText().toString(),btnCountrySelector.getText().toString()+txtPhone.getText().toString());
                     return true;
                 }
                 return false;
             }
         });
 
-        return view;
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+        view.findViewById(R.id.btnSignUp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString());
+            }
+        });
 
-    public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList,ArrayList<PCContent> stickerList){
-        Log.w("","");
+        return view;
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
+    public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
+        Log.w("", "");
         PicoCandyManager picoCandyManager = PicoCandyManager.sharedInstance();
         picoCandyManager.getStickerByName("happy");
     }
-	public void onCreate(Bundle savedInstanceState) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onCreate(savedInstanceState);
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-	public void onAttach(Activity activity) {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onAttach(activity);
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    public void onCreate(Bundle savedInstanceState) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onCreate(savedInstanceState);
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-	public void onDetach() {
-	//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-		super.onDetach();
-	}//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+    public void onAttach(Activity activity) {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onAttach(activity);
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
+    public void onDetach() {
+        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+        super.onDetach();
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     @Override
     public void didReceiveFreeUserId(String userId) {
@@ -184,7 +195,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     @Override
     public void didFailValidatingUsernamePhone(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-        Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT);
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
 
     }
 
