@@ -62,6 +62,9 @@ public class PicoCandyManager {
     }
 
     public void requestStickers(final StikersProtocol stikersProtocol){
+        if (stickerList.size() > 0)
+            stikersProtocol.didReceiveStickers(contentGroupsList,stickerList);
+
         final ArrayList<String> ids = new ArrayList<String>();
         ids.add("883");
         ids.add("884");
@@ -75,7 +78,7 @@ public class PicoCandyManager {
                     public void onSuccess(PCContentGroup pcContentGroup) {
                         processedItems+=1;
                         contentGroupArrayList.add(pcContentGroup);
-                        if(ids.size()==processedItems){
+                        if(ids.size()>=processedItems){
                             parseStickers(stikersProtocol, contentGroupArrayList);
                         }
 
@@ -84,7 +87,7 @@ public class PicoCandyManager {
                     @Override
                     public void onFail(String s) {
                         processedItems+=1;
-                        if(ids.size()==processedItems){
+                        if(ids.size()>=processedItems){
                             parseStickers(stikersProtocol,contentGroupArrayList);
                         }
                     }
