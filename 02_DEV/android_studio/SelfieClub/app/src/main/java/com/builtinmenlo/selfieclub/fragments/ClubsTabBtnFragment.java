@@ -87,7 +87,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         populate();
 
         UserManager userManager = new UserManager();
-        userManager.requestUserClubs(this, "151159");
+        userManager.requestUserClubs(this, "155489");
 
 
         return view;

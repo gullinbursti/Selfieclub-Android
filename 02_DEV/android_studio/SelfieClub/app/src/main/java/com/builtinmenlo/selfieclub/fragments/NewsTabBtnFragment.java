@@ -375,6 +375,6 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
         ClubManager clubManager = new ClubManager();
-        clubManager.requestNews(this, "151159");
+        clubManager.requestNews(this, "155489");
     }
 }

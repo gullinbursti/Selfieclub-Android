@@ -137,6 +137,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
                 else
                     newFragment = backView;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.remove(CameraFragment.this);
                 transaction.replace(R.id.fragment_container, newFragment);
                 if (bundle == null)
                     bundle = new Bundle();
@@ -335,6 +336,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         else
             newFragment = nextView;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.remove(CameraFragment.this);
         transaction.replace(R.id.fragment_container, newFragment);
         if (bundle == null)
             bundle = new Bundle();

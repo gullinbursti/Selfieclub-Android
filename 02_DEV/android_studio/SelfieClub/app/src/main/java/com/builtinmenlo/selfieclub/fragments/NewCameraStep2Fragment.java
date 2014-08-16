@@ -49,6 +49,8 @@ import com.picocandy.android.data.PCContentGroup;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 ;
@@ -111,10 +113,10 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
         PicoCandyManager.sharedInstance().requestStickers(this);
 
         bundle = getArguments();
-        byte[] avatarImage = null;
+        /*byte[] avatarImage = null;
         if (bundle != null) {
             avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
-        }
+        }*/
 
 
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
@@ -135,18 +137,31 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
         view.findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean selected = false;
+                ArrayList<String> selected = new ArrayList<String>();
                 for (Emoticon emoticon:emoticons){
                     if (emoticon.isSelected()){
-                        selected = true;
+                        selected.add(emoticon.getContent().getName());
                         break;
                     }
                 }
-                if (!selected){
+                if (selected.size() < 1){
                     showNoEmoticonDialog();
                 }else{
                     ClubManager manager = new ClubManager();
-                    //manager.submitPhoto(this,getActivity(),);
+                    byte[] avatarImage = null;
+                    if (bundle != null) {
+                        avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
+                    }
+                    try {
+                        File file = new File(getActivity().getCacheDir().getPath() + "/temp.jpg");
+                        FileOutputStream fos=new FileOutputStream(file);
+                        fos.write(avatarImage);
+                        fos.close();
+                        manager.submitPhoto(NewCameraStep2Fragment.this, getActivity(), "155489", "3560", file, selected);
+                    }
+                    catch (java.io.IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 /*Fragment newFragment = new CameraStep3Fragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -291,8 +306,9 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
         for (PCContent sticker:stickerList)
-                emoticons.add(new Emoticon(sticker));
+            emoticons.add(new Emoticon(sticker));
         //emoticons = stickerList;
+        loadingIcon.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
     }
 
