@@ -33,12 +33,12 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
+import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.picocandy.android.data.PCContent;
 import com.picocandy.android.data.PCContentGroup;
 
@@ -49,7 +49,7 @@ import java.util.ArrayList;
 
 
 // <[!] class delaration [¡]>
-public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol {
+public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol, SCDialogProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
@@ -57,6 +57,9 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     private ProgressDialog dialog;
     private static String freeUserId;
     private FirstRunManager manager;
+
+    private static String FAILED_VALIDATING_TAG = "validation_failed";
+
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
@@ -112,11 +115,11 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         });*/
 
         final EditText txtUsername = (EditText) view.findViewById(R.id.txtUserName);
-        if (username != null)
+        if (username != null && username.length() > 0)
             txtUsername.setText(username);
 
         final Button btnCountrySelector = (Button) view.findViewById(R.id.btnCountrySelect);
-        if (countryCode != null)
+        if (countryCode != null && countryCode.length() > 0)
             btnCountrySelector.setText(countryCode);
         btnCountrySelector.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +129,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
                 transaction.replace(R.id.fragment_container, newFragment);
                 if (bundle == null)
                     bundle = new Bundle();
-                bundle.putString(FirstRunCountrySelectorFragment.EXTRA_USERNAME,txtUsername.getText().toString());
+                bundle.putString(FirstRunCountrySelectorFragment.EXTRA_USERNAME, txtUsername.getText().toString());
                 newFragment.setArguments(bundle);
                 transaction.commit();
             }
@@ -195,8 +198,11 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     @Override
     public void didFailValidatingUsernamePhone(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
-
+        SCDialog dialog = new SCDialog();
+        dialog.setScDialogProtocol(this);
+        dialog.setMessage(message);
+        dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        dialog.show(getFragmentManager(), FAILED_VALIDATING_TAG);
     }
 
     @Override
@@ -207,5 +213,14 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     @Override
     public void didFailRegisteringUser(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
 
+    }
+
+    @Override
+    public void didClickedButton(String dialogTag, int buttonIndex) {
+        if (dialogTag.equalsIgnoreCase(FAILED_VALIDATING_TAG)) {
+            if (buttonIndex == 1) {
+
+            }
+        }
     }
 }
