@@ -13,6 +13,7 @@
         <item name="actionBarDivider">@null</item>
         <item name="android:actionBarDivider">@null</item>
         <item name="android:icon">@android:color/transparent</item>
+        <!--<item name="android:windowNoTitle">true</item>-->
         <item name="android:windowContentOverlay">@android:color/black</item>
     </style>
 
