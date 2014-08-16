@@ -47,7 +47,6 @@ import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.NewsFeedProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.StikersProtocol;
-import com.builtinmenlo.selfieclub.util.ImageDownloader;
 import com.picocandy.android.data.PCContent;
 import com.picocandy.android.data.PCContentGroup;
 import com.squareup.picasso.Callback;
@@ -75,14 +74,10 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
-    ImageDownloader downloader;
-    ArrayList<NewsItem> news;
-    ImageView[] listImages;
+    private ArrayList<NewsItem> news;
     public ListView lv;
     private MyCustomAdapter adapter;
     private ProgressBar loadingIcon;
-    //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
-    //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
     // <*] class constructor [*>
     public NewsTabBtnFragment() {
@@ -92,7 +87,6 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_tab, container, false);
         lv = (ListView) view.findViewById(android.R.id.list);
-        downloader = new ImageDownloader(NewsTabBtnFragment.this.getActivity(), "news");
         news = new ArrayList<NewsItem>();
         populate();
 
@@ -114,7 +108,6 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onDetach() {
-        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onDetach();
     }
 
@@ -123,10 +116,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
         TextView lblStatus;
         TextView lblTime;
         TextView lblClubName;
-        //ImageView imgNews;
         ImageView imgAvatar;
-        //Button btnUpVote;
-        //Button btnReply;
         ProgressBar loadingImage;
     }
 
@@ -138,12 +128,12 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
                     lv.setAdapter(adapter);
                 }
             });
-
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    Fragment newFragment = new CameraFragment();
+                    Fragment newFragment = new TimelineFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.remove(NewsTabBtnFragment.this);
                     transaction.replace(R.id.fragment_container, newFragment);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(TimelineFragment.EXTRA_NEWS_ITEM, news.get(position));
@@ -151,6 +141,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
                     transaction.commit();
                 }
             });
+
+
         }
     }
 
@@ -196,10 +188,22 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
             viewHolder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
             viewHolder.lblStatus = (TextView) convertView.findViewById(R.id.lblStatus);
-            //viewHolder.imgNews = (ImageView) convertView.findViewById(R.id.imgNews);
             viewHolder.lblTime = (TextView) convertView.findViewById(R.id.lblTime);
             viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
             viewHolder.listStickers = (LinearLayout) convertView.findViewById(R.id.listStickers);
+            viewHolder.listStickers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment newFragment = new TimelineFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.remove(NewsTabBtnFragment.this);
+                    transaction.replace(R.id.fragment_container, newFragment);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(TimelineFragment.EXTRA_NEWS_ITEM, news.get(position));
+                    newFragment.setArguments(bundle);
+                    transaction.commit();
+                }
+            });
             //viewHolder.btnReply = (Button) convertView.findViewById(R.id.btnReply);
             //viewHolder.btnUpVote = (Button) convertView.findViewById(R.id.btnUpVote);
             convertView.setTag(viewHolder);
@@ -212,6 +216,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             for (int i = 0; i < newsItem.getStatus().length(); i++) {
                 try {
                     ImageView imgSticker = new ImageView(getActivity());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(48,48);
+                    imgSticker.setLayoutParams(params);
                     viewHolder.listStickers.addView(imgSticker);
                     if (newsItem.getStatus() != null && newsItem.getStatus().length() > 0) {
                         PCContent sticker = PicoCandyManager.sharedInstance().getStickerByName(newsItem.getStatus().getString(i));
@@ -315,8 +321,6 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
 
             }
         }
-
-
     }
 
     Bitmap downloadBitmap(String url) {
@@ -359,14 +363,13 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     }
 
     public void didReceiveNewsFeed(ArrayList<NewsItem> newsItemArrayList) {
+        getActivity().findViewById(R.id.loadingIcon).setVisibility(View.INVISIBLE);
         news = newsItemArrayList;
-        listImages = new ImageView[newsItemArrayList.size()];
         adapter.notifyDataSetChanged();
-
     }
 
     public void didReceiveNewsFeedError(String errorMessage) {
-
+        getActivity().findViewById(R.id.loadingIcon).setVisibility(View.INVISIBLE);
     }
 
     @Override

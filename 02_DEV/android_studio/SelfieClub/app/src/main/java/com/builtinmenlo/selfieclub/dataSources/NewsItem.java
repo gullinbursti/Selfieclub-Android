@@ -16,7 +16,6 @@ public class NewsItem implements Serializable {
     private String imageUrl;
     private JSONArray status;
 
-
     public String getUserName() {
         return userName;
     }
