@@ -192,7 +192,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     }
 
     @Override
-    public void didValideUsernamePhone(Boolean isValid, String message) {
+    public void didValidateUsernamePhone(Boolean isValid, String message) {
         System.err.println(message);
     }
 
