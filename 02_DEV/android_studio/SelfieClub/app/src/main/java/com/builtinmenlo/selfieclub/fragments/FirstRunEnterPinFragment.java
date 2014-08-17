@@ -139,7 +139,11 @@ public class FirstRunEnterPinFragment extends Fragment implements FirstRunProtoc
 
     @Override
     public void didFailRegisteringUser(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-
+        SCDialog dialog = new SCDialog();
+        dialog.setScDialogProtocol(FirstRunEnterPinFragment.this);
+        dialog.setMessage(message);
+        dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        dialog.show(getFragmentManager(),NO_PIN_TAG);
     }
 
     @Override
