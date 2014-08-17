@@ -52,6 +52,11 @@ import java.util.ArrayList;
 public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol, SCDialogProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
+    public static final String EXTRA_USERNAME = "username";
+    public static final String EXTRA_ID = "user_id";
+    public static final String EXTRA_EMAIL= "user_email";
+
+
     //] class properties ]>
     private Bundle bundle;
     private ProgressDialog dialog;
@@ -84,9 +89,9 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         String countryCode = "";
         String username = "";
         //byte[] avatarImage = null;
-        if (getArguments() != null) {
-            countryCode = getArguments().getString(FirstRunCountrySelectorFragment.EXTRA_CODE);
-            username = getArguments().getString(FirstRunCountrySelectorFragment.EXTRA_USERNAME);
+        if (bundle != null) {
+            countryCode =bundle.getString(FirstRunCountrySelectorFragment.EXTRA_CODE);
+            username = bundle.getString(EXTRA_USERNAME);
             //avatarImage = getArguments().getByteArray(CameraPreview.EXTRA_IMAGE);
         }
 
@@ -129,7 +134,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
                 transaction.replace(R.id.fragment_container, newFragment);
                 if (bundle == null)
                     bundle = new Bundle();
-                bundle.putString(FirstRunCountrySelectorFragment.EXTRA_USERNAME, txtUsername.getText().toString());
+                bundle.putString(EXTRA_USERNAME, txtUsername.getText().toString());
                 newFragment.setArguments(bundle);
                 transaction.commit();
             }
@@ -152,7 +157,8 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         view.findViewById(R.id.btnSignUp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString());
+                getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.INVISIBLE);
+                manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString() + "@selfieclub.com");
             }
         });
 
@@ -194,6 +200,16 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     @Override
     public void didValidateUsernamePhone(Boolean isValid, String message) {
         System.err.println(message);
+        if (isValid){
+            getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.VISIBLE);
+            Fragment newFragment = new FirstRunEnterPinFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, newFragment);
+            if (bundle == null)
+                bundle = new Bundle();
+            newFragment.setArguments(bundle);
+            transaction.commit();
+        }
     }
 
     @Override
