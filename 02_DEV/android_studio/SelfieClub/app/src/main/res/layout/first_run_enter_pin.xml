@@ -32,6 +32,7 @@
     <EditText
         android:background="@drawable/search_background"
         android:id="@+id/txtEnterPin"
+        android:paddingLeft="15dp"
         android:layout_below="@+id/lblRegistration"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

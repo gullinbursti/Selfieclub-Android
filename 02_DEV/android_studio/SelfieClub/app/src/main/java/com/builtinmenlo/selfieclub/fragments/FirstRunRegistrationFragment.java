@@ -37,6 +37,7 @@ import android.widget.TextView;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
+import com.builtinmenlo.selfieclub.models.PINVerificationProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.picocandy.android.data.PCContent;
@@ -49,7 +50,7 @@ import java.util.ArrayList;
 
 
 // <[!] class delaration [¡]>
-public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol, SCDialogProtocol {
+public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol, SCDialogProtocol, PINVerificationProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     public static final String EXTRA_USERNAME = "username";
@@ -62,8 +63,11 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     private ProgressDialog dialog;
     private static String freeUserId;
     private FirstRunManager manager;
+    private EditText txtUsername;
+    private EditText txtPhone;
 
     private static String FAILED_VALIDATING_TAG = "validation_failed";
+    private static String FAILED_VALIDATING_PIN_TAG = "validation_pin_failed";
     private static String FIELDS_NOT_FILLED_TAG = "fields_not fill";
 
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
@@ -91,7 +95,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         String username = "";
         //byte[] avatarImage = null;
         if (bundle != null) {
-            countryCode =bundle.getString(FirstRunCountrySelectorFragment.EXTRA_CODE);
+            countryCode = bundle.getString(FirstRunCountrySelectorFragment.EXTRA_CODE);
             username = bundle.getString(EXTRA_USERNAME);
             //avatarImage = getArguments().getByteArray(CameraPreview.EXTRA_IMAGE);
         }
@@ -120,7 +124,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             }
         });*/
 
-        final EditText txtUsername = (EditText) view.findViewById(R.id.txtUserName);
+        txtUsername = (EditText) view.findViewById(R.id.txtUserName);
         if (username != null && username.length() > 0)
             txtUsername.setText(username);
 
@@ -141,7 +145,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             }
         });
 
-        final EditText txtPhone = (EditText) view.findViewById(R.id.txtEnterPhone);
+        txtPhone = (EditText) view.findViewById(R.id.txtEnterPhone);
         txtPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
@@ -160,13 +164,14 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             public void onClick(View view) {
                 if (txtPhone.getText().length() > 0 && txtUsername.getText().length() > 0) {
                     getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.INVISIBLE);
+                    dialog = ProgressDialog.show(getActivity(), "", "Validating...");
                     manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString() + "@selfieclub.com");
                 } else {
-                    SCDialog dialog = new SCDialog();
-                    dialog.setScDialogProtocol(FirstRunRegistrationFragment.this);
-                    dialog.setMessage("Please Fill Both Username and Phone Field");
-                    dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-                    dialog.show(getFragmentManager(),FIELDS_NOT_FILLED_TAG);
+                    SCDialog scdialog = new SCDialog();
+                    scdialog.setScDialogProtocol(FirstRunRegistrationFragment.this);
+                    scdialog.setMessage("Please Fill Both Username and Phone Fields");
+                    scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+                    scdialog.show(getFragmentManager(),FIELDS_NOT_FILLED_TAG);
                 }
             }
         });
@@ -208,26 +213,23 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     @Override
     public void didValidateUsernamePhone(Boolean isValid, String message) {
+        dialog.dismiss();
         System.err.println(message);
         if (isValid){
             getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.VISIBLE);
-            Fragment newFragment = new FirstRunEnterPinFragment();
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, newFragment);
-            if (bundle == null)
-                bundle = new Bundle();
-            newFragment.setArguments(bundle);
-            transaction.commit();
+            dialog = ProgressDialog.show(getActivity(), "", "Sending PIN...");
+            manager.sendPIN(FirstRunRegistrationFragment.this,freeUserId,txtPhone.getText().toString());
         }
     }
 
     @Override
     public void didFailValidatingUsernamePhone(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-        SCDialog dialog = new SCDialog();
-        dialog.setScDialogProtocol(this);
-        dialog.setMessage(message);
-        dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        dialog.show(getFragmentManager(), FAILED_VALIDATING_TAG);
+        dialog.dismiss();
+        SCDialog scdialog = new SCDialog();
+        scdialog.setScDialogProtocol(this);
+        scdialog.setMessage(message);
+        scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        scdialog.show(getFragmentManager(), FAILED_VALIDATING_TAG);
     }
 
     @Override
@@ -247,5 +249,40 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
             }
         }
+    }
+
+    @Override
+    public void didSendPIN(Boolean result) {
+        dialog.dismiss();
+        Fragment newFragment = new FirstRunEnterPinFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        if (bundle == null)
+            bundle = new Bundle();
+        bundle.putString(EXTRA_ID, freeUserId);
+        bundle.putString(EXTRA_USERNAME,txtUsername.getText().toString());
+        bundle.putString(EXTRA_EMAIL,txtPhone.getText().toString() + "@selfieclub.com");
+        newFragment.setArguments(bundle);
+        transaction.commit();
+    }
+
+    @Override
+    public void didFailSendingPIN(String message) {
+        dialog.dismiss();
+        SCDialog scdialog = new SCDialog();
+        scdialog.setScDialogProtocol(this);
+        scdialog.setMessage(message);
+        scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        scdialog.show(getFragmentManager(), FAILED_VALIDATING_PIN_TAG);
+    }
+
+    @Override
+    public void didValidatePIN(Boolean result) {
+
+    }
+
+    @Override
+    public void didFailValidatingPIN(String message) {
+
     }
 }
