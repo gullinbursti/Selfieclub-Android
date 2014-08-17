@@ -128,15 +128,6 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         clubsTab.setTabListener(new TabButtonListener(clubsFragment));
         topNavActionBar.addTab(clubsTab);
 
-
-        /*notificationsTab = topNavActionBar.newTab();
-        View mCustomView = mInflater.inflate(R.layout.notifications_tab_bar, null);
-        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.lblTitleText);
-        mTitleTextView.setText("0");
-        notificationsTab.setCustomView(mCustomView);
-        notificationsTab.setTabListener(new TabButtonListener(notificationsFragment));
-        topNavActionBar.addTab(notificationsTab);*/
-
         //TODO Use a real userId
         ApplicationManager applicationManager = new ApplicationManager(this);
         applicationManager.setUserId("151159");
