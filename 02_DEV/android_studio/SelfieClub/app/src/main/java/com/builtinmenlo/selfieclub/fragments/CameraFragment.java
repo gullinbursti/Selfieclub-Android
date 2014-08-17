@@ -132,10 +132,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
             public void onClick(View view) {
                 Fragment newFragment;
                 if (backView == null)
-                    newFragment = new FirstRunRegistrationFragment();
+                    newFragment = new FriendsTabBtnFragment();
+                    //newFragment = new FirstRunRegistrationFragment();
                 else
                     newFragment = backView;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.remove(CameraFragment.this);
                 transaction.replace(R.id.fragment_container, newFragment);
                 if (bundle == null)
                     bundle = new Bundle();
@@ -202,15 +204,15 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
      */
     public String getPath(Uri uri) {
         // just some safety built in
-        if( uri == null ) {
+        if (uri == null) {
             // TODO perform some logging or show user feedback
             return null;
         }
         // try to retrieve the image from the media store first
         // this will only work for images selected from gallery
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
-        if( cursor != null ){
+        if (cursor != null) {
             int column_index = cursor
                     .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
@@ -334,13 +336,22 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         else
             newFragment = nextView;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.remove(CameraFragment.this);
         transaction.replace(R.id.fragment_container, newFragment);
         if (bundle == null)
             bundle = new Bundle();
+
+
         Bitmap thePicture = BitmapFactory.decodeByteArray(data, 0, data.length);
-        Matrix m = new Matrix();
-        m.postRotate(90);
-        thePicture = Bitmap.createBitmap(thePicture, 0, 0, thePicture.getWidth(), thePicture.getHeight(), m, true);
+        if (isUsingFrontCamera) {
+            Matrix m = new Matrix();
+            m.postRotate(270);
+            thePicture = Bitmap.createBitmap(thePicture, 0, 0, thePicture.getWidth(), thePicture.getHeight(), m, true);
+        } else {
+            Matrix m = new Matrix();
+            m.postRotate(90);
+            thePicture = Bitmap.createBitmap(thePicture, 0, 0, thePicture.getWidth(), thePicture.getHeight(), m, true);
+        }
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         thePicture.compress(CompressFormat.JPEG, 100, bos);

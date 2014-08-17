@@ -41,14 +41,15 @@ import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.CameraFragment;
-import com.builtinmenlo.selfieclub.fragments.CameraStep2Fragment;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
+import com.builtinmenlo.selfieclub.fragments.NewCameraStep2Fragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.DeepLinksManager;
 import com.builtinmenlo.selfieclub.models.KeenManager;
+import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 
@@ -87,6 +88,9 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         deepLinksManager.activity = this;
         deepLinksManager.deepLinkRegistry(data);
 
+        setContentView(R.layout.activity_main);
+        PicoCandyManager.sharedInstance().registerApp(getApplicationContext());
+        getOverflowMenu();
 
         setContentView(R.layout.activity_main);
         getOverflowMenu();
@@ -125,13 +129,13 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         topNavActionBar.addTab(clubsTab);
 
 
-        notificationsTab = topNavActionBar.newTab();
+        /*notificationsTab = topNavActionBar.newTab();
         View mCustomView = mInflater.inflate(R.layout.notifications_tab_bar, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.lblTitleText);
         mTitleTextView.setText("0");
         notificationsTab.setCustomView(mCustomView);
         notificationsTab.setTabListener(new TabButtonListener(notificationsFragment));
-        topNavActionBar.addTab(notificationsTab);
+        topNavActionBar.addTab(notificationsTab);*/
 
         //TODO Use a real userId
         ApplicationManager applicationManager = new ApplicationManager(this);
@@ -147,9 +151,11 @@ public class MainActivity extends Activity implements UserClubsProtocol{
 
     public void onMainCameraClick(View view) {
         CameraFragment newFragment = new CameraFragment();
+        //NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
-        newFragment.setNextView(new CameraStep2Fragment());
+        //newFragment.setNextView(new CameraStep2Fragment());
+        newFragment.setNextView(new NewCameraStep2Fragment());
         transaction.commit();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 

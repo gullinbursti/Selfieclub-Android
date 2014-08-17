@@ -66,6 +66,7 @@ import java.util.List;
 public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,SCDialogProtocol,ClubInviteProtocol {
 
     private GridView gridClubs;
+    private ProgressBar loadingIcon;
     private ArrayList<Club> clubs;
     private MyCustomAdapter adapter;
     private ImageDownloader downloader;
@@ -82,6 +83,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
         downloader = new ImageDownloader(getActivity(), "clubs");
 
+        loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
         gridClubs = (GridView) view.findViewById(R.id.gridMenu);
         clubs = new ArrayList<Club>();
         populate();
@@ -240,7 +242,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
 
 
     public void didReceiveUserClubs(ArrayList<Club> userClubs) {
-        // TODO Add here the rendering on the clubs
+        loadingIcon.setVisibility(View.INVISIBLE);
         Log.i(this.getActivity().getClass().getName(), userClubs.toString());
         clubs = userClubs;
         adapter.notifyDataSetChanged();
@@ -248,6 +250,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
     }
 
     public void didReceiveUserClubsError(String errorMessage) {
+        loadingIcon.setVisibility(View.INVISIBLE);
         //TODO Add here the error management for the get clubs request
     }
 

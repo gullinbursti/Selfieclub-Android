@@ -8,8 +8,8 @@
 
 
     <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingLeft="0dip"
         android:paddingRight="0dip"
         android:paddingTop="0dip"
@@ -17,8 +17,8 @@
 
         <SurfaceView
             android:id="@+id/camera_surface"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"></SurfaceView>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></SurfaceView>
     </FrameLayout>
 
     <Button

@@ -40,32 +40,28 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubInviteProtocol;
 import com.builtinmenlo.selfieclub.models.ClubManager;
+import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
 import com.builtinmenlo.selfieclub.util.Util;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Callback;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 
 public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol,SCDialogProtocol,ClubInviteProtocol {
     public ListView lv;
@@ -94,6 +90,10 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         lv = (ListView) view.findViewById(android.R.id.list);
         friends = new ArrayList<Friend>();
         populate();
+
+        PhoneManager phoneManager = new PhoneManager();
+        ArrayList<HashMap<String, String>> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
+        Log.w("", "");
 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
@@ -138,7 +138,15 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                     selectedFriend = friends.get(position);
                     showinviteFriendDialog(selectedFriend);
-                }
+
+/*                    if (friends.get(position).isSelected()) {
+                        arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+                        friends.get(position).setSelected(false);
+                    } else {
+                        arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+                        friends.get(position).setSelected(true);
+                    }
+*/                }
             });
         }
     }
@@ -178,34 +186,41 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
             final ViewHolder viewHolder;
             //if (convertView == null) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                convertView = inflater.inflate(R.layout.friends_item, parent, false);
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            //convertView = inflater.inflate(R.layout.friends_item, parent, false);
+            convertView = inflater.inflate(R.layout.new_friends_item, parent, false);
 
-                viewHolder = new ViewHolder();
-                viewHolder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
-                // viewHolder.lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
-                viewHolder.lblName = (TextView) convertView.findViewById(R.id.lblName);
-                //viewHolder.imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
-                viewHolder.imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
-                viewHolder.imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
-                viewHolder.imgLoading = (ProgressBar) convertView.findViewById(R.id.loadingImage);
-                convertView.setTag(viewHolder);
+            viewHolder = new ViewHolder();
+            //viewHolder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
+            // viewHolder.lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
+            viewHolder.lblName = (TextView) convertView.findViewById(R.id.lblName);
+            //viewHolder.imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
+            viewHolder.imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
+            //viewHolder.imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
+            //viewHolder.imgLoading = (ProgressBar) convertView.findViewById(R.id.loadingImage);
+            convertView.setTag(viewHolder);
             //} else {
-                //viewHolder = (ViewHolder) convertView.getTag();
+            //viewHolder = (ViewHolder) convertView.getTag();
             //}
 
             Friend friend = friends.get(position);
 
+            if (friend.isSelected())
+                convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+            else
+                convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+
+
             // viewHolder.lblFollowers.setText(String.valueOf(friend.getFollowers()));
             viewHolder.lblName.setText(friend.getUsername());
 
-            if (friend.getState() == 1) {
+            /*if (friend.getState() == 1) {
                 viewHolder.imgAddOrCheck.setBackgroundResource(R.drawable.green_selection_dot);
                 viewHolder.imgAvatarCheck.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.imgAddOrCheck.setBackgroundResource(R.drawable.gray_selection_dot);
                 viewHolder.imgAvatarCheck.setVisibility(View.INVISIBLE);
-            }
+            }*/
 
             /*if (friend.getFollowers() > 0){
                 viewHolder.imgFollowers.setBackgroundResource(R.drawable.verify_arrow_green);
@@ -216,7 +231,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             }*/
 
 
-            if (viewHolder.imgAvatar != null) {
+            /*if (viewHolder.imgAvatar != null) {
                 Picasso.with(getActivity()).load(friend.getAvatarUrl()).into(viewHolder.imgAvatar, new Callback() {
 
                     @Override
@@ -231,7 +246,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
                         viewHolder.imgLoading.setVisibility(View.INVISIBLE);
                     }
                 });
-            }
+            }*/
 
             return convertView;
         }

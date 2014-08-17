@@ -14,7 +14,7 @@ public interface FirstRunProtocol {
     /*
     Interface methods for validating username/phone
      */
-    public void didValideUsernamePhone(Boolean isValid, String message);
+    public void didValidateUsernamePhone(Boolean isValid, String message);
     public void didFailValidatingUsernamePhone(FirstRunManager.FIRSTRUN_ERROR errorType, String message);
 
     /*

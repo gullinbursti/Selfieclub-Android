@@ -64,7 +64,7 @@ public class FirstRunManager {
                             int result = data.getInt("result");
                             switch (result){
                                 case 0:
-                                    firstRunProtocol.didValideUsernamePhone(true,"Passed");
+                                    firstRunProtocol.didValidateUsernamePhone(true,"Passed");
                                     break;
                                 case 1:
                                     firstRunProtocol.didFailValidatingUsernamePhone(FIRSTRUN_ERROR.USERNAME_TAKEN,"Username taken");

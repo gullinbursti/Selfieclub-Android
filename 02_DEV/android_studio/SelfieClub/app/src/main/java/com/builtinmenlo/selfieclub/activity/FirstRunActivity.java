@@ -27,14 +27,11 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.ViewConfiguration;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.fragments.FirstRunCountrySelectorFragment;
 import com.builtinmenlo.selfieclub.fragments.FirstRunEnterPinFragment;
 import com.builtinmenlo.selfieclub.fragments.FirstRunRegistrationFragment;
-
-import java.lang.reflect.Field;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -60,7 +57,7 @@ public class FirstRunActivity extends Activity {
         setContentView(R.layout.activity_first_run);
 
         ActionBar topNavActionBar = getActionBar();
-        topNavActionBar.setDisplayShowTitleEnabled(false);
+        topNavActionBar.hide();
 
         Log.i("__LOCAL_CLASS_NAME", this.getLocalClassName() + "][" + this.getClass().toString());
 
@@ -73,17 +70,4 @@ public class FirstRunActivity extends Activity {
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-    private void getOverflowMenu() {
-
-        try {
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if (menuKeyField != null) {
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
