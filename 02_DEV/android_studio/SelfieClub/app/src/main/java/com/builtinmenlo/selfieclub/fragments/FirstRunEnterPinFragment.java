@@ -139,7 +139,9 @@ public class FirstRunEnterPinFragment extends Fragment implements FirstRunProtoc
     @Override
     public void didRegisteredUser(String userId) {
         dialog.dismiss();
-        SharedPreferences.Editor editor = getActivity().getPreferences(Activity.MODE_PRIVATE).edit();
+        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
+                Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putString(FirstRunRegistrationFragment.EXTRA_ID, userId);
         editor.apply();
         Intent intent = new Intent(getActivity(), MainActivity.class);

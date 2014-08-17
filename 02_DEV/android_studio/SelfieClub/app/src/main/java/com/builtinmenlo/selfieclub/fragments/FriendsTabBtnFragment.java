@@ -22,6 +22,7 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
@@ -72,6 +73,8 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     private ImageDownloader downloader;
     private Friend selectedFriend;
     private static String INVITE_FRIEND_TAG = "invite_friend";
+    private static String RECEIVE_FRIENDS_ERROR_TAG = "error_receiving_friends_list";
+    private static String NO_FRIENDS_ERROR_TAG = "no_friends";
 
     public FriendsTabBtnFragment() {/*..\(^_^)/..*/}
 
@@ -80,7 +83,11 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         downloader = new ImageDownloader(getActivity(), "friends");
 
         UserManager userManager = new UserManager();
-        userManager.requestFriends(this, "2394", "+17143309754|+15617164724|+15617164831|+17409726939|+16505754720|+14086210100|+15303041380|+141 52646152|+16192042875|+16179397216|+15612369460|+18475305634|+14089215625|+19783175663|+14159354255|+14255032279|+16502244999|+14159028877|+12393709811|+12 135098296|+14083109905|+19196560716|+14087181396|+14085069784|+14152549391|+16509969693|+15612719211|+17869735014|+15624539140|+16506192664|+13107078969|+1 4152609007|+16263750676|+14079219866|+18187266581|+18312220104|+19312496956|+13105978645|+13106262124|+19493502980|+14084995523|+14153788924|+17816161660|+ 14156867366|+17816161660|+16507434738|+14153368700|+15105797189|+14153086768|+16506192665|+12068566868|+13105005463|+13035266649|+12133009127|+14156095557| +14084293828|+16507968877|+12135905745");
+        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
+                Activity.MODE_PRIVATE);
+        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
+        userManager.requestFriends(this, userId, "+17143309754|+15617164724|+15617164831|+17409726939|+16505754720|+14086210100|+15303041380|+141 52646152|+16192042875|+16179397216|+15612369460|+18475305634|+14089215625|+19783175663|+14159354255|+14255032279|+16502244999|+14159028877|+12393709811|+12 135098296|+14083109905|+19196560716|+14087181396|+14085069784|+14152549391|+16509969693|+15612719211|+17869735014|+15624539140|+16506192664|+13107078969|+1 4152609007|+16263750676|+14079219866|+18187266581|+18312220104|+19312496956|+13105978645|+13106262124|+19493502980|+14084995523|+14153788924|+17816161660|+ 14156867366|+17816161660|+16507434738|+14153368700|+15105797189|+14153086768|+16506192665|+12068566868|+13105005463|+13035266649|+12133009127|+14156095557| +14084293828|+16507968877|+12135905745");
+        //userManager.requestFriends(this, "2394", "+17143309754|+15617164724|+15617164831|+17409726939|+16505754720|+14086210100|+15303041380|+141 52646152|+16192042875|+16179397216|+15612369460|+18475305634|+14089215625|+19783175663|+14159354255|+14255032279|+16502244999|+14159028877|+12393709811|+12 135098296|+14083109905|+19196560716|+14087181396|+14085069784|+14152549391|+16509969693|+15612719211|+17869735014|+15624539140|+16506192664|+13107078969|+1 4152609007|+16263750676|+14079219866|+18187266581|+18312220104|+19312496956|+13105978645|+13106262124|+19493502980|+14084995523|+14153788924|+17816161660|+ 14156867366|+17816161660|+16507434738|+14153368700|+15105797189|+14153086768|+16506192665|+12068566868|+13105005463|+13035266649|+12133009127|+14156095557| +14084293828|+16507968877|+12135905745");
         View view = inflater.inflate(R.layout.friends_tab, container, false);
 
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
@@ -253,9 +260,18 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     }
 
     public void didReceiveFriendsList(FriendsViewData friendsViewData) {
-        friends = friendsViewData.getFriends();
-        owner = friendsViewData.getOwner();
-        adapter.notifyDataSetChanged();
+        loadingIcon.setVisibility(View.INVISIBLE);
+        if (friendsViewData.getFriends().size() < 1 ) {
+            SCDialog scdialog = new SCDialog();
+            scdialog.setScDialogProtocol(this);
+            scdialog.setMessage("No Friends Related with this user");
+            scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+            scdialog.show(getFragmentManager(), NO_FRIENDS_ERROR_TAG);
+        } else {
+            friends = friendsViewData.getFriends();
+            owner = friendsViewData.getOwner();
+            adapter.notifyDataSetChanged();
+        }
         /*if (friendsViewData.getFriends().size() > 8) {
             lv.setSelection(8);
         } else {
@@ -266,7 +282,13 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     }
 
     public void didReceiveFriendsListError(String errorMessage) {
+        loadingIcon.setVisibility(View.INVISIBLE);
         System.err.println(errorMessage);
+        SCDialog scdialog = new SCDialog();
+        scdialog.setScDialogProtocol(this);
+        scdialog.setMessage(errorMessage);
+        scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        scdialog.show(getFragmentManager(), RECEIVE_FRIENDS_ERROR_TAG);
     }
 
     class ImageDownloaderTask extends AsyncTask<String, Void, Bitmap> {

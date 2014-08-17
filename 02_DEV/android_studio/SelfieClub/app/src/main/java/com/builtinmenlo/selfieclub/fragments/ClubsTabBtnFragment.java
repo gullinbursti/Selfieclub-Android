@@ -22,6 +22,7 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -72,6 +73,8 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
     private ImageDownloader downloader;
     private Club selectedClub;
     private static String INVITE_RANDOM_FRIENDS_TAG = "invite_random_friends";
+    private static String RECEIVE_CLUBS_ERROR_TAG = "error_retrieving_clubs";
+    private static String NO_CLUBS_ERROR_TAG = "no_clubs";
 
 
 
@@ -89,7 +92,11 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         populate();
 
         UserManager userManager = new UserManager();
-        userManager.requestUserClubs(this, "155489");
+        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
+                Activity.MODE_PRIVATE);
+        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
+        //userManager.requestUserClubs(this, "155489");
+        userManager.requestUserClubs(this, userId);
 
 
         return view;
@@ -243,15 +250,26 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
 
     public void didReceiveUserClubs(ArrayList<Club> userClubs) {
         loadingIcon.setVisibility(View.INVISIBLE);
-        Log.i(this.getActivity().getClass().getName(), userClubs.toString());
-        clubs = userClubs;
-        adapter.notifyDataSetChanged();
-
+        if (userClubs.size() < 1 ) {
+            SCDialog scdialog = new SCDialog();
+            scdialog.setScDialogProtocol(this);
+            scdialog.setMessage("No Clubs Related with this user");
+            scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+            scdialog.show(getFragmentManager(), NO_CLUBS_ERROR_TAG);
+        } else {
+            Log.i(this.getActivity().getClass().getName(), userClubs.toString());
+            clubs = userClubs;
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public void didReceiveUserClubsError(String errorMessage) {
         loadingIcon.setVisibility(View.INVISIBLE);
-        //TODO Add here the error management for the get clubs request
+        SCDialog scdialog = new SCDialog();
+        scdialog.setScDialogProtocol(this);
+        scdialog.setMessage(errorMessage);
+        scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        scdialog.show(getFragmentManager(), RECEIVE_CLUBS_ERROR_TAG);
     }
 
     //Dialog protocol

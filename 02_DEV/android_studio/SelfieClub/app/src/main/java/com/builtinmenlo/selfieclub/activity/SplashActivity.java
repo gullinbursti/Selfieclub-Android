@@ -27,6 +27,7 @@ import android.os.Handler;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.fragments.FirstRunRegistrationFragment;
+import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -41,6 +42,8 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
+        PicoCandyManager.sharedInstance().registerApp(getApplicationContext());
+
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -50,10 +53,11 @@ public class SplashActivity extends Activity {
 
             @Override
             public void run() {
-                SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-                String userId = prefs.getString(FirstRunRegistrationFragment.EXTRA_ID, null);
+                SharedPreferences preferences = getSharedPreferences("prefs",
+                        MODE_PRIVATE);
+                String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
                 Intent intent;
-                if (userId != null)
+                if (userId.length() > 0)
                     intent = new Intent(SplashActivity.this, MainActivity.class);
                 else
                     intent = new Intent(SplashActivity.this, FirstRunActivity.class);

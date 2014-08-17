@@ -23,12 +23,10 @@
             android:layout_centerInParent="true"/>
         <Button
             android:id="@+id/btnSignUp"
-            android:text="Sign Up"
+            android:background="@drawable/btn_sign_up_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"/>
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
     <TextView
@@ -81,6 +79,7 @@
             android:imeOptions="actionNext"
             android:gravity="center_vertical"
             android:singleLine="true"
+            android:hint="Enter Username"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
 
@@ -95,12 +94,13 @@
 
     <EditText
         android:id="@+id/txtEnterPhone"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="5dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/btnCountrySelect"
         android:gravity="center_vertical"
         android:singleLine="true"
+        android:hint="Enter Phone #"
         android:layout_toLeftOf="@+id/imgCheckPhone"
         android:layout_alignBottom="@+id/lblEnterPhone"
         android:layout_alignTop="@+id/lblEnterPhone"
@@ -126,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignBaseline="@+id/btnCountrySelect"
-        android:layout_margin="30dp"
+        android:layout_margin="10dp"
         android:background="@drawable/check_mark"
         android:visibility="invisible" />
 

@@ -46,7 +46,6 @@ import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.KeenManager;
-import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 
@@ -78,8 +77,6 @@ public class MainActivity extends Activity implements UserClubsProtocol{
 
 
         setContentView(R.layout.activity_main);
-
-        PicoCandyManager.sharedInstance().registerApp(getApplicationContext());
 
         getOverflowMenu();
 

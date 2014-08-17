@@ -23,6 +23,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -35,6 +37,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
 import com.builtinmenlo.selfieclub.models.PINVerificationProtocol;
@@ -55,7 +58,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     public static final String EXTRA_USERNAME = "username";
     public static final String EXTRA_ID = "user_id";
-    public static final String EXTRA_EMAIL= "user_email";
+    public static final String EXTRA_EMAIL = "user_email";
 
 
     //] class properties ]>
@@ -171,7 +174,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
                     scdialog.setScDialogProtocol(FirstRunRegistrationFragment.this);
                     scdialog.setMessage("Please Fill Both Username and Phone Fields");
                     scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-                    scdialog.show(getFragmentManager(),FIELDS_NOT_FILLED_TAG);
+                    scdialog.show(getFragmentManager(), FIELDS_NOT_FILLED_TAG);
                 }
             }
         });
@@ -215,10 +218,19 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     public void didValidateUsernamePhone(Boolean isValid, String message) {
         dialog.dismiss();
         System.err.println(message);
-        if (isValid){
+        if (isValid) {
             getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.VISIBLE);
-            dialog = ProgressDialog.show(getActivity(), "", "Sending PIN...");
-            manager.sendPIN(FirstRunRegistrationFragment.this,freeUserId,txtPhone.getText().toString());
+            getActivity().findViewById(R.id.imgCheckPhone).setVisibility(View.VISIBLE);
+            SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
+                    Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(FirstRunRegistrationFragment.EXTRA_ID, freeUserId);
+            editor.apply();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            getActivity().startActivity(intent);
+            getActivity().finish();
+            /*dialog = ProgressDialog.show(getActivity(), "", "Sending PIN...");
+            manager.sendPIN(FirstRunRegistrationFragment.this,freeUserId,txtPhone.getText().toString());*/
         }
     }
 
@@ -260,8 +272,8 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         if (bundle == null)
             bundle = new Bundle();
         bundle.putString(EXTRA_ID, freeUserId);
-        bundle.putString(EXTRA_USERNAME,txtUsername.getText().toString());
-        bundle.putString(EXTRA_EMAIL,txtPhone.getText().toString() + "@selfieclub.com");
+        bundle.putString(EXTRA_USERNAME, txtUsername.getText().toString());
+        bundle.putString(EXTRA_EMAIL, txtPhone.getText().toString() + "@selfieclub.com");
         newFragment.setArguments(bundle);
         transaction.commit();
     }

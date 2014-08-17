@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.fragments.FirstRunRegistrationFragment;
 
 /**
  * Created by Leonardo on 7/9/14.
@@ -39,8 +40,8 @@ public class ApplicationManager {
      * @return
      */
     public String getUserId(){
-        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
-        String userId = settings.getString("userId","");
+        SharedPreferences prefs = activity.getPreferences(Activity.MODE_PRIVATE);
+        String userId = prefs.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
         return userId;
     }
 
