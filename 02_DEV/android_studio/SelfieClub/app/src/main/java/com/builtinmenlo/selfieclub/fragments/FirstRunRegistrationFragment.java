@@ -64,6 +64,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     private FirstRunManager manager;
 
     private static String FAILED_VALIDATING_TAG = "validation_failed";
+    private static String FIELDS_NOT_FILLED_TAG = "fields_not fill";
 
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -157,8 +158,16 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         view.findViewById(R.id.btnSignUp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.INVISIBLE);
-                manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString() + "@selfieclub.com");
+                if (txtPhone.getText().length() > 0 && txtUsername.getText().length() > 0) {
+                    getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.INVISIBLE);
+                    manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString() + "@selfieclub.com");
+                } else {
+                    SCDialog dialog = new SCDialog();
+                    dialog.setScDialogProtocol(FirstRunRegistrationFragment.this);
+                    dialog.setMessage("Please Fill Both Username and Phone Field");
+                    dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+                    dialog.show(getFragmentManager(),FIELDS_NOT_FILLED_TAG);
+                }
             }
         });
 
