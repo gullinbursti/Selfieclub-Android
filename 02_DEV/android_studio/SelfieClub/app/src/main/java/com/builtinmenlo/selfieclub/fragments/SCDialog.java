@@ -15,25 +15,38 @@ public class SCDialog extends DialogFragment {
     private String message;
     private String positiveButtonTitle;
     private String negativeButtonTitle;
+    private String neutralButtonTitle;
+    public boolean showTwoButtons=false;
     private SCDialogProtocol scDialogProtocol;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(this.getMessage())
-                .setPositiveButton(this.positiveButtonTitle, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if(getScDialogProtocol() != null)
-                            getScDialogProtocol().didClickedButton(getTag(), 1);
-                    }
-                })
-                .setNegativeButton(this.negativeButtonTitle, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if(getScDialogProtocol() != null)
-                            getScDialogProtocol().didClickedButton(getTag(), 0);
-                    }
-                });
+        builder.setMessage(this.getMessage());
+        if(showTwoButtons){
+            builder.setPositiveButton(this.positiveButtonTitle, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if(getScDialogProtocol() != null)
+                        getScDialogProtocol().didClickedButton(getTag(), 1);
+                }
+            });
+            builder.setNegativeButton(this.negativeButtonTitle, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if(getScDialogProtocol() != null)
+                        getScDialogProtocol().didClickedButton(getTag(), 0);
+                }
+            });
+        }
+        else {
+            builder.setNeutralButton(this.neutralButtonTitle, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if(getScDialogProtocol() != null)
+                        getScDialogProtocol().didClickedButton(getTag(), 0);
+                }
+            });
+        }
+
         // Create the AlertDialog object and return it
         return builder.create();
     }
@@ -69,5 +82,13 @@ public class SCDialog extends DialogFragment {
 
     public void setScDialogProtocol(SCDialogProtocol scDialogProtocol) {
         this.scDialogProtocol = scDialogProtocol;
+    }
+
+    public String getNeutralButtonTitle() {
+        return neutralButtonTitle;
+    }
+
+    public void setNeutralButtonTitle(String neutralButtonTitle) {
+        this.neutralButtonTitle = neutralButtonTitle;
     }
 }

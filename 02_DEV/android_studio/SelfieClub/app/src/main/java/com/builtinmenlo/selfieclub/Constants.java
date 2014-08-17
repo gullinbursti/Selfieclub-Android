@@ -9,6 +9,7 @@ public final class Constants {
     public static final String API_ENDPOINT = "http://volley-api.devint.selfieclubapp.com/master/";
     public static final String GET_ACTIVITY_PATH = "users/getactivity";
     public static final String GET_USERCLUBS_PATH = "users/getclubs";
+    public static final String GET_OTHER_CLUBS_PATH = "users/getOtherUsersClubs";
     public static final String CHECK_USERNAMEPASSWORD_PATH = "users/checkNameAndEmail";
     public static final String USER_PATH = "Users.php";
     public static final String SEARCH_PATH = "Search.php";

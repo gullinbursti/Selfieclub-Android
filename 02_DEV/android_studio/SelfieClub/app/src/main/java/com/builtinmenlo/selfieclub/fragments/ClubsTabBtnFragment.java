@@ -87,7 +87,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         populate();
 
         UserManager userManager = new UserManager();
-        userManager.requestUserClubs(this, "151159");
+        userManager.requestUserClubs(this, "155489");
 
 
         return view;
@@ -266,6 +266,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         String message = getResources().getString(R.string.invite_random_friends_dialog);
         SCDialog dialog = new SCDialog();
         dialog.setScDialogProtocol(this);
+        dialog.showTwoButtons=true;
         dialog.setMessage(message);
         dialog.setPositiveButtonTitle(getResources().getString(R.string.yes_button_title));
         dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));

@@ -81,7 +81,10 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         Intent intent = getIntent();
         String action = intent.getAction();
         Uri data = intent.getData();
+
         DeepLinksManager deepLinksManager = new DeepLinksManager();
+        deepLinksManager.context = this.getApplicationContext();
+        deepLinksManager.activity = this;
         deepLinksManager.deepLinkRegistry(data);
 
 
@@ -133,7 +136,7 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         //TODO Use a real userId
         ApplicationManager applicationManager = new ApplicationManager(this);
         applicationManager.setUserId("151159");
-        applicationManager.setUserName("matt2");
+        applicationManager.setUserName("matt");
 
         //Request the user's personal club
         UserManager userManager = new UserManager();

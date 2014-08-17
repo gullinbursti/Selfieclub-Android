@@ -348,6 +348,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         dialog.setMessage(message);
         dialog.setPositiveButtonTitle(getResources().getString(R.string.yes_button_title));
         dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));
+        dialog.showTwoButtons=true;
         dialog.show(getFragmentManager(),INVITE_FRIEND_TAG);
     }
 

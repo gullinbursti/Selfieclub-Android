@@ -154,7 +154,7 @@ public class UserManager
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         RequestParams requestParams = new RequestParams(data);
-        client.post(Constants.API_ENDPOINT+Constants.GET_USERCLUBS_PATH,requestParams,new JsonHttpResponseHandler() {
+        client.post(Constants.API_ENDPOINT+Constants.GET_OTHER_CLUBS_PATH,requestParams,new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(JSONObject data) {
 
@@ -330,7 +330,7 @@ public class UserManager
             User user = new User();
             user.setUsername(jsonObject.getString("username"));
             user.setUserId(jsonObject.getString("id"));
-            user.setAvatarUrl(jsonObject.getString("avatar_url"));
+            user.setAvatarUrl(jsonObject.getString("avatar"));
             return user;
         }
         catch (Exception e){
@@ -384,6 +384,7 @@ public class UserManager
             club.setClubPendingMembers(data.getJSONArray("pending"));
             club.setClubBlockedMembers(data.getJSONArray("blocked"));
             club.setClubSubmissions(data.getJSONArray("submissions"));
+            club.setClubOwner(parseUser(data.getJSONObject("owner")));
         } catch (JSONException e) {
             Log.e(this.getClass().getName(),"Error parsing the club object");
             e.printStackTrace();
