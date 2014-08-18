@@ -266,7 +266,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             scdialog.setScDialogProtocol(this);
             scdialog.setMessage("No Friends Related with this user");
             scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-            scdialog.show(getFragmentManager(), NO_FRIENDS_ERROR_TAG);
+            //scdialog.show(getFragmentManager(), NO_FRIENDS_ERROR_TAG);
         } else {
             friends = friendsViewData.getFriends();
             owner = friendsViewData.getOwner();
@@ -288,7 +288,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         scdialog.setScDialogProtocol(this);
         scdialog.setMessage(errorMessage);
         scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        scdialog.show(getFragmentManager(), RECEIVE_FRIENDS_ERROR_TAG);
+        //scdialog.show(getFragmentManager(), RECEIVE_FRIENDS_ERROR_TAG);
     }
 
     class ImageDownloaderTask extends AsyncTask<String, Void, Bitmap> {

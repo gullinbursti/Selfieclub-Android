@@ -222,7 +222,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             for (int i = 0; i < newsItem.getStatus().length(); i++) {
                 try {
                     ImageView imgSticker = new ImageView(getActivity());
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(48,48);
+                    //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(48,48);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
                     imgSticker.setLayoutParams(params);
                     viewHolder.listStickers.addView(imgSticker);
                     if (newsItem.getStatus() != null && newsItem.getStatus().length() > 0) {
@@ -375,7 +376,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             scdialog.setScDialogProtocol(this);
             scdialog.setMessage("No News Related with this user");
             scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-            scdialog.show(getFragmentManager(), NO_NEWS_TAG);
+            //scdialog.show(getFragmentManager(), NO_NEWS_TAG);
         } else {
             news = newsItemArrayList;
             adapter.notifyDataSetChanged();
@@ -389,7 +390,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
         scdialog.setScDialogProtocol(this);
         scdialog.setMessage(errorMessage);
         scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        scdialog.show(getFragmentManager(), RECEIVE_NEWS_ERROR_TAG);
+        //scdialog.show(getFragmentManager(), RECEIVE_NEWS_ERROR_TAG);
     }
 
     @Override
@@ -398,8 +399,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
         SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
                 Activity.MODE_PRIVATE);
         String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        //clubManager.requestNews(this, "155489");
-        clubManager.requestNews(this, userId);
+        clubManager.requestNews(this, "155489");
+        //clubManager.requestNews(this, userId);
     }
 
     @Override
