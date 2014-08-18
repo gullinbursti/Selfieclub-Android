@@ -21,10 +21,13 @@ package com.builtinmenlo.selfieclub.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.fragments.FirstRunRegistrationFragment;
+import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -39,6 +42,8 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
+        PicoCandyManager.sharedInstance().registerApp(getApplicationContext());
+
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -48,13 +53,15 @@ public class SplashActivity extends Activity {
 
             @Override
             public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                Intent i = new Intent(SplashActivity.this, FirstRunActivity.class);
-                //Intent i = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(i);
-
-                // close this activity
+                SharedPreferences preferences = getSharedPreferences("prefs",
+                        MODE_PRIVATE);
+                String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
+                Intent intent;
+                if (userId.length() > 0)
+                    intent = new Intent(SplashActivity.this, MainActivity.class);
+                else
+                    intent = new Intent(SplashActivity.this, FirstRunActivity.class);
+                startActivity(intent);
                 finish();
             }
         }, SPLASH_TIME_OUT);

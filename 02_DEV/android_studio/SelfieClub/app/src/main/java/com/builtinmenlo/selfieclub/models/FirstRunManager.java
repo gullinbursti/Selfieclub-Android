@@ -124,12 +124,9 @@ public class FirstRunManager {
                     public void onFailure(Throwable e, String response) {
                         firstRunProtocol.didFailRegisteringUser(FIRSTRUN_ERROR.USER_REGISTRATION_ERROR, response);
                     }
-
                 }
         );
     }
-
-
 
     public void sendPIN(final PINVerificationProtocol pinVerificationProtocol, String userId,String phoneNumber){
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();

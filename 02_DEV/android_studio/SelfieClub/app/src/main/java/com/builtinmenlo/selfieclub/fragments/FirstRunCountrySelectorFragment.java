@@ -53,7 +53,6 @@ public class FirstRunCountrySelectorFragment extends Fragment {
     //] class properties ]>
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     public static final String EXTRA_CODE = "country_code";
-    public static final String EXTRA_USERNAME = "username";
 
     private Bundle bundle;
     public ListView lv;

@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
@@ -46,6 +47,7 @@ import com.builtinmenlo.selfieclub.dataSources.NewsItem;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.NewsFeedProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
+import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.StikersProtocol;
 import com.picocandy.android.data.PCContent;
 import com.picocandy.android.data.PCContentGroup;
@@ -70,7 +72,7 @@ import java.util.Date;
 
 
 // <[!] class delaration [¡]>
-public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, StikersProtocol {
+public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, StikersProtocol, SCDialogProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
@@ -78,6 +80,9 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     public ListView lv;
     private MyCustomAdapter adapter;
     private ProgressBar loadingIcon;
+
+    private static String RECEIVE_NEWS_ERROR_TAG = "news_error";
+    private static String NO_NEWS_TAG = "no_news";
 
     // <*] class constructor [*>
     public NewsTabBtnFragment() {
@@ -88,6 +93,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
         View view = inflater.inflate(R.layout.news_tab, container, false);
         lv = (ListView) view.findViewById(android.R.id.list);
         news = new ArrayList<NewsItem>();
+        loadingIcon = (ProgressBar)view.findViewById(R.id.loadingIcon);
         populate();
 
         PicoCandyManager.sharedInstance().requestStickers(this);
@@ -363,18 +369,45 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     }
 
     public void didReceiveNewsFeed(ArrayList<NewsItem> newsItemArrayList) {
-        getActivity().findViewById(R.id.loadingIcon).setVisibility(View.INVISIBLE);
-        news = newsItemArrayList;
-        adapter.notifyDataSetChanged();
+        loadingIcon.setVisibility(View.INVISIBLE);
+        if (newsItemArrayList.size() < 1 ) {
+            SCDialog scdialog = new SCDialog();
+            scdialog.setScDialogProtocol(this);
+            scdialog.setMessage("No News Related with this user");
+            scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+            scdialog.show(getFragmentManager(), NO_NEWS_TAG);
+        } else {
+            news = newsItemArrayList;
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public void didReceiveNewsFeedError(String errorMessage) {
-        getActivity().findViewById(R.id.loadingIcon).setVisibility(View.INVISIBLE);
+        //getActivity().findViewById(R.id.loadingIcon).setVisibility(View.INVISIBLE);
+        loadingIcon.setVisibility(View.INVISIBLE);
+        SCDialog scdialog = new SCDialog();
+        scdialog.setScDialogProtocol(this);
+        scdialog.setMessage(errorMessage);
+        scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        scdialog.show(getFragmentManager(), RECEIVE_NEWS_ERROR_TAG);
     }
 
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
         ClubManager clubManager = new ClubManager();
-        clubManager.requestNews(this, "155489");
+        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
+                Activity.MODE_PRIVATE);
+        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
+        //clubManager.requestNews(this, "155489");
+        clubManager.requestNews(this, userId);
+    }
+
+    @Override
+    public void didClickedButton(String dialogTag, int buttonIndex){
+        if(dialogTag.equalsIgnoreCase(RECEIVE_NEWS_ERROR_TAG)){
+            if(buttonIndex==1){
+
+            }
+        }
     }
 }

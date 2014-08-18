@@ -89,11 +89,8 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         deepLinksManager.deepLinkRegistry(data);
 
         setContentView(R.layout.activity_main);
-        PicoCandyManager.sharedInstance().registerApp(getApplicationContext());
         getOverflowMenu();
 
-        setContentView(R.layout.activity_main);
-        getOverflowMenu();
         ActionBar topNavActionBar = getActionBar();
         topNavActionBar.setDisplayShowTitleEnabled(false);
         topNavActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
