@@ -181,7 +181,7 @@ public class Util {
 
     public static void uploadPhotoToS3(File imageFile, String fileName){
         AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET));
-        s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
+        //s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
         PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile);
         s3Client.putObject(por);
 
