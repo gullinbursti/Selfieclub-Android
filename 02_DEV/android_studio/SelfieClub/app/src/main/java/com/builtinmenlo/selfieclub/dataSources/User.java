@@ -7,6 +7,7 @@ public class User {
     private String username;
     private String userId;
     private String avatarUrl;
+    private String phoneNumber;
 
 
 
@@ -34,4 +35,11 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }
