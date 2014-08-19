@@ -1,5 +1,6 @@
 package com.builtinmenlo.selfieclub.models;
 
+import android.content.ContentResolver;
 import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
@@ -239,7 +240,7 @@ public class UserManager
         );
     }
 
-    public void requestFriends(final UserFriendsProtocol userFriendsProtocol, String userId, String phoneNumbers){
+    public void requestFriends(final UserFriendsProtocol userFriendsProtocol, String userId, String phoneNumbers, final ContentResolver contentResolver){
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
@@ -261,6 +262,22 @@ public class UserManager
                             for(int i=0 ; i<friendsArray.length();i++){
                                 friends.add(parseFriend(friendsArray.getJSONObject(i)));
                             }
+                            //Add the phone's contacts
+                            PhoneManager phoneManager = new PhoneManager();
+                            ArrayList<HashMap<String,String>> phoneContacts = phoneManager.getContacts(contentResolver);
+                            for(int i=0;i<phoneContacts.size();i++){
+                                HashMap<String,String> contact = phoneContacts.get(i);
+                                Friend friend = new Friend();
+                                friend.setUsername(contact.get("name"));
+                                friend.setUserId("no_member");
+                                friend.setPhoneNumber(contact.get("number"));
+                                friend.setSelected(false);
+                                friend.setState(0);
+                                friend.setAvatarUrl(Constants.DEFAULT_AVATAR_URL);
+                                friends.add(friend);
+                            }
+
+
                             FriendsViewData friendsViewData = new FriendsViewData();
                             friendsViewData.setOwner(owner);
                             friendsViewData.setFriends(friends);
