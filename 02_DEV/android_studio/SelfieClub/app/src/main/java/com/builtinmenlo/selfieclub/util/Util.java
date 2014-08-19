@@ -2,12 +2,13 @@ package com.builtinmenlo.selfieclub.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
-
+import android.widget.ImageView;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -101,7 +102,11 @@ public class Util {
         }
         Bitmap result = null;
         try{
-            result = Picasso.with(context).load(imageFile).resize(width,height).centerCrop().get();
+            ImageView mImageView = new ImageView(context);
+            Picasso.with(context).load(imageFile).resize(width,height).centerCrop().into(mImageView);
+            result = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            Canvas canvas = new Canvas(result);
+            mImageView.draw(canvas);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             result.compress(Bitmap.CompressFormat.JPEG,100,bos);
             byte[] bitmapData = bos.toByteArray();
