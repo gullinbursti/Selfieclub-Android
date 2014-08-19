@@ -10,9 +10,15 @@ import android.net.Uri;
 import android.telephony.TelephonyManager;
 import android.widget.ImageView;
 
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.TransferManagerConfiguration;
+import com.amazonaws.services.s3.transfer.Upload;
+import com.amazonaws.services.s3.transfer.model.UploadResult;
 import com.builtinmenlo.selfieclub.Constants;
 import com.squareup.picasso.Picasso;
 
@@ -185,10 +191,56 @@ public class Util {
     }
 
     public static void uploadPhotoToS3(File imageFile, String fileName){
-        AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET));
-        //s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
+        AWSCredentials credential = new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET);
+
+// TransferManager manages its own thread pool, so
+// please share it when possible.
+
+        ClientConfiguration s3Config = new ClientConfiguration();
+// Sets the maximum number of allowed open HTTP connections.
+        s3Config.setMaxConnections(5);
+// Sets the amount of time to wait (in milliseconds) for data
+// to be transferred over a connection.
+        s3Config.setSocketTimeout(30000);
+
+        AmazonS3Client s3Client = new AmazonS3Client(credential, s3Config);
+        TransferManager manager = new TransferManager(s3Client);
+        TransferManagerConfiguration tmConfig = new TransferManagerConfiguration();
+// Sets the minimum part size for upload parts.
+        tmConfig.setMinimumUploadPartSize(5 * 1024 * 1024);
+// Sets the size threshold in bytes for when to use multipart uploads.
+        tmConfig.setMultipartUploadThreshold(5 * 1024 * 1024);
+
+        manager.setConfiguration(tmConfig);
+// Transfer a file to an S3 bucket.
+        /*s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
+        for (Bucket bucket : s3Client.listBuckets()) {
+            System.out.println("Bucket:" + bucket.getName());
+        }*/
+        //Upload upload = manager.upload(Constants.AMAZON_S3_BUCKET, fileName, imageFile);
         PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile);
-        s3Client.putObject(por);
+        Upload upload = manager.upload(por);
+        try {
+            if (upload.isDone() == false) {
+                System.out.println("Transfer: " + upload.getDescription());
+                System.out.println("  - State: " + upload.getState());
+                System.out.println("  - Progress: " + upload.getProgress().getBytesTransferred());
+            }
+            UploadResult result = upload.waitForUploadResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.err.print(upload.toString());
+
+        /*AmazonS3 s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET));
+        s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
+        for (Bucket bucket : s3Client.listBuckets()) {
+            System.out.println("Bucket:" + bucket.getName());
+        }
+        //PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile).withBucketName(Constants.AMAZON_S3_BUCKET).withKey(Constants.AMAZON_S3_KEY);
+        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,"/thumbs/upload.jpg",imageFile);
+        s3Client.putObject(por);*/
 
     }
 
