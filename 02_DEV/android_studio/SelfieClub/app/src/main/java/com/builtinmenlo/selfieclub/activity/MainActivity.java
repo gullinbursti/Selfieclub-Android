@@ -45,11 +45,11 @@ import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewCameraStep2Fragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
+import com.builtinmenlo.selfieclub.fragments.WebviewFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.DeepLinksManager;
 import com.builtinmenlo.selfieclub.models.KeenManager;
-import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 
@@ -173,11 +173,41 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     // handle click events for action bar items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        String url = null;
         switch (item.getItemId()) {
+            case R.id.menuTerms:
+                url = "Http://www.getselfieclub.com/terms.html";
+
+                break;
+            case R.id.menuNetworkStatus:
+                url = "Http://mobile.twitter.com/selfiec_status";
+                break;
+            case R.id.menuRate:
+                url = "Http://www.getselfieclub.com/rateapp.html";
+                break;
+            case  R.id.menuPrivacyPolicy:
+                url = "Http://www.getselfieclub.com/privacy.html";
+                break;
+            case R.id.menuSupport:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri
+                        .parse("mailto:support@getselfieclub.com"));
+                startActivity(intent);
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
+
+        if (url!=null) {
+            WebviewFragment newFragment = new WebviewFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, newFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString(WebviewFragment.EXTRA_URL_ITEM, url);
+            newFragment.setArguments(bundle);
+            transaction.commit();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
     @Override
     public void onResume(){

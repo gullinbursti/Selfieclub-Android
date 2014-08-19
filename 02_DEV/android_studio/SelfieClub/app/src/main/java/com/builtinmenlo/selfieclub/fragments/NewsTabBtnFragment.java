@@ -94,6 +94,16 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
         lv = (ListView) view.findViewById(android.R.id.list);
         news = new ArrayList<NewsItem>();
         loadingIcon = (ProgressBar)view.findViewById(R.id.loadingIcon);
+        view.findViewById(R.id.txtError).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CameraFragment newFragment = new CameraFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, newFragment);
+                newFragment.setNextView(new NewCameraStep2Fragment());
+                transaction.commit();
+            }
+        });
         populate();
 
         PicoCandyManager.sharedInstance().requestStickers(this);
@@ -376,6 +386,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             scdialog.setScDialogProtocol(this);
             scdialog.setMessage("No News Related with this user");
             scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+            getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
+
             //scdialog.show(getFragmentManager(), NO_NEWS_TAG);
         } else {
             news = newsItemArrayList;
@@ -390,7 +402,10 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
         scdialog.setScDialogProtocol(this);
         scdialog.setMessage(errorMessage);
         scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        //scdialog.show(getFragmentManager(), RECEIVE_NEWS_ERROR_TAG);
+        getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
+
+
+        scdialog.show(getFragmentManager(), RECEIVE_NEWS_ERROR_TAG);
     }
 
     @Override
@@ -399,8 +414,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
         SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
                 Activity.MODE_PRIVATE);
         String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        clubManager.requestNews(this, "155489");
-        //clubManager.requestNews(this, userId);
+        //clubManager.requestNews(this, "155489");
+        clubManager.requestNews(this, userId);
     }
 
     @Override
