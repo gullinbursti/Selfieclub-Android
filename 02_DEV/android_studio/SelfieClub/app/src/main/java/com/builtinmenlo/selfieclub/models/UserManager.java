@@ -10,6 +10,7 @@ import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -247,10 +248,11 @@ public class UserManager
         data.put("action","5");
         data.put("phone",phoneNumbers);
         RequestParams requestParams = new RequestParams(data);
-        client.post(Constants.API_ENDPOINT+Constants.USER_PATH,requestParams,new JsonHttpResponseHandler() {
+        client.post(Constants.API_ENDPOINT+Constants.USER_PATH,requestParams,new AsyncHttpResponseHandler() {
                     @Override
-                    public void onSuccess(JSONObject data) {
+                    public void onSuccess(String strData) {
                         try{
+                            JSONObject data = new JSONObject( strData);
                             Friend owner = new Friend();
                             owner.setUserId(data.getString("id"));
                             owner.setAvatarUrl(data.getString("avatar_url"));

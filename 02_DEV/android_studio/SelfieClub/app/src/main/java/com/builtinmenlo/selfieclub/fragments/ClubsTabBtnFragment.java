@@ -95,8 +95,8 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
                 Activity.MODE_PRIVATE);
         String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        userManager.requestUserClubs(this, "155489");
-        //userManager.requestUserClubs(this, userId);
+        //userManager.requestUserClubs(this, "155489");
+        userManager.requestUserClubs(this, userId);
 
 
         return view;

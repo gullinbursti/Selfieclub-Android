@@ -38,22 +38,26 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
+import com.builtinmenlo.selfieclub.models.ClubManager;
+import com.builtinmenlo.selfieclub.models.CreateClubProtocol;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
 import com.builtinmenlo.selfieclub.models.PINVerificationProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
+import com.builtinmenlo.selfieclub.util.Util;
 import com.picocandy.android.data.PCContent;
 import com.picocandy.android.data.PCContentGroup;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
 // <[!] class delaration [¡]>
-public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol, SCDialogProtocol, PINVerificationProtocol {
+public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol, SCDialogProtocol, PINVerificationProtocol, CreateClubProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     public static final String EXTRA_USERNAME = "username";
@@ -226,12 +230,33 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(FirstRunRegistrationFragment.EXTRA_ID, freeUserId);
             editor.apply();
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            getActivity().startActivity(intent);
-            getActivity().finish();
-            /*dialog = ProgressDialog.show(getActivity(), "", "Sending PIN...");
-            manager.sendPIN(FirstRunRegistrationFragment.this,freeUserId,txtPhone.getText().toString());*/
+
+
+            ClubManager clubManager = new ClubManager();
+            Random rn = new Random();
+            int rnd = rn.nextInt(10)+1;
+            String suffix="10";
+            if(rnd!=10){
+                suffix="0"+rnd;
+            }
+
+            String clubAvatar = String.format("http://hotornot-challenges.s3.amazonaws.com/pc-0%sMedium_320x320.jpg", suffix);
+
+            clubManager.createClub(this,freeUserId,txtUsername.getText().toString(),"Personal club",clubAvatar);
+
+
+
         }
+    }
+    @Override
+    public void didCreateClub(){
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        getActivity().startActivity(intent);
+        getActivity().finish();
+    }
+    @Override
+    public void didFailCreatingClub(String errorMessage){
+        Log.w("FirstRunRegistrationFragment",errorMessage);
     }
 
     @Override
