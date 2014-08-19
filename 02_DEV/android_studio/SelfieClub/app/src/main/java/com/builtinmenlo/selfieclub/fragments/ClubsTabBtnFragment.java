@@ -163,7 +163,13 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
             gridClubs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    showInviteDialog(clubs.get(position));
+                    //showInviteDialog(clubs.get(position));
+                    SCDialog dialog = new SCDialog();
+                    dialog.setNeutralButtonTitle(getString(R.string.ok_button_title));
+                    dialog.setMessage("Coming soon ...");
+                    dialog.showTwoButtons = false;
+                    dialog.show(getFragmentManager(),"");
+
                 }
             });
         }
