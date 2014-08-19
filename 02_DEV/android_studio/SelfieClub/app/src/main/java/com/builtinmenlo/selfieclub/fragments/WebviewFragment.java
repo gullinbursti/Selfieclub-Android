@@ -23,17 +23,21 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.builtinmenlo.selfieclub.R;
 
 public class WebviewFragment extends Fragment {
     public static final String EXTRA_URL_ITEM = "urlAdress";
+
+    private ProgressBar loadingIcon;
 
     public WebviewFragment() {
     }
@@ -41,6 +45,8 @@ public class WebviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         final View view = inflater.inflate(R.layout.webview, container, false);
+
+        loadingIcon = (ProgressBar)view.findViewById(R.id.loadingIcon);
 
         view.findViewById(R.id.btnClose).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +73,18 @@ public class WebviewFragment extends Fragment {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return false;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                loadingIcon.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                loadingIcon.setVisibility(View.INVISIBLE);
             }
         });
         webview.loadUrl(url);
