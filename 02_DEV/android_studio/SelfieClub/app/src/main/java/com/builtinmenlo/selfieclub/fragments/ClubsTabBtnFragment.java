@@ -261,6 +261,8 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
             scdialog.setScDialogProtocol(this);
             scdialog.setMessage("No Clubs Related with this user");
             scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+            getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
+
             //scdialog.show(getFragmentManager(), NO_CLUBS_ERROR_TAG);
         } else {
             Log.i(this.getActivity().getClass().getName(), userClubs.toString());
@@ -275,7 +277,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         scdialog.setScDialogProtocol(this);
         scdialog.setMessage(errorMessage);
         scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        //scdialog.show(getFragmentManager(), RECEIVE_CLUBS_ERROR_TAG);
+        scdialog.show(getFragmentManager(), RECEIVE_CLUBS_ERROR_TAG);
     }
 
     //Dialog protocol

@@ -271,6 +271,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             scdialog.setMessage("No Friends Related with this user");
             scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
             //scdialog.show(getFragmentManager(), NO_FRIENDS_ERROR_TAG);
+            getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
         } else {
             friends = friendsViewData.getFriends();
             owner = friendsViewData.getOwner();

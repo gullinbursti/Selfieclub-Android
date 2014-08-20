@@ -38,7 +38,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.activity.CameraPreview;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -95,7 +94,7 @@ public class CameraStep2Fragment extends Fragment {
         bundle = getArguments();
         byte[] avatarImage = null;
         if (bundle!= null) {
-            avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
+            avatarImage = bundle.getByteArray(CameraFragment.EXTRA_IMAGE);
         }
 
         ImageView avatar = (ImageView) view.findViewById(R.id.imgAvatar);
