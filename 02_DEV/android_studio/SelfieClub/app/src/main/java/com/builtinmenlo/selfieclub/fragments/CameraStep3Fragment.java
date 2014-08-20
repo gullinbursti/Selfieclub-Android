@@ -49,8 +49,6 @@ import com.builtinmenlo.selfieclub.util.ImageDownloader;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,15 +135,12 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                     avatarImage = bundle.getByteArray(CameraFragment.EXTRA_IMAGE);
                     selected = bundle.getStringArrayList(EXTRA_STICKERS);
                 }
-                try {
-                    File file = new File(getActivity().getCacheDir().getPath() + "/temp.jpg");
+                    /*File file = new File(getActivity().getCacheDir().getPath() + "/temp.jpg");
                     FileOutputStream fos = new FileOutputStream(file);
                     fos.write(avatarImage);
-                    fos.close();
-                    manager.submitPhoto(CameraStep3Fragment.this, getActivity(), "155489", "3560", file, selected);
-                } catch (java.io.IOException e) {
-                    e.printStackTrace();
-                }
+                    fos.close();*/
+                    manager.submitPhoto(CameraStep3Fragment.this, getActivity(), "155489", "3560", avatarImage, selected);
+
             }});
 
         hideKeyboard(view);

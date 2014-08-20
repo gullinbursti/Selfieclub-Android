@@ -1,8 +1,8 @@
 package com.builtinmenlo.selfieclub.models;
 
 
-
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
@@ -13,7 +13,6 @@ import com.builtinmenlo.selfieclub.util.Util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -311,7 +310,7 @@ public class ClubManager {
                             Context context,
                             String userId,
                             String clubId,
-                            File imageFile,
+                            byte[] imageFile,
                             ArrayList<String>subjects){
 
         String uniqueString = Util.generateUniqueString(context);

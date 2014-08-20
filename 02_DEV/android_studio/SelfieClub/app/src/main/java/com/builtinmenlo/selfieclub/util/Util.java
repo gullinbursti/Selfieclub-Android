@@ -2,13 +2,12 @@ package com.builtinmenlo.selfieclub.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
-import android.widget.ImageView;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
@@ -20,7 +19,6 @@ import com.amazonaws.services.s3.transfer.TransferManagerConfiguration;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
 import com.builtinmenlo.selfieclub.Constants;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -83,7 +81,9 @@ public class Util {
 
     }
 
-    public static File resizeImage(IMAGE_SIZES size, File imageFile, Context context){
+
+
+    public static File resizeImage(IMAGE_SIZES size, byte[] imageFile, Context context){
         int width = 50;
         int height = 50;
         switch (size){
@@ -106,25 +106,24 @@ public class Util {
 
 
         }
-        Bitmap result = null;
+
         try{
-            ImageView mImageView = new ImageView(context);
-            Picasso.with(context).load(imageFile).resize(width,height).centerCrop().into(mImageView);
-            result = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-            Canvas canvas = new Canvas(result);
-            mImageView.draw(canvas);
+            Bitmap source = BitmapFactory.decodeByteArray(imageFile, 0, imageFile.length);
+            Bitmap result = Bitmap.createScaledBitmap(source, width, height, false);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             result.compress(Bitmap.CompressFormat.JPEG,100,bos);
             byte[] bitmapData = bos.toByteArray();
             bos.flush();
             bos.close();
-            FileOutputStream fos = new FileOutputStream(imageFile);
+            File file = new File(context.getCacheDir().getPath() + "/temp.jpg");
+            FileOutputStream fos = new FileOutputStream(file);
             fos.write(bitmapData);
+            fos.close();
+            return file;
         }
         catch (Exception e){
             return null;
         }
-        return imageFile;
     }
 
 
@@ -231,7 +230,7 @@ public class Util {
             e.printStackTrace();
         }
 
-        System.err.print(upload.toString());
+        System.err.print(upload.getDescription().toString());
 
         /*AmazonS3 s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET));
         s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
