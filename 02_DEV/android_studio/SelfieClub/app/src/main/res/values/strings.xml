@@ -23,7 +23,6 @@
     <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
 
     <string name="notifications">Notifications</string>
-    <string name="search_friends_hint">Search for friends</string>
 
     <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
 
@@ -50,4 +49,19 @@
     <string name="invite_random_friends_dialog">To enter the club please invite some friends!</string>
     <string name="already_club_member_dialog">You are already a member!</string>
     <string name="would_you_like_joinclub_dialog">Would you like to join %s ?</string>
+
+    <!-- Layout messages -->
+
+    <string name="btn_close_label">Close</string>
+    <string name="btn_flip_label">Flip</string>
+    <string name="btn_camera_roll_label">Camera Roll</string>
+    <string name="btn_next_label">Next</string>
+    <string name="btn_submit_label">Submit</string>
+
+    <string name="title_how_do_you_feel">How do you feel?</string>
+    <string name="title_select_club">Select Club</string>
+
+    <string name="label_is_feeling">is feeling...</string>
+    <string name="label_no_clubs">No clubs available</string>
+
 </resources>

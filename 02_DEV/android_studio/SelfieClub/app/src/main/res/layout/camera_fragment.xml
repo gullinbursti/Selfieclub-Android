@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnClose"
         android:background="@android:color/transparent"
-        android:text="Close"
+        android:text="@string/btn_close_label"
         android:textStyle="bold"
         android:layout_margin="5dp"/>
 
@@ -36,7 +36,7 @@
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
         android:id="@+id/btnFlip"
-        android:text="Flip"
+        android:text="@string/btn_flip_label"
         android:textStyle="bold"
         android:layout_margin="5dp"/>
 
@@ -49,7 +49,7 @@
         android:background="@android:color/transparent"
         android:id="@+id/btnGallery"
         android:textStyle="bold"
-        android:text="Camera Roll"
+        android:text="@string/btn_camera_roll_label"
         android:layout_margin="5dp"/>
 
     <ImageButton
