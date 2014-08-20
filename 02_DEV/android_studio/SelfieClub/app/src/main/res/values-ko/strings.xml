@@ -16,22 +16,24 @@
 
     <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
 
-    <string name="tab_friends_title">Friends</string>
-    <string name="tab_clubs_title">Clubs</string>
-    <string name="tab_news_title">News</string>
+    <string name="tab_friends_title">친구</string>
+    <string name="tab_clubs_title">클럽</string>
+    <string name="tab_news_title">뉴스</string>
 
-    <string name="menu_terms">Terms of Service</string>
-    <string name="menu_privacy_policy">Privacy Policy</string>
-    <string name="menu_support">Support</string>
-    <string name="menu_rate_app">Rate this app</string>
-    <string name="menu_network_status">Network Status</string>
+    <string name="menu_terms">서비스 약관</string>
+    <string name="menu_privacy_policy">개인정보 보호정책</string>
+    <string name="menu_support">지원 요청</string>
+    <string name="menu_rate_app">이 앱을 평가하기</string>
+    <string name="menu_network_status">네트워크 상태</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
 
     <string name="title_activity_invite">Invite</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string name="yes_button_title">YES</string>
-    <string name="no_button_title">NO</string>
+    <string name="yes_button_title">예</string>
+    <string name="no_button_title">아니요</string>
     <string name="ok_button_title">OK</string>
     <string name="retry_button_title">RETRY</string>
 
@@ -43,34 +45,34 @@
 
     <!-- Layout messages -->
 
-    <string name="btn_close_label">Close</string>
+    <string name="btn_close_label">뒤로</string>
     <string name="btn_flip_label">Flip</string>
     <string name="btn_camera_roll_label">Camera Roll</string>
-    <string name="btn_next_label">Next</string>
-    <string name="btn_submit_label">Submit</string>
+    <string name="btn_next_label">다음</string>
+    <string name="btn_submit_label">제출</string>
 
-    <string name="title_how_do_you_feel">How do you feel?</string>
-    <string name="title_select_club">Select Club</string>
+    <string name="title_how_do_you_feel">느낌을 선택</string>
+    <string name="title_select_club">클럽 선택하기</string>
 
-    <string name="label_is_feeling">is feeling...</string>
+    <string name="label_is_feeling">기분이...</string>
     <string name="label_no_clubs">No clubs available</string>
     <string name="label_no_friends">No contacts available</string>
-    <string name="label_no_news">No posts yet, tap here to create</string>
-    <string name="label_select_all_clubs">Select All</string>
-    <string name="label_create_a_club">Create a club</string>
+    <string name="label_no_news">게시물이 없습니다, 작성하려면 여기를 누르세요</string>
+    <string name="label_select_all_clubs">모든 클럽을 선택</string>
+    <string name="label_create_a_club">클럽 만들기</string>
     <string name="label_coming_soon">Coming soon ...</string>
     <string name="label_fill_phone_username">Please Fill Both Username and Phone Fields</string>
     <string name="label_minutes_ago"> mins ago</string>
-    <string name="label_checking_username">Checking Username...</string>
-    <string name="label_please_wait">Please Wait...</string>
+    <string name="label_checking_username">username_ 확인 중</string>
+    <string name="label_please_wait">로딩 중...</string>
     <string name="label_register_user">Authenticating User...</string>
     <string name="label_uploading_image">Uploading Image...</string>
     <string name="label_successfully_uploaded">Succesfully Uploaded!</string>
 
 
 
-    <string name="hint_enter_username">Enter Username</string>
-    <string name="hint_enter_phone">Enter Phone #</string>
+    <string name="hint_enter_username">사용자 이름</string>
+    <string name="hint_enter_phone">전화번호</string>
 
     <string name="default_country_code">1</string>
     <string name="default_followers_number">0</string>

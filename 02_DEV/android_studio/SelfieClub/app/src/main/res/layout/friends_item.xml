@@ -34,7 +34,7 @@
         android:layout_toRightOf="@id/imgFollowers"
         android:singleLine="true"
         android:textColor="#dadada"
-        android:text="0"
+        android:text="@string/default_followers_number"
         android:textSize="16sp" />
 
 

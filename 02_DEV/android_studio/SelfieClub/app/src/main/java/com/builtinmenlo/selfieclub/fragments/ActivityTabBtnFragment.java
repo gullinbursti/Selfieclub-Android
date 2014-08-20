@@ -202,7 +202,6 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
             TextView lblText = (TextView) convertView.findViewById(R.id.lblText);
 
             lblText.setText(notifications.get(position).getMessage());
-            //lblText.setText("Hola");
 
             return convertView;
         }

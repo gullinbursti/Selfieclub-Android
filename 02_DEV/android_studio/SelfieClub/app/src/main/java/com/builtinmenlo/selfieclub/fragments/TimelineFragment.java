@@ -87,7 +87,7 @@ public class TimelineFragment extends Fragment {
 
         long time = (((Calendar.getInstance().getTimeInMillis() - calendar.getTimeInMillis()) / 1000) % 3600) / 60;
 
-        ((TextView)view.findViewById(R.id.lblTimeStamp)).setText(String.valueOf(time) + " mins ago");
+        ((TextView)view.findViewById(R.id.lblTimeStamp)).setText(String.valueOf(time) + getString(R.string.label_minutes_ago));
 
         Picasso.with(getActivity()).load(newsItem.getImageUrl() + "Tab_640x960.jpg").into((ImageView)view.findViewById(R.id.background), new Callback() {
 

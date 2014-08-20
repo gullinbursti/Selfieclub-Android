@@ -166,7 +166,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
                     //showInviteDialog(clubs.get(position));
                     SCDialog dialog = new SCDialog();
                     dialog.setNeutralButtonTitle(getString(R.string.ok_button_title));
-                    dialog.setMessage("Coming soon ...");
+                    dialog.setMessage(getString(R.string.label_coming_soon));
                     dialog.showTwoButtons = false;
                     dialog.show(getFragmentManager(),"");
 
@@ -203,7 +203,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
                 convertView = inflater.inflate(R.layout.clubs_item, parent, false);
                 viewHolder = new ViewHolder();
                 TextView lblText = (TextView) convertView.findViewById(R.id.lblClubName);
-                lblText.setText("Create a club");
+                lblText.setText(R.string.label_create_a_club);
                 viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imgClub);
                 viewHolder.imageView.setImageResource(R.drawable.selector_add_club);
                 viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
@@ -257,13 +257,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
     public void didReceiveUserClubs(ArrayList<Club> userClubs) {
         loadingIcon.setVisibility(View.INVISIBLE);
         if (userClubs.size() < 1 ) {
-            SCDialog scdialog = new SCDialog();
-            scdialog.setScDialogProtocol(this);
-            scdialog.setMessage("No Clubs Related with this user");
-            scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
             getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
-
-            //scdialog.show(getFragmentManager(), NO_CLUBS_ERROR_TAG);
         } else {
             Log.i(this.getActivity().getClass().getName(), userClubs.toString());
             clubs = userClubs;

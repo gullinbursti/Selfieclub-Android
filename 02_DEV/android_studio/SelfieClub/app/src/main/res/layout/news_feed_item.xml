@@ -41,7 +41,6 @@
         android:singleLine="true"
         android:textColor="#bababa"
         android:layout_marginTop="10dp"
-        android:text="time"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp" />
 
@@ -52,14 +51,12 @@
         android:layout_toLeftOf="@+id/lblTime"
         android:layout_toRightOf="@+id/lblStatus"
         android:singleLine="true"
-        android:text="club name"
         android:textColor="#bababa"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp" />
 
     <TextView
         android:id="@+id/lblStatus"
-        android:text="status"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

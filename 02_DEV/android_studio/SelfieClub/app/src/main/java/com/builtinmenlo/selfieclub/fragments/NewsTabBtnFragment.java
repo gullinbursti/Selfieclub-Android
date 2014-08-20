@@ -382,13 +382,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     public void didReceiveNewsFeed(ArrayList<NewsItem> newsItemArrayList) {
         loadingIcon.setVisibility(View.INVISIBLE);
         if (newsItemArrayList.size() < 1 ) {
-            SCDialog scdialog = new SCDialog();
-            scdialog.setScDialogProtocol(this);
-            scdialog.setMessage("No News Related with this user");
-            scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
             getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
-
-            //scdialog.show(getFragmentManager(), NO_NEWS_TAG);
         } else {
             news = newsItemArrayList;
             adapter.notifyDataSetChanged();
@@ -396,16 +390,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     }
 
     public void didReceiveNewsFeedError(String errorMessage) {
-        //getActivity().findViewById(R.id.loadingIcon).setVisibility(View.INVISIBLE);
-        loadingIcon.setVisibility(View.INVISIBLE);
-        SCDialog scdialog = new SCDialog();
-        scdialog.setScDialogProtocol(this);
-        scdialog.setMessage(errorMessage);
-        scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
         getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
-
-
-        scdialog.show(getFragmentManager(), RECEIVE_NEWS_ERROR_TAG);
+        loadingIcon.setVisibility(View.INVISIBLE);
     }
 
     @Override

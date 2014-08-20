@@ -23,10 +23,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.http.AndroidHttpClient;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,13 +50,6 @@ import com.builtinmenlo.selfieclub.models.UserManager;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
 import com.builtinmenlo.selfieclub.util.Util;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -266,111 +255,17 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     public void didReceiveFriendsList(FriendsViewData friendsViewData) {
         loadingIcon.setVisibility(View.INVISIBLE);
         if (friendsViewData.getFriends().size() < 1 ) {
-            SCDialog scdialog = new SCDialog();
-            scdialog.setScDialogProtocol(this);
-            scdialog.setMessage("No Friends Related with this user");
-            scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-            //scdialog.show(getFragmentManager(), NO_FRIENDS_ERROR_TAG);
             getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
         } else {
             friends = friendsViewData.getFriends();
             owner = friendsViewData.getOwner();
             adapter.notifyDataSetChanged();
         }
-        /*if (friendsViewData.getFriends().size() > 8) {
-            lv.setSelection(8);
-        } else {
-            lv.setSelection(friendsViewData.getFriends().size());
-        }
-        lv.smoothScrollToPosition(0);*/
-
     }
 
     public void didReceiveFriendsListError(String errorMessage) {
         loadingIcon.setVisibility(View.INVISIBLE);
-        System.err.println(errorMessage);
-        SCDialog scdialog = new SCDialog();
-        scdialog.setScDialogProtocol(this);
-        scdialog.setMessage(errorMessage);
-        scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        //scdialog.show(getFragmentManager(), RECEIVE_FRIENDS_ERROR_TAG);
-    }
-
-    class ImageDownloaderTask extends AsyncTask<String, Void, Bitmap> {
-        private final WeakReference<ImageView> imageViewReference;
-
-        public ImageDownloaderTask(ImageView imageView) {
-            imageViewReference = new WeakReference<ImageView>(imageView);
-        }
-
-        @Override
-        // Actual download method, run in the task thread
-        protected Bitmap doInBackground(String... params) {
-            // params comes from the execute() call: params[0] is the url.
-            return downloadBitmap(params[0]);
-        }
-
-        @Override
-        // Once the image is downloaded, associates it to the imageView
-        protected void onPostExecute(Bitmap bitmap) {
-            if (isCancelled()) {
-                bitmap = null;
-            }
-
-            if (imageViewReference != null) {
-                ImageView imageView = imageViewReference.get();
-                if (imageView != null) {
-
-                    if (bitmap != null) {
-                        imageView.setImageBitmap(bitmap);
-                    } else {
-                        imageView.setImageDrawable(imageView.getContext().getResources()
-                                .getDrawable(R.drawable.friends_item_image_mask));
-                    }
-                }
-
-            }
-        }
-
-        Bitmap downloadBitmap(String url) {
-            final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-            final HttpGet getRequest = new HttpGet(url);
-            try {
-                HttpResponse response = client.execute(getRequest);
-                final int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode != HttpStatus.SC_OK) {
-                    Log.w("ImageDownloader", "Error " + statusCode
-                            + " while retrieving bitmap from " + url);
-                    return null;
-                }
-
-                final HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    InputStream inputStream = null;
-                    try {
-                        inputStream = entity.getContent();
-                        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        return bitmap;
-                    } finally {
-                        if (inputStream != null) {
-                            inputStream.close();
-                        }
-                        entity.consumeContent();
-                    }
-                }
-            } catch (Exception e) {
-                // Could provide a more explicit error message for IOException or
-                // IllegalStateException
-                getRequest.abort();
-                Log.w("ImageDownloader", "Error while retrieving bitmap from " + url);
-            } finally {
-                if (client != null) {
-                    client.close();
-                }
-            }
-            return null;
-        }
-
+        getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
     }
 
     public void didClickedButton(String dialogTag, int buttonIndex){

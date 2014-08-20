@@ -42,7 +42,7 @@
     <Button
         android:background="#00E942"
         android:id="@+id/btnSubmit"
-        android:text="Submit"
+        android:text="@string/btn_submit_label"
         android:layout_below="@+id/txtEnterPin"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

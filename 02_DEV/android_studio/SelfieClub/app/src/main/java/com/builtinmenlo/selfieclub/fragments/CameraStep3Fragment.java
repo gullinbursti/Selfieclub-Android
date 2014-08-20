@@ -23,6 +23,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -43,6 +44,7 @@ import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.ClubPhotoSubmissionProtocol;
+import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
@@ -57,12 +59,14 @@ import java.util.List;
 
 
 // <[!] class delaration [¡]>
-public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, ClubPhotoSubmissionProtocol {
+public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, ClubPhotoSubmissionProtocol, SCDialogProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
 
     public static final String EXTRA_STICKERS = "stickers";
+    private static final String UPLOAD_SUCCESS_TAG = "upload_succeed";
+    private static final String UPLOAD_FAILED_TAG = "upload_failed";
 
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     private ImageDownloader downloader;
@@ -72,6 +76,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
 
     private Bundle bundle;
     private ProgressBar loadingIcon;
+    private ProgressDialog waiting;
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
     private Fragment backView;
@@ -135,13 +140,11 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                     avatarImage = bundle.getByteArray(CameraFragment.EXTRA_IMAGE);
                     selected = bundle.getStringArrayList(EXTRA_STICKERS);
                 }
-                    /*File file = new File(getActivity().getCacheDir().getPath() + "/temp.jpg");
-                    FileOutputStream fos = new FileOutputStream(file);
-                    fos.write(avatarImage);
-                    fos.close();*/
-                    manager.submitPhoto(CameraStep3Fragment.this, getActivity(), "155489", "3560", avatarImage, selected);
+                waiting = ProgressDialog.show(getActivity(), "", getString(R.string.label_uploading_image));
+                manager.submitPhoto(CameraStep3Fragment.this, getActivity(), "155489", "3560", avatarImage, selected);
 
-            }});
+            }
+        });
 
         hideKeyboard(view);
         return view;
@@ -193,101 +196,101 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                             for (Club club : clubs) {
                                 club.setSelected(true);
                             }
-                         else
+                        else
                             for (Club club : clubs) {
                                 club.setSelected(false);
                             }
                         adapter.notifyDataSetChanged();
                     } else {
-                            if (clubs.get(position).isSelected()) {
-                                arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
-                                clubs.get(position).setSelected(false);
-                            } else {
-                                arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
-                                clubs.get(position).setSelected(true);
-                            }
+                        if (clubs.get(position).isSelected()) {
+                            arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+                            clubs.get(position).setSelected(false);
+                        } else {
+                            arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+                            clubs.get(position).setSelected(true);
                         }
+                    }
+                }
+            });
+        }
+    }
+
+    private class MyCustomAdapter extends ArrayAdapter<Club> {
+
+        public MyCustomAdapter(Context context, int textViewResourceId, List<Club> list) {
+            super(context, textViewResourceId, list);
+
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return clubs.size() + 1;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ViewHolder viewHolder;
+
+            if (convertView == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                convertView = inflater.inflate(R.layout.camera_step3_item, parent, false);
+                viewHolder = new ViewHolder();
+                viewHolder.imgClub = (ImageView) convertView.findViewById(R.id.imgClub);
+                viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
+                viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            if (position >= clubs.size()) {
+                viewHolder.lblClubName.setText(R.string.label_select_all_clubs);
+                Bitmap image = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
+                image.eraseColor(Color.TRANSPARENT);
+                boolean allSelected = true;
+                for (Club club : clubs) {
+                    if (!club.isSelected()) {
+                        allSelected = false;
+                        break;
+                    }
+                }
+                viewHolder.loadingImage.setVisibility(View.INVISIBLE);
+                if (allSelected)
+                    convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+                else
+                    convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+                viewHolder.imgClub.setImageBitmap(image);
+            } else {
+                Club club = clubs.get(position);
+                viewHolder.lblClubName.setText(club.getClubName());
+                if (club.isSelected())
+                    convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+                else
+                    convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+
+                Picasso.with(getActivity()).load(club.getClubImage() + "Large_640x1136.jpg").into(viewHolder.imgClub, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        viewHolder.imgClub.setVisibility(View.VISIBLE);
+                        viewHolder.loadingImage.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        viewHolder.imgClub.setVisibility(View.VISIBLE);
+                        viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                     }
                 });
             }
+
+            return convertView;
         }
-
-        private class MyCustomAdapter extends ArrayAdapter<Club> {
-
-            public MyCustomAdapter(Context context, int textViewResourceId, List<Club> list) {
-                super(context, textViewResourceId, list);
-
-            }
-
-            @Override
-            public void notifyDataSetChanged() {
-                super.notifyDataSetChanged();
-            }
-
-            @Override
-            public int getCount() {
-                return clubs.size() + 1;
-            }
-
-            @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
-                final ViewHolder viewHolder;
-
-                if (convertView == null) {
-                    LayoutInflater inflater = getActivity().getLayoutInflater();
-                    convertView = inflater.inflate(R.layout.camera_step3_item, parent, false);
-                    viewHolder = new ViewHolder();
-                    viewHolder.imgClub = (ImageView) convertView.findViewById(R.id.imgClub);
-                    viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
-                    viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
-                    convertView.setTag(viewHolder);
-                } else {
-                    viewHolder = (ViewHolder) convertView.getTag();
-                }
-
-                if (position >= clubs.size()){
-                    viewHolder.lblClubName.setText("Select All");
-                    Bitmap image = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
-                    image.eraseColor(Color.TRANSPARENT);
-                    boolean allSelected = true;
-                    for (Club club:clubs){
-                        if (!club.isSelected()) {
-                            allSelected = false;
-                            break;
-                        }
-                    }
-                    viewHolder.loadingImage.setVisibility(View.INVISIBLE);
-                    if (allSelected)
-                        convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
-                    else
-                        convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
-                    viewHolder.imgClub.setImageBitmap(image);
-                } else {
-                    Club club = clubs.get(position);
-                    viewHolder.lblClubName.setText(club.getClubName());
-                    if (club.isSelected())
-                        convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
-                    else
-                        convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
-
-                    Picasso.with(getActivity()).load(club.getClubImage() + "Large_640x1136.jpg").into(viewHolder.imgClub, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            viewHolder.imgClub.setVisibility(View.VISIBLE);
-                            viewHolder.loadingImage.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onError() {
-                            viewHolder.imgClub.setVisibility(View.VISIBLE);
-                            viewHolder.loadingImage.setVisibility(View.INVISIBLE);
-                        }
-                    });
-                }
-
-                return convertView;
-            }
-        }
+    }
 
     public void didReceiveUserClubs(ArrayList<Club> userClubs) {
         // TODO Add here the rendering on the clubs
@@ -302,13 +305,45 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
     }
 
     @Override
-    public void didSubmittedPhotoInClub(Boolean result){
-
+    public void didSubmittedPhotoInClub(Boolean result) {
+        waiting.dismiss();
+        if (result){
+        SCDialog dialog = new SCDialog();
+        dialog.setScDialogProtocol(this);
+        dialog.setMessage(getString(R.string.label_successfully_uploaded));
+        dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        dialog.showTwoButtons=false;
+        dialog.show(getFragmentManager(),UPLOAD_SUCCESS_TAG);
+            }
     }
 
     @Override
-    public void didFailSubmittingPhotoInClub(String message){
+    public void didFailSubmittingPhotoInClub(String message) {
+        waiting.dismiss();
+        SCDialog dialog = new SCDialog();
+        dialog.setScDialogProtocol(this);
+        dialog.setMessage(message);
+        dialog.setPositiveButtonTitle(getResources().getString(R.string.retry_button_title));
+        dialog.setNegativeButtonTitle(getResources().getString(R.string.ok_button_title));
+        dialog.showTwoButtons=true;
+        dialog.show(getFragmentManager(),UPLOAD_FAILED_TAG);
+    }
 
+    @Override
+    public void didClickedButton(String dialogTag, int buttonIndex){
+        if(dialogTag.equalsIgnoreCase(UPLOAD_FAILED_TAG)){
+            if(buttonIndex==1){
+                ClubManager manager = new ClubManager();
+                byte[] avatarImage = null;
+                ArrayList<String> selected = null;
+                if (bundle != null) {
+                    avatarImage = bundle.getByteArray(CameraFragment.EXTRA_IMAGE);
+                    selected = bundle.getStringArrayList(EXTRA_STICKERS);
+                }
+                waiting = ProgressDialog.show(getActivity(), "", getString(R.string.label_uploading_image));
+                manager.submitPhoto(CameraStep3Fragment.this, getActivity(), "155489", "3560", avatarImage, selected);
+            }
+        }
     }
 
 }

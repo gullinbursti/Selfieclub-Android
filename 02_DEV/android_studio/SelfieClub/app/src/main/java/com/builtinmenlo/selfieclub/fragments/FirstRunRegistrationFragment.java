@@ -43,13 +43,8 @@ import com.builtinmenlo.selfieclub.models.CreateClubProtocol;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
 import com.builtinmenlo.selfieclub.models.PINVerificationProtocol;
-import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
-import com.builtinmenlo.selfieclub.util.Util;
-import com.picocandy.android.data.PCContent;
-import com.picocandy.android.data.PCContentGroup;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 ;
@@ -92,7 +87,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
         bundle = getArguments();
 
-        dialog = ProgressDialog.show(getActivity(), "", "Please Wait");
+        dialog = ProgressDialog.show(getActivity(), "", getString(R.string.label_please_wait));
 
 
         manager = new FirstRunManager();
@@ -171,12 +166,12 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             public void onClick(View view) {
                 if (txtPhone.getText().length() > 0 && txtUsername.getText().length() > 0) {
                     getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.INVISIBLE);
-                    dialog = ProgressDialog.show(getActivity(), "", "Validating...");
+                    dialog = ProgressDialog.show(getActivity(), "", getString(R.string.label_checking_username));
                     manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString() + "@selfieclub.com");
                 } else {
                     SCDialog scdialog = new SCDialog();
                     scdialog.setScDialogProtocol(FirstRunRegistrationFragment.this);
-                    scdialog.setMessage("Please Fill Both Username and Phone Fields");
+                    scdialog.setMessage(getString(R.string.label_fill_phone_username));
                     scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
                     scdialog.show(getFragmentManager(), FIELDS_NOT_FILLED_TAG);
                 }
@@ -185,12 +180,6 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
-
-    public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
-        Log.w("", "");
-        PicoCandyManager picoCandyManager = PicoCandyManager.sharedInstance();
-        picoCandyManager.getStickerByName("happy");
-    }
 
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
@@ -239,13 +228,8 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             if(rnd!=10){
                 suffix="0"+rnd;
             }
-
             String clubAvatar = String.format("http://hotornot-challenges.s3.amazonaws.com/pc-0%sMedium_320x320.jpg", suffix);
-
             clubManager.createClub(this,freeUserId,txtUsername.getText().toString(),"Personal club",clubAvatar);
-
-
-
         }
     }
     @Override

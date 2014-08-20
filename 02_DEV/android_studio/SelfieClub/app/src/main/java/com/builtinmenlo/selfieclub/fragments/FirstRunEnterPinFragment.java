@@ -179,7 +179,7 @@ public class FirstRunEnterPinFragment extends Fragment implements FirstRunProtoc
         dialog.dismiss();
         if (result) {
             FirstRunManager manager = new FirstRunManager();
-            dialog = ProgressDialog.show(getActivity(), "", "Registering User...");
+            dialog = ProgressDialog.show(getActivity(), "", getString(R.string.label_register_user));
             manager.registerUser(FirstRunEnterPinFragment.this, userId, username, email, txtPin.getText().toString(), "");
         }
     }
