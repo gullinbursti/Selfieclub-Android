@@ -40,12 +40,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.activity.CameraPreview;
 import com.builtinmenlo.selfieclub.dataSources.Club;
+import com.builtinmenlo.selfieclub.models.ClubManager;
+import com.builtinmenlo.selfieclub.models.ClubPhotoSubmissionProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 import com.builtinmenlo.selfieclub.util.ImageDownloader;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,10 +59,13 @@ import java.util.List;
 
 
 // <[!] class delaration [¡]>
-public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
+public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, ClubPhotoSubmissionProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
+
+    public static final String EXTRA_STICKERS = "stickers";
+
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     private ImageDownloader downloader;
     private ListView listClubs;
@@ -90,10 +98,10 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
         View view = inflater.inflate(R.layout.camera_step_3, container, false);
 
         bundle = getArguments();
-        byte[] avatarImage = null;
+        /*byte[] avatarImage = null;
         if (bundle != null) {
             avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
-        }
+        }*/
 
         downloader = new ImageDownloader(getActivity(), "camera_clubs");
         listClubs = (ListView) view.findViewById(android.R.id.list);
@@ -113,13 +121,32 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
         view.findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CameraFragment newFragment = new CameraFragment();
+                NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
-                newFragment.setNextView(new CameraStep2Fragment());
                 transaction.commit();
             }
         });
+        view.findViewById(R.id.btnSubmit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClubManager manager = new ClubManager();
+                byte[] avatarImage = null;
+                ArrayList<String> selected = null;
+                if (bundle != null) {
+                    avatarImage = bundle.getByteArray(CameraFragment.EXTRA_IMAGE);
+                    selected = bundle.getStringArrayList(EXTRA_STICKERS);
+                }
+                try {
+                    File file = new File(getActivity().getCacheDir().getPath() + "/temp.jpg");
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(avatarImage);
+                    fos.close();
+                    manager.submitPhoto(CameraStep3Fragment.this, getActivity(), "155489", "3560", file, selected);
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            }});
 
         hideKeyboard(view);
         return view;
@@ -209,7 +236,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
 
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
-                ViewHolder viewHolder;
+                final ViewHolder viewHolder;
 
                 if (convertView == null) {
                     LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -234,6 +261,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
                             break;
                         }
                     }
+                    viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                     if (allSelected)
                         convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
                     else
@@ -241,13 +269,25 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
                     viewHolder.imgClub.setImageBitmap(image);
                 } else {
                     Club club = clubs.get(position);
+                    viewHolder.lblClubName.setText(club.getClubName());
                     if (club.isSelected())
                         convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
                     else
                         convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
-                    //new DownloadAsyncTask().execute(viewHolder);
-                    downloader.DisplayImage(club.getClubImage() + "Large_640x1136.jpg", String.valueOf(position), getActivity(), viewHolder.imgClub, viewHolder.loadingImage);
-                    viewHolder.lblClubName.setText(club.getClubName());
+
+                    Picasso.with(getActivity()).load(club.getClubImage() + "Large_640x1136.jpg").into(viewHolder.imgClub, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            viewHolder.imgClub.setVisibility(View.VISIBLE);
+                            viewHolder.loadingImage.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            viewHolder.imgClub.setVisibility(View.VISIBLE);
+                            viewHolder.loadingImage.setVisibility(View.INVISIBLE);
+                        }
+                    });
                 }
 
                 return convertView;
@@ -264,6 +304,16 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol {
 
     public void didReceiveUserClubsError(String errorMessage) {
         //TODO Add here the error management for the get clubs request
+    }
+
+    @Override
+    public void didSubmittedPhotoInClub(Boolean result){
+
+    }
+
+    @Override
+    public void didFailSubmittingPhotoInClub(String message){
+
     }
 
 }
