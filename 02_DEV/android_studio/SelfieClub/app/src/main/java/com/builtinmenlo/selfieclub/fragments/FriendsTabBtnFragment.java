@@ -53,9 +53,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol,SCDialogProtocol,ClubInviteProtocol {
-    public ListView lv;
-    public ArrayList<Friend> friends;
-    public User owner;
+    private ListView lv;
+    private ArrayList<Friend> friends;
+    private User owner;
     private MyCustomAdapter adapter;
     private ProgressBar loadingIcon;
     private Friend selectedFriend;
@@ -312,6 +312,8 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
     public void didSendCubInvite(Boolean response){
         Util.playDefaultNotificationSound(getActivity().getApplicationContext());
+        selectedFriend.setSelected(true);
+        adapter.notifyDataSetChanged();;
     }
     public void didFailSendingClubInvite(String errorMessage){
         Log.w(getClass().getName(),"Failed inviting user");
