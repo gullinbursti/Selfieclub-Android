@@ -221,14 +221,21 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
                     viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
                     viewHolder.loadingImage.setVisibility(View.VISIBLE);
                     convertView.setTag(viewHolder);
-                //} else {
+
 
                     Club club = clubs.get(position - 1);
+                    try{
+                        String clubImagePath = new URL(club.getClubImage()).getPath();
+                        String newClubImageUrl = "http://hotornot-challenges.s3.amazonaws.com"+clubImagePath;
+                        viewHolder.imageURL = newClubImageUrl;
+                    }
+                    catch (Exception e){
+                        viewHolder.imageURL = "";
+                        Log.w("ClubsTabBtnFragment","Error parsing the club image id");
+                    };
 
-                    //viewHolder = (ViewHolder) convertView.getTag();
-                    viewHolder.imageURL = club.getClubImage() + "Large_640x1136.jpg";
-                    //new DownloadAsyncTask().execute(viewHolder);
-                    //downloader.DisplayImage(viewHolder.imageURL, String.valueOf(position), getActivity(), viewHolder.imageView, viewHolder.loadingImage);
+
+
                     Picasso.with(getActivity()).load(viewHolder.imageURL).into(viewHolder.imageView, new Callback() {
 
                         @Override
