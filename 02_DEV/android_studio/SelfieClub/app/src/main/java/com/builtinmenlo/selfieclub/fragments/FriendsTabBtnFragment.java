@@ -293,11 +293,26 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
         String userId = applicationManager.getUserId();
         String clubId = applicationManager.getUserPersonalClubId();
-        ArrayList<String> friends = new ArrayList<String>();
-        friends.add(selectedFriend.getUserId());
-        ArrayList<HashMap<String,String>> nonUsers = new ArrayList<HashMap<String, String>>();
-        ClubManager clubManager = new ClubManager();
-        clubManager.sendClubInvite(this,userId,clubId,friends,nonUsers);
+
+        String selectedFriendId = selectedFriend.getUserId();
+        if(selectedFriendId.equalsIgnoreCase("no_member")){
+            ArrayList<String> friends = new ArrayList<String>();
+            ArrayList<HashMap<String,String>> nonUsers = new ArrayList<HashMap<String, String>>();
+            HashMap<String,String>contact = new HashMap<String, String>();
+            contact.put("name",selectedFriend.getUsername());
+            contact.put("number",selectedFriend.getPhoneNumber());
+            nonUsers.add(contact);
+            ClubManager clubManager = new ClubManager();
+            clubManager.sendClubInvite(this,userId,clubId,friends,nonUsers);
+        }
+        else{
+            ArrayList<String> friends = new ArrayList<String>();
+            friends.add(selectedFriendId);
+            ArrayList<HashMap<String,String>> nonUsers = new ArrayList<HashMap<String, String>>();
+            ClubManager clubManager = new ClubManager();
+            clubManager.sendClubInvite(this,userId,clubId,friends,nonUsers);
+        }
+
     }
 
     public void didSendCubInvite(Boolean response){
