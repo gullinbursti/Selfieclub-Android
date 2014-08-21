@@ -26,6 +26,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
 import com.builtinmenlo.selfieclub.models.PINVerificationProtocol;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
+import com.couchbase.lite.Context;
 
 import java.util.Random;
 
@@ -53,7 +55,7 @@ import java.util.Random;
 
 
 // <[!] class delaration [¡]>
-public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol, SCDialogProtocol, PINVerificationProtocol, CreateClubProtocol {
+public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol, SCDialogProtocol, PINVerificationProtocol, CreateClubProtocol{
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     public static final String EXTRA_USERNAME = "username";
@@ -255,9 +257,13 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     }
     @Override
     public void didCreateClub(){
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        getActivity().startActivity(intent);
-        getActivity().finish();
+        TelephonyManager tMgr =(TelephonyManager)this.getActivity().getSystemService(this.getActivity().TELEPHONY_SERVICE);
+        String mPhoneNumber = txtPhone.getText().toString();
+        FirstRunManager manager = new FirstRunManager();
+        manager.registerUser(this, freeUserId, txtUsername.getText().toString(), mPhoneNumber, mPhoneNumber,"https://s3.amazonaws.com/hotornot-avatars/defaultAvatar");
+
+
+
     }
     @Override
     public void didFailCreatingClub(String errorMessage){
@@ -276,12 +282,14 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     @Override
     public void didRegisteredUser(String userId) {
-
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        getActivity().startActivity(intent);
+        getActivity().finish();
     }
 
     @Override
     public void didFailRegisteringUser(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-
+        Log.w("FirstRunRegistrationFragment",message);
     }
 
     @Override
