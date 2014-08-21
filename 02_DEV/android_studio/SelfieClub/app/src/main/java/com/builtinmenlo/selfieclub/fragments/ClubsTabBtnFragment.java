@@ -22,7 +22,6 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -88,11 +87,8 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         populate();
 
         UserManager userManager = new UserManager();
-        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                Activity.MODE_PRIVATE);
-        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        //userManager.requestUserClubs(this, "155489");
-        userManager.requestUserClubs(this, userId);
+        ApplicationManager applicationManager = new ApplicationManager(getActivity());
+        userManager.requestUserClubs(this, applicationManager.getUserId());
 
 
         return view;

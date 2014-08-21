@@ -22,7 +22,6 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,12 +81,8 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         ArrayList<HashMap<String, String>> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
 
         UserManager userManager = new UserManager();
-        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                Activity.MODE_PRIVATE);
-
-
-        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        userManager.requestFriends(this, userId, "+17143309754|+15617164724",getActivity().getContentResolver());
+        ApplicationManager applicationManager = new ApplicationManager(getActivity());
+        userManager.requestFriends(this, applicationManager.getUserId(), "+17143309754|+15617164724",getActivity().getContentResolver());
 
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯

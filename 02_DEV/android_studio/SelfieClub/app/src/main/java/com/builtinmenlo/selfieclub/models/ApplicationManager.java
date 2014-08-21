@@ -1,11 +1,9 @@
 package com.builtinmenlo.selfieclub.models;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.builtinmenlo.selfieclub.Constants;
-import com.builtinmenlo.selfieclub.fragments.FirstRunRegistrationFragment;
 
 /**
  * Created by Leonardo on 7/9/14.
@@ -19,8 +17,8 @@ public class ApplicationManager {
     }
 
     public  boolean isFirstRun(){
-        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
-        Boolean response = settings.getBoolean("firstRun",true);
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        Boolean response = preferences.getBoolean("firstRun",true);
         if(response){
             //Log event
             KeenManager keenManager = KeenManager.sharedInstance();
@@ -31,8 +29,8 @@ public class ApplicationManager {
     }
 
     public void setFirstRun(boolean firstRun){
-        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
-        settings.edit().putBoolean("firstRun",firstRun).apply();
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        preferences.edit().putBoolean("firstRun",firstRun).apply();
     }
 
     /**
@@ -40,8 +38,8 @@ public class ApplicationManager {
      * @return
      */
     public String getUserId(){
-        SharedPreferences prefs = activity.getPreferences(Activity.MODE_PRIVATE);
-        String userId = prefs.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        String userId = preferences.getString("userId", "");
         return userId;
     }
 
@@ -50,19 +48,19 @@ public class ApplicationManager {
      * @param userId 
      */
     public void setUserId(String userId){
-        SharedPreferences setting = activity.getPreferences(Context.MODE_PRIVATE);
-        setting.edit().putString("userId",userId).apply();
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        preferences.edit().putString("userId",userId).apply();
 
     }
 
     public void setUserName(String userName){
-        SharedPreferences setting = activity.getPreferences(Context.MODE_PRIVATE);
-        setting.edit().putString("userName",userName).apply();
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        preferences.edit().putString("userName",userName).apply();
     }
 
     public String getUserName(){
-        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
-        String userId = settings.getString("userName","");
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        String userId = preferences.getString("userName","");
         return userId;
     }
 
@@ -72,8 +70,8 @@ public class ApplicationManager {
      * @return
      */
     public String getUserPersonalClubId(){
-        SharedPreferences settings = activity.getPreferences(Context.MODE_PRIVATE);
-        String userPersonalClubId = settings.getString("userPersonalClubId","");
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        String userPersonalClubId = preferences.getString("userPersonalClubId","");
         return userPersonalClubId;
     }
 
@@ -82,9 +80,8 @@ public class ApplicationManager {
      * @param userPersonalClubId personal club id
      */
     public void setUserPersonalClubId(String userPersonalClubId){
-        SharedPreferences setting = activity.getPreferences(Context.MODE_PRIVATE);
-        setting.edit().putString("userPersonalClubId",userPersonalClubId).apply();
-        setting.edit().commit();
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        preferences.edit().putString("userPersonalClubId",userPersonalClubId).apply();
     }
 
 }

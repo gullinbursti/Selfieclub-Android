@@ -285,11 +285,14 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
 
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
-        for (PCContent sticker:stickerList)
-            emoticons.add(new Emoticon(sticker));
-        //emoticons = stickerList;
-        loadingIcon.setVisibility(View.GONE);
-        adapter.notifyDataSetChanged();
+        if (getActivity() != null) {
+            for (PCContent sticker : stickerList)
+                emoticons.add(new Emoticon(sticker));
+            //emoticons = stickerList;
+            if (loadingIcon != null)
+                loadingIcon.setVisibility(View.INVISIBLE);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

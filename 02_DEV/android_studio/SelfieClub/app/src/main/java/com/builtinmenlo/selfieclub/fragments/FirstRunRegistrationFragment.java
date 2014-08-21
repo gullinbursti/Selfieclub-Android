@@ -25,7 +25,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -39,6 +38,7 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.CreateClubProtocol;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
@@ -228,7 +228,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     @Override
     public void didFailReceivingFreeUserId(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-        dialog.dismiss();
+        manager.requestFreeUserId(this);
     }
 
     @Override
@@ -238,12 +238,9 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         if (isValid) {
             getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.imgCheckPhone).setVisibility(View.VISIBLE);
-            SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                    Activity.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(FirstRunRegistrationFragment.EXTRA_ID, freeUserId);
-            editor.apply();
-
+            ApplicationManager applicationManager = new ApplicationManager(getActivity());
+            applicationManager.setUserId(freeUserId);
+            applicationManager.setUserName(txtUsername.getText().toString());
 
             ClubManager clubManager = new ClubManager();
             Random rn = new Random();
