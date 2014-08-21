@@ -55,9 +55,6 @@ public class SplashActivity extends Activity {
             public void run() {
                 SharedPreferences preferences = getSharedPreferences("prefs",
                         MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(FirstRunRegistrationFragment.EXTRA_ID, "ID_GOES_HERE");
-                editor.apply();
 
                 String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
                 Intent intent;
@@ -65,7 +62,7 @@ public class SplashActivity extends Activity {
                     intent = new Intent(SplashActivity.this, MainActivity.class);
                 else
                     intent = new Intent(SplashActivity.this, FirstRunActivity.class);
-                intent = new Intent(SplashActivity.this, FirstRunActivity.class);
+
                 startActivity(intent);
                 finish();
             }
