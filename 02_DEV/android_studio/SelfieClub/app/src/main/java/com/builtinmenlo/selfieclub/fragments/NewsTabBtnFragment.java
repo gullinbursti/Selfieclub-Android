@@ -397,11 +397,13 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
         ClubManager clubManager = new ClubManager();
-        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                Activity.MODE_PRIVATE);
-        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        //clubManager.requestNews(this, "155489");
-        clubManager.requestNews(this, userId);
+        if (getActivity() != null) {
+            SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
+                    Activity.MODE_PRIVATE);
+            String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
+            //clubManager.requestNews(this, "155489");
+            clubManager.requestNews(this, userId);
+        }
     }
 
     @Override

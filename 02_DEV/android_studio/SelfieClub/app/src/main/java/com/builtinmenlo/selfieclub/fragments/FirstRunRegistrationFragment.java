@@ -19,6 +19,7 @@ package com.builtinmenlo.selfieclub.fragments;
 //] includes [!]>
 //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -80,6 +81,12 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
     //]~=~=~=~=~=~=~=~=~=[>
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
@@ -178,6 +185,19 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             }
         });
 
+        view.findViewById(R.id.lblTermsText).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WebviewFragment newFragment = new WebviewFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, newFragment);
+                Bundle bundle = new Bundle();
+                bundle.putString(WebviewFragment.EXTRA_URL_ITEM, "http://www.getselfieclub.com/terms.html");
+                newFragment.setArguments(bundle);
+                transaction.commit();
+            }
+        });
+
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
@@ -189,11 +209,15 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     public void onAttach(Activity activity) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onAttach(activity);
+        ActionBar topNavActionBar = getActivity().getActionBar();
+        topNavActionBar.hide();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onDetach() {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onDetach();
+        ActionBar topNavActionBar = getActivity().getActionBar();
+        topNavActionBar.show();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     @Override
@@ -204,7 +228,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     @Override
     public void didFailReceivingFreeUserId(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-
+        dialog.dismiss();
     }
 
     @Override

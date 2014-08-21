@@ -107,7 +107,9 @@ public class PicoCandyManager {
                 this.stickerList.add(item);
             }
         }
-        stikersProtocol.didReceiveStickers(contentGroupsList, stickerList);
+        if (stikersProtocol != null) {
+            stikersProtocol.didReceiveStickers(contentGroupsList, stickerList);
+        }
     }
 
     /**

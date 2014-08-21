@@ -131,17 +131,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
             @Override
             public void onClick(View view) {
                 Fragment newFragment;
-                if (backView == null)
-                    newFragment = new FriendsTabBtnFragment();
-                    //newFragment = new FirstRunRegistrationFragment();
-                else
-                    newFragment = backView;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.remove(CameraFragment.this);
-                transaction.replace(R.id.fragment_container, newFragment);
-                if (bundle == null)
-                    bundle = new Bundle();
-                newFragment.setArguments(bundle);
                 transaction.commit();
             }
         });

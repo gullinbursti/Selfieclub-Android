@@ -65,7 +65,7 @@ public class FirstRunActivity extends Activity {
 
         Fragment newFragment = new FirstRunRegistrationFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.replace(R.id.tab_fragment_layout, newFragment);
         transaction.commit();
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯

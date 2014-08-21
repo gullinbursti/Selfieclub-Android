@@ -33,6 +33,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
 
 public class WebviewFragment extends Fragment {
     public static final String EXTRA_URL_ITEM = "urlAdress";
@@ -53,7 +54,6 @@ public class WebviewFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.remove(WebviewFragment.this);
-                transaction.replace(R.id.fragment_container, new FriendsTabBtnFragment());
                 transaction.commit();
             }
         });
@@ -106,8 +106,10 @@ public class WebviewFragment extends Fragment {
 
     public void onDetach() {
         super.onDetach();
-        final ActionBar actionBar = getActivity().getActionBar();
-        actionBar.show();
+        if (getActivity().getClass().getSimpleName().toString().equals(MainActivity.class.getSimpleName())) {
+            final ActionBar actionBar = getActivity().getActionBar();
+            actionBar.show();
+        }
     }
 
 }

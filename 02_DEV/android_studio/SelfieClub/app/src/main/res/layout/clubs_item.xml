@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="96dp"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
         android:layout_margin="10dp"
         android:id="@+id/relClub"
         android:layout_height="96dp">
@@ -20,7 +20,6 @@
             android:layout_height="96dp"
             android:layout_centerHorizontal="true"
             android:scaleType="fitXY"
-            android:src="@drawable/friends_item_image_mask"
             app:svg_raw_resource="@raw/image" />
 
         <ProgressBar
