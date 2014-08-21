@@ -25,6 +25,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -109,7 +110,10 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
         populate();
 
         UserManager userManager = new UserManager();
-        userManager.requestUserClubs(this, "131820");
+        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
+                Activity.MODE_PRIVATE);
+        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
+        userManager.requestUserClubs(this, userId);
 
         final ActionBar actionBar = getActivity().getActionBar();
         actionBar.hide();
@@ -270,16 +274,15 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                 else
                     convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
 
-                Picasso.with(getActivity()).load(club.getClubImage() + "Large_640x1136.jpg").into(viewHolder.imgClub, new Callback() {
+                Picasso.with(getActivity()).load(club.getClubImage()).into(viewHolder.imgClub, new Callback() {
                     @Override
                     public void onSuccess() {
-                        viewHolder.imgClub.setVisibility(View.VISIBLE);
                         viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                     }
 
                     @Override
                     public void onError() {
-                        viewHolder.imgClub.setVisibility(View.VISIBLE);
+                        viewHolder.imgClub.setImageResource(R.drawable.default_club_cover);
                         viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                     }
                 });
