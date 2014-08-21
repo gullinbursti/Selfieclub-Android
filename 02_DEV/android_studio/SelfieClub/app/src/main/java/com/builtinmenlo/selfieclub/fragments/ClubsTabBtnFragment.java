@@ -48,7 +48,6 @@ import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
-import com.builtinmenlo.selfieclub.util.ImageDownloader;
 import com.builtinmenlo.selfieclub.util.Util;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -69,7 +68,6 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
     private ProgressBar loadingIcon;
     private ArrayList<Club> clubs;
     private MyCustomAdapter adapter;
-    private ImageDownloader downloader;
     private Club selectedClub;
     private static String INVITE_RANDOM_FRIENDS_TAG = "invite_random_friends";
     private static String RECEIVE_CLUBS_ERROR_TAG = "error_retrieving_clubs";
@@ -83,7 +81,6 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         View view = inflater.inflate(R.layout.clubs_tab, container, false);
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
-        downloader = new ImageDownloader(getActivity(), "clubs");
 
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
         gridClubs = (GridView) view.findViewById(R.id.gridMenu);
@@ -220,14 +217,24 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
                     viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
                     viewHolder.loadingImage.setVisibility(View.VISIBLE);
                     convertView.setTag(viewHolder);
-                //} else {
+
 
                     Club club = clubs.get(position - 1);
+                    try{
+                        String clubImagePath = new URL(club.getClubImage()).getPath();
+                        String newClubImageUrl = "http://hotornot-challenges.s3.amazonaws.com"+clubImagePath;
+                        viewHolder.imageURL = newClubImageUrl;
+                    }
+                    catch (Exception e){
+                        viewHolder.imageURL = "";
+                        Log.w("ClubsTabBtnFragment","Error parsing the club image id");
+                    };
+
+
 
                     //viewHolder = (ViewHolder) convertView.getTag();
                     viewHolder.imageURL = club.getClubImage();
-                    //new DownloadAsyncTask().execute(viewHolder);
-                    //downloader.DisplayImage(viewHolder.imageURL, String.valueOf(position), getActivity(), viewHolder.imageView, viewHolder.loadingImage);
+
                     Picasso.with(getActivity()).load(viewHolder.imageURL).into(viewHolder.imageView, new Callback() {
 
                         @Override

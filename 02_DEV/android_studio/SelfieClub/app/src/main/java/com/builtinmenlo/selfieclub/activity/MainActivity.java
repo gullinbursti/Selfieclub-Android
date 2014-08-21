@@ -24,6 +24,7 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -52,6 +53,7 @@ import com.builtinmenlo.selfieclub.models.DeepLinksManager;
 import com.builtinmenlo.selfieclub.models.KeenManager;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
+import com.couchbase.lite.Context;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

@@ -47,7 +47,6 @@ import com.builtinmenlo.selfieclub.models.ClubPhotoSubmissionProtocol;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
-import com.builtinmenlo.selfieclub.util.ImageDownloader;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -69,7 +68,6 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
     private static final String UPLOAD_FAILED_TAG = "upload_failed";
 
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
-    private ImageDownloader downloader;
     private ListView listClubs;
     private ArrayList<Club> clubs;
     private MyCustomAdapter adapter;
@@ -106,7 +104,6 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
             avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
         }*/
 
-        downloader = new ImageDownloader(getActivity(), "camera_clubs");
         listClubs = (ListView) view.findViewById(android.R.id.list);
         clubs = new ArrayList<Club>();
         populate();
