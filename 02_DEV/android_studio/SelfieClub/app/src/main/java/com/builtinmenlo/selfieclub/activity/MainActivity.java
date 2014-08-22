@@ -141,17 +141,20 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         CameraFragment newFragment = new CameraFragment();
         //NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.add(R.id.fragment_container, newFragment);
+        //transaction.replace(R.id.tab_fragment_layout, newFragment);
+        transaction.setCustomAnimations(R.anim.no_amin,R.anim.no_amin);
+        transaction.setTransition(0);
         //newFragment.setNextView(new CameraStep2Fragment());
         newFragment.setNextView(new NewCameraStep2Fragment());
         transaction.commit();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-
     private void getOverflowMenu() {
 
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
+
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
             if (menuKeyField != null) {
                 menuKeyField.setAccessible(true);
