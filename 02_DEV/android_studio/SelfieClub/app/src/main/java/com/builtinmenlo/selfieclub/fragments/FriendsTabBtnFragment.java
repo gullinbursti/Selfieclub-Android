@@ -74,8 +74,9 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         PhoneManager phoneManager = new PhoneManager();
         ArrayList<HashMap<String, String>> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
         UserManager userManager = new UserManager();
+
         ApplicationManager applicationManager = new ApplicationManager(getActivity());
-        userManager.requestFriends(this, applicationManager.getUserId(), "+17143309754|+15617164724",getActivity().getContentResolver());
+        userManager.requestFriends(this, applicationManager.getUserId(), phoneManager.getContactsPhones(getActivity().getContentResolver()),getActivity().getContentResolver());
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
@@ -119,14 +120,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
                     selectedFriend = friends.get(position);
                     showinviteFriendDialog(selectedFriend);
 
-/*                    if (friends.get(position).isSelected()) {
-                        arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
-                        friends.get(position).setSelected(false);
-                    } else {
-                        arg1.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
-                        friends.get(position).setSelected(true);
-                    }
-*/                }
+                }
             });
         }
     }
@@ -165,69 +159,20 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         public View getView(final int position, View convertView, ViewGroup parent) {
 
             final ViewHolder viewHolder;
-            //if (convertView == null) {
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            //convertView = inflater.inflate(R.layout.friends_item, parent, false);
             convertView = inflater.inflate(R.layout.new_friends_item, parent, false);
 
             viewHolder = new ViewHolder();
-            //viewHolder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
-            // viewHolder.lblFollowers = (TextView) convertView.findViewById(R.id.lblFollowers);
             viewHolder.lblName = (TextView) convertView.findViewById(R.id.lblName);
-            //viewHolder.imgFollowers = (ImageView) convertView.findViewById(R.id.imgFollowers);
             viewHolder.imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
-            //viewHolder.imgAvatarCheck = (ImageView) convertView.findViewById(R.id.imgAvatarCheck);
-            //viewHolder.imgLoading = (ProgressBar) convertView.findViewById(R.id.loadingImage);
             convertView.setTag(viewHolder);
-            //} else {
-            //viewHolder = (ViewHolder) convertView.getTag();
-            //}
-
             Friend friend = friends.get(position);
 
             if (friend.isSelected())
                 convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
             else
                 convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
-
-
-            // viewHolder.lblFollowers.setText(String.valueOf(friend.getFollowers()));
             viewHolder.lblName.setText(friend.getUsername());
-
-            /*if (friend.getState() == 1) {
-                viewHolder.imgAddOrCheck.setBackgroundResource(R.drawable.green_selection_dot);
-                viewHolder.imgAvatarCheck.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.imgAddOrCheck.setBackgroundResource(R.drawable.gray_selection_dot);
-                viewHolder.imgAvatarCheck.setVisibility(View.INVISIBLE);
-            }*/
-
-            /*if (friend.getFollowers() > 0){
-                viewHolder.imgFollowers.setBackgroundResource(R.drawable.verify_arrow_green);
-                viewHolder.lblFollowers.setTextColor(Color.GREEN);
-            }else{
-                viewHolder.imgFollowers.setBackgroundResource(R.drawable.verify_arrow_grey);
-                viewHolder.lblFollowers.setTextColor(Color.LTGRAY);
-            }*/
-
-
-            /*if (viewHolder.imgAvatar != null) {
-                Picasso.with(getActivity()).load(friend.getAvatarUrl()).into(viewHolder.imgAvatar, new Callback() {
-
-                    @Override
-                    public void onSuccess() {
-                        viewHolder.imgAvatar.setVisibility(View.VISIBLE);
-                        viewHolder.imgLoading.setVisibility(View.INVISIBLE);
-                    }
-
-                    @Override
-                    public void onError() {
-                        viewHolder.imgAvatar.setVisibility(View.VISIBLE);
-                        viewHolder.imgLoading.setVisibility(View.INVISIBLE);
-                    }
-                });
-            }*/
-
             return convertView;
         }
     }
