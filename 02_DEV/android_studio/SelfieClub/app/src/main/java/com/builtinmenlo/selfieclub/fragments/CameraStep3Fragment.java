@@ -317,7 +317,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
             dialog.setScDialogProtocol(this);
             dialog.setMessage(getString(R.string.label_successfully_uploaded));
             dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-            dialog.showTwoButtons = false;
+            dialog.showTwoButtons = true;
             dialog.show(getFragmentManager(), UPLOAD_SUCCESS_TAG);
         }
     }
