@@ -33,6 +33,14 @@
             android:src="@drawable/friends_item_image_mask"
             app:svg_raw_resource="@raw/image" />
 
+       <!-- <com.builtinmenlo.selfieclub.views.SVGImageView
+            android:id="@+id/imgClub"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/friends_item_image_mask"
+            app:svg_raw_resource="@raw/image" /> -->
+
         <ProgressBar
             android:id="@+id/loadingImage"
             android:layout_width="wrap_content"
