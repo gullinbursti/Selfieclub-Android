@@ -220,26 +220,17 @@ public class Util {
         PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile);
         Upload upload = manager.upload(por);
         try {
-            if (upload.isDone() == false) {
+            /*if (upload.isDone() == false) {
                 System.out.println("Transfer: " + upload.getDescription());
                 System.out.println("  - State: " + upload.getState());
                 System.out.println("  - Progress: " + upload.getProgress().getBytesTransferred());
-            }
+            }*/
             UploadResult result = upload.waitForUploadResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        System.err.print(upload.getDescription().toString());
-
-        /*AmazonS3 s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET));
-        s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
-        for (Bucket bucket : s3Client.listBuckets()) {
-            System.out.println("Bucket:" + bucket.getName());
-        }
-        //PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile).withBucketName(Constants.AMAZON_S3_BUCKET).withKey(Constants.AMAZON_S3_KEY);
-        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,"/thumbs/upload.jpg",imageFile);
-        s3Client.putObject(por);*/
+        System.out.println(upload.getDescription());
 
     }
 

@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -42,12 +43,12 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Club;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.ClubPhotoSubmissionProtocol;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
-import com.builtinmenlo.selfieclub.util.ImageDownloader;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -69,8 +70,8 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
     private static final String UPLOAD_FAILED_TAG = "upload_failed";
 
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
-    private ImageDownloader downloader;
     private ListView listClubs;
+    private Button btnSubmit;
     private ArrayList<Club> clubs;
     private MyCustomAdapter adapter;
 
@@ -106,16 +107,14 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
             avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
         }*/
 
-        downloader = new ImageDownloader(getActivity(), "camera_clubs");
         listClubs = (ListView) view.findViewById(android.R.id.list);
+        btnSubmit = (Button) view.findViewById(R.id.btnSubmit);
         clubs = new ArrayList<Club>();
         populate();
 
         UserManager userManager = new UserManager();
-        userManager.requestUserClubs(this, "131820");
-
-        final ActionBar actionBar = getActivity().getActionBar();
-        actionBar.hide();
+        ApplicationManager applicationManager = new ApplicationManager(getActivity());
+        userManager.requestUserClubs(this, applicationManager.getUserId());
 
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
 
@@ -127,6 +126,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                 NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
+                newFragment.setArguments(bundle);
                 transaction.commit();
             }
         });
@@ -162,8 +162,9 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {
-        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onAttach(activity);
+        final ActionBar actionBar = getActivity().getActionBar();
+        actionBar.hide();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     @Override
@@ -236,17 +237,13 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ViewHolder viewHolder;
 
-            if (convertView == null) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                convertView = inflater.inflate(R.layout.camera_step3_item, parent, false);
-                viewHolder = new ViewHolder();
-                viewHolder.imgClub = (ImageView) convertView.findViewById(R.id.imgClub);
-                viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
-                viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            convertView = inflater.inflate(R.layout.camera_step3_item, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.imgClub = (ImageView) convertView.findViewById(R.id.imgClub);
+            viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
+            viewHolder.lblClubName = (TextView) convertView.findViewById(R.id.lblClubName);
+            convertView.setTag(viewHolder);
 
             if (position >= clubs.size()) {
                 viewHolder.lblClubName.setText(R.string.label_select_all_clubs);
@@ -273,16 +270,15 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                 else
                     convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
 
-                Picasso.with(getActivity()).load(club.getClubImage() + "Large_640x1136.jpg").into(viewHolder.imgClub, new Callback() {
+                Picasso.with(getActivity()).load(club.getClubImage()).into(viewHolder.imgClub, new Callback() {
                     @Override
                     public void onSuccess() {
-                        viewHolder.imgClub.setVisibility(View.VISIBLE);
                         viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                     }
 
                     @Override
                     public void onError() {
-                        viewHolder.imgClub.setVisibility(View.VISIBLE);
+                        viewHolder.imgClub.setImageResource(R.drawable.default_club_cover);
                         viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                     }
                 });
@@ -296,25 +292,29 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
         // TODO Add here the rendering on the clubs
         Log.i(this.getActivity().getClass().getName(), userClubs.toString());
         clubs = userClubs;
+        btnSubmit.setVisibility(View.VISIBLE);
+        listClubs.setVisibility(View.VISIBLE);
+        loadingIcon.setVisibility(View.INVISIBLE);
         adapter.notifyDataSetChanged();
 
     }
 
     public void didReceiveUserClubsError(String errorMessage) {
-        //TODO Add here the error management for the get clubs request
+        btnSubmit.setVisibility(View.VISIBLE);
+        loadingIcon.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void didSubmittedPhotoInClub(Boolean result) {
         waiting.dismiss();
-        if (result){
-        SCDialog dialog = new SCDialog();
-        dialog.setScDialogProtocol(this);
-        dialog.setMessage(getString(R.string.label_successfully_uploaded));
-        dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        dialog.showTwoButtons=false;
-        dialog.show(getFragmentManager(),UPLOAD_SUCCESS_TAG);
-            }
+        if (result) {
+            SCDialog dialog = new SCDialog();
+            dialog.setScDialogProtocol(this);
+            dialog.setMessage(getString(R.string.label_successfully_uploaded));
+            dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+            dialog.showTwoButtons = false;
+            dialog.show(getFragmentManager(), UPLOAD_SUCCESS_TAG);
+        }
     }
 
     @Override
@@ -325,14 +325,14 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
         dialog.setMessage(message);
         dialog.setPositiveButtonTitle(getResources().getString(R.string.retry_button_title));
         dialog.setNegativeButtonTitle(getResources().getString(R.string.ok_button_title));
-        dialog.showTwoButtons=true;
-        dialog.show(getFragmentManager(),UPLOAD_FAILED_TAG);
+        dialog.showTwoButtons = true;
+        dialog.show(getFragmentManager(), UPLOAD_FAILED_TAG);
     }
 
     @Override
-    public void didClickedButton(String dialogTag, int buttonIndex){
-        if(dialogTag.equalsIgnoreCase(UPLOAD_FAILED_TAG)){
-            if(buttonIndex==1){
+    public void didClickedButton(String dialogTag, int buttonIndex) {
+        if (dialogTag.equalsIgnoreCase(UPLOAD_FAILED_TAG)) {
+            if (buttonIndex == 1) {
                 ClubManager manager = new ClubManager();
                 byte[] avatarImage = null;
                 ArrayList<String> selected = null;
@@ -341,9 +341,17 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                     selected = bundle.getStringArrayList(EXTRA_STICKERS);
                 }
                 waiting = ProgressDialog.show(getActivity(), "", getString(R.string.label_uploading_image));
-                manager.submitPhoto(CameraStep3Fragment.this, getActivity(), "155489", "3560", avatarImage, selected);
+                ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
+                String userId = applicationManager.getUserId();
+                String clubId = applicationManager.getUserPersonalClubId();
+                manager.submitPhoto(CameraStep3Fragment.this, getActivity(), userId, clubId, avatarImage, selected);
             }
+        } else if (dialogTag.equalsIgnoreCase(UPLOAD_SUCCESS_TAG)) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.remove(this);
+            transaction.commit();
         }
+
     }
 
 }

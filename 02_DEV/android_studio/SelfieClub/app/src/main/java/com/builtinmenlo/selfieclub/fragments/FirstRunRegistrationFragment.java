@@ -19,12 +19,12 @@ package com.builtinmenlo.selfieclub.fragments;
 //] includes [!]>
 //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.CreateClubProtocol;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
@@ -82,6 +83,12 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
     //]~=~=~=~=~=~=~=~=~=[>
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
@@ -180,6 +187,19 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             }
         });
 
+        view.findViewById(R.id.lblTermsText).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WebviewFragment newFragment = new WebviewFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, newFragment);
+                Bundle bundle = new Bundle();
+                bundle.putString(WebviewFragment.EXTRA_URL_ITEM, "http://www.getselfieclub.com/terms.html");
+                newFragment.setArguments(bundle);
+                transaction.commit();
+            }
+        });
+
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
@@ -191,11 +211,15 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     public void onAttach(Activity activity) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onAttach(activity);
+        ActionBar topNavActionBar = getActivity().getActionBar();
+        topNavActionBar.hide();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onDetach() {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onDetach();
+        ActionBar topNavActionBar = getActivity().getActionBar();
+        topNavActionBar.show();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     @Override
@@ -206,7 +230,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     @Override
     public void didFailReceivingFreeUserId(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-
+        manager.requestFreeUserId(this);
     }
 
     @Override
@@ -216,12 +240,9 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         if (isValid) {
             getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.imgCheckPhone).setVisibility(View.VISIBLE);
-            SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                    Activity.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(FirstRunRegistrationFragment.EXTRA_ID, freeUserId);
-            editor.apply();
-
+            ApplicationManager applicationManager = new ApplicationManager(getActivity());
+            applicationManager.setUserId(freeUserId);
+            applicationManager.setUserName(txtUsername.getText().toString());
 
             ClubManager clubManager = new ClubManager();
             Random rn = new Random();

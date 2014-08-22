@@ -21,12 +21,11 @@ package com.builtinmenlo.selfieclub.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.fragments.FirstRunRegistrationFragment;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
@@ -53,14 +52,13 @@ public class SplashActivity extends Activity {
 
             @Override
             public void run() {
-                SharedPreferences preferences = getSharedPreferences("prefs",
-                        MODE_PRIVATE);
-                String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
+                ApplicationManager manager = new ApplicationManager(SplashActivity.this);
                 Intent intent;
-                if (userId.length() > 0)
+                if (manager.getUserId().length() > 0)
                     intent = new Intent(SplashActivity.this, MainActivity.class);
                 else
                     intent = new Intent(SplashActivity.this, FirstRunActivity.class);
+
                 startActivity(intent);
                 finish();
             }

@@ -24,7 +24,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +33,7 @@ import android.widget.EditText;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
 import com.builtinmenlo.selfieclub.models.PINVerificationProtocol;
@@ -139,11 +139,8 @@ public class FirstRunEnterPinFragment extends Fragment implements FirstRunProtoc
     @Override
     public void didRegisteredUser(String userId) {
         dialog.dismiss();
-        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(FirstRunRegistrationFragment.EXTRA_ID, userId);
-        editor.apply();
+        ApplicationManager applicationManager = new ApplicationManager(getActivity());
+        applicationManager.setUserId(userId);
         Intent intent = new Intent(getActivity(), MainActivity.class);
         getActivity().startActivity(intent);
         getActivity().finish();

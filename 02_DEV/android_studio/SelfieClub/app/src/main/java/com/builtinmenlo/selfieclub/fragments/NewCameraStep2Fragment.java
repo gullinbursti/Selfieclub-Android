@@ -71,15 +71,6 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
 
     private static String NO_EMOTICON_TAG = "no_emoticon";
 
-
-    public void setBackView(Fragment backView) {
-        this.backView = backView;
-    }
-
-    public void setNextView(Fragment nextView) {
-        this.nextView = nextView;
-    }
-
     // <*] class constructor [*>
     public NewCameraStep2Fragment() {/*..\(^_^)/..*/}
 
@@ -101,6 +92,7 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
         final ActionBar actionBar = getActivity().getActionBar();
         actionBar.hide();
 
+        loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
         lv = (ListView) view.findViewById(android.R.id.list);
         emoticons = new ArrayList<Emoticon>();
         populate();
@@ -112,9 +104,6 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
         if (bundle != null) {
             avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
         }*/
-
-
-        loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
 
@@ -285,11 +274,14 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
 
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
-        for (PCContent sticker:stickerList)
-            emoticons.add(new Emoticon(sticker));
-        //emoticons = stickerList;
-        loadingIcon.setVisibility(View.GONE);
-        adapter.notifyDataSetChanged();
+        if (getActivity() != null) {
+            for (PCContent sticker : stickerList)
+                emoticons.add(new Emoticon(sticker));
+            //emoticons = stickerList;
+            if (loadingIcon != null)
+                loadingIcon.setVisibility(View.INVISIBLE);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

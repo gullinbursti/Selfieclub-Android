@@ -24,7 +24,6 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -53,7 +52,6 @@ import com.builtinmenlo.selfieclub.models.DeepLinksManager;
 import com.builtinmenlo.selfieclub.models.KeenManager;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
-import com.couchbase.lite.Context;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -129,8 +127,8 @@ public class MainActivity extends Activity implements UserClubsProtocol{
 
         //TODO Use a real userId
         ApplicationManager applicationManager = new ApplicationManager(this);
-        applicationManager.setUserId("151159");
-        applicationManager.setUserName("matt");
+        //applicationManager.setUserId("151159");
+        //applicationManager.setUserName("matt");
 
         //Request the user's personal club
         UserManager userManager = new UserManager();
@@ -143,17 +141,20 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         CameraFragment newFragment = new CameraFragment();
         //NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.add(R.id.fragment_container, newFragment);
+        //transaction.replace(R.id.tab_fragment_layout, newFragment);
+        transaction.setCustomAnimations(R.anim.no_amin,R.anim.no_amin);
+        transaction.setTransition(0);
         //newFragment.setNextView(new CameraStep2Fragment());
         newFragment.setNextView(new NewCameraStep2Fragment());
         transaction.commit();
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
-
     private void getOverflowMenu() {
 
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
+
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
             if (menuKeyField != null) {
                 menuKeyField.setAccessible(true);

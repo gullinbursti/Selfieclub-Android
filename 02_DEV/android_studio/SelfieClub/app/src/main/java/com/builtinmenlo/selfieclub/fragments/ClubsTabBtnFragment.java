@@ -22,10 +22,8 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +47,6 @@ import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
-import com.builtinmenlo.selfieclub.util.ImageDownloader;
 import com.builtinmenlo.selfieclub.util.Util;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -70,7 +67,6 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
     private ProgressBar loadingIcon;
     private ArrayList<Club> clubs;
     private MyCustomAdapter adapter;
-    private ImageDownloader downloader;
     private Club selectedClub;
     private static String INVITE_RANDOM_FRIENDS_TAG = "invite_random_friends";
     private static String RECEIVE_CLUBS_ERROR_TAG = "error_retrieving_clubs";
@@ -84,7 +80,6 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         View view = inflater.inflate(R.layout.clubs_tab, container, false);
 
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
-        downloader = new ImageDownloader(getActivity(), "clubs");
 
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
         gridClubs = (GridView) view.findViewById(R.id.gridMenu);
@@ -92,11 +87,8 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         populate();
 
         UserManager userManager = new UserManager();
-        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                Activity.MODE_PRIVATE);
-        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        //userManager.requestUserClubs(this, "155489");
-        userManager.requestUserClubs(this, userId);
+        ApplicationManager applicationManager = new ApplicationManager(getActivity());
+        userManager.requestUserClubs(this, applicationManager.getUserId());
 
 
         return view;
@@ -215,9 +207,9 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
                     convertView = inflater.inflate(R.layout.clubs_item, parent, false);
                     viewHolder = new ViewHolder();
                     viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imgClub);
-                    Bitmap image = Bitmap.createBitmap(96, 96, Bitmap.Config.ARGB_8888);
+                    /*Bitmap image = Bitmap.createBitmap(96, 96, Bitmap.Config.ARGB_8888);
                     image.eraseColor(Color.TRANSPARENT);
-                    viewHolder.imageView.setImageBitmap(image);
+                    viewHolder.imageView.setImageBitmap(image);*/
                     viewHolder.loadingImage = (ProgressBar) convertView.findViewById(R.id.loadingImage);
                     viewHolder.loadingImage.setVisibility(View.VISIBLE);
                     convertView.setTag(viewHolder);
@@ -236,17 +228,19 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
 
 
 
+                    //viewHolder = (ViewHolder) convertView.getTag();
+                    viewHolder.imageURL = club.getClubImage();
+
                     Picasso.with(getActivity()).load(viewHolder.imageURL).into(viewHolder.imageView, new Callback() {
 
                         @Override
                         public void onSuccess() {
-                            viewHolder.imageView.setVisibility(View.VISIBLE);
                             viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
                         public void onError() {
-                            viewHolder.imageView.setVisibility(View.VISIBLE);
+                            viewHolder.imageView.setImageResource(R.drawable.default_club_cover);
                             viewHolder.loadingImage.setVisibility(View.INVISIBLE);
                         }
                     });

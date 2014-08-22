@@ -122,6 +122,13 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.camera_fragment, container, false);
 
+        container.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         isUsingFrontCamera = true;
 
         final ActionBar actionBar = getActivity().getActionBar();
@@ -131,17 +138,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
             @Override
             public void onClick(View view) {
                 Fragment newFragment;
-                if (backView == null)
-                    newFragment = new FriendsTabBtnFragment();
-                    //newFragment = new FirstRunRegistrationFragment();
-                else
-                    newFragment = backView;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.remove(CameraFragment.this);
-                transaction.replace(R.id.fragment_container, newFragment);
-                if (bundle == null)
-                    bundle = new Bundle();
-                newFragment.setArguments(bundle);
                 transaction.commit();
             }
         });

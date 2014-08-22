@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
@@ -44,6 +43,7 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.NewsItem;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.NewsFeedProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
@@ -380,7 +380,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     }
 
     public void didReceiveNewsFeed(ArrayList<NewsItem> newsItemArrayList) {
-        loadingIcon.setVisibility(View.INVISIBLE);
+        if (loadingIcon != null)
+            loadingIcon.setVisibility(View.INVISIBLE);
         if (newsItemArrayList.size() < 1 ) {
             getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
         } else {
@@ -391,17 +392,17 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
 
     public void didReceiveNewsFeedError(String errorMessage) {
         getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
-        loadingIcon.setVisibility(View.INVISIBLE);
+        if (loadingIcon != null)
+            loadingIcon.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
         ClubManager clubManager = new ClubManager();
-        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                Activity.MODE_PRIVATE);
-        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        //clubManager.requestNews(this, "155489");
-        clubManager.requestNews(this, userId);
+        if (getActivity() != null) {
+            ApplicationManager applicationManager = new ApplicationManager(getActivity());
+            clubManager.requestNews(this, applicationManager.getUserId());
+        }
     }
 
     @Override

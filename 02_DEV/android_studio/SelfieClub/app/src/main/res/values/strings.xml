@@ -65,7 +65,9 @@
     <string name="label_please_wait">Please Wait...</string>
     <string name="label_register_user">Authenticating User...</string>
     <string name="label_uploading_image">Uploading Image...</string>
-    <string name="label_successfully_uploaded">Succesfully Uploaded!</string>
+    <string name="label_successfully_uploaded">Successfully Uploaded!</string>
+    <string name="label_registration_enter_phone">Enter your phone number\nfor device verification.</string>
+    <string name="label_registration_terms">Terms.</string>
 
 
 

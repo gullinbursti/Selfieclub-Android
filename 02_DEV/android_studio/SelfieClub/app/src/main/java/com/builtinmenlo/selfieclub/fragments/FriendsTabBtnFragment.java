@@ -22,7 +22,6 @@ package com.builtinmenlo.selfieclub.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,19 +46,17 @@ import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserFriendsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
-import com.builtinmenlo.selfieclub.util.ImageDownloader;
 import com.builtinmenlo.selfieclub.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtocol,SCDialogProtocol,ClubInviteProtocol {
-    public ListView lv;
-    public ArrayList<Friend> friends;
-    public User owner;
+    private ListView lv;
+    private ArrayList<Friend> friends;
+    private User owner;
     private MyCustomAdapter adapter;
     private ProgressBar loadingIcon;
-    private ImageDownloader downloader;
     private Friend selectedFriend;
     private static String INVITE_FRIEND_TAG = "invite_friend";
     private static String RECEIVE_FRIENDS_ERROR_TAG = "error_receiving_friends_list";
@@ -68,40 +65,24 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     public FriendsTabBtnFragment() {/*..\(^_^)/..*/}
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-        downloader = new ImageDownloader(getActivity(), "friends");
-
-
-
         View view = inflater.inflate(R.layout.friends_tab, container, false);
-
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
-
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
-
         lv = (ListView) view.findViewById(android.R.id.list);
         friends = new ArrayList<Friend>();
         populate();
-
         PhoneManager phoneManager = new PhoneManager();
         ArrayList<HashMap<String, String>> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
-
         UserManager userManager = new UserManager();
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                Activity.MODE_PRIVATE);
-        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        userManager.requestFriends(this, userId, phoneManager.getContactsPhones(getActivity().getContentResolver()),getActivity().getContentResolver());
-
-
+        ApplicationManager applicationManager = new ApplicationManager(getActivity());
+        userManager.requestFriends(this, applicationManager.getUserId(), phoneManager.getContactsPhones(getActivity().getContentResolver()),getActivity().getContentResolver());
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
-
-
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {
@@ -261,6 +242,8 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
     public void didSendCubInvite(Boolean response){
         Util.playDefaultNotificationSound(getActivity().getApplicationContext());
+        selectedFriend.setSelected(true);
+        adapter.notifyDataSetChanged();;
     }
     public void didFailSendingClubInvite(String errorMessage){
         Log.w(getClass().getName(),"Failed inviting user");
