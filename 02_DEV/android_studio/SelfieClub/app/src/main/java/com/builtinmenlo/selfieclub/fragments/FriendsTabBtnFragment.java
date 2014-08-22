@@ -65,25 +65,17 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
     public FriendsTabBtnFragment() {/*..\(^_^)/..*/}
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
-
         View view = inflater.inflate(R.layout.friends_tab, container, false);
-
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
-
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
-
         lv = (ListView) view.findViewById(android.R.id.list);
         friends = new ArrayList<Friend>();
         populate();
-
         PhoneManager phoneManager = new PhoneManager();
         ArrayList<HashMap<String, String>> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
-
         UserManager userManager = new UserManager();
         ApplicationManager applicationManager = new ApplicationManager(getActivity());
         userManager.requestFriends(this, applicationManager.getUserId(), "+17143309754|+15617164724",getActivity().getContentResolver());
-
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 

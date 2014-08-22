@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -70,6 +71,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
 
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     private ListView listClubs;
+    private Button btnSubmit;
     private ArrayList<Club> clubs;
     private MyCustomAdapter adapter;
 
@@ -106,13 +108,13 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
         }*/
 
         listClubs = (ListView) view.findViewById(android.R.id.list);
+        btnSubmit = (Button) view.findViewById(R.id.btnSubmit);
         clubs = new ArrayList<Club>();
         populate();
 
         UserManager userManager = new UserManager();
         ApplicationManager applicationManager = new ApplicationManager(getActivity());
         userManager.requestUserClubs(this, applicationManager.getUserId());
-
 
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
 
@@ -124,6 +126,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                 NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
+                newFragment.setArguments(bundle);
                 transaction.commit();
             }
         });
@@ -289,12 +292,16 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
         // TODO Add here the rendering on the clubs
         Log.i(this.getActivity().getClass().getName(), userClubs.toString());
         clubs = userClubs;
+        btnSubmit.setVisibility(View.VISIBLE);
+        listClubs.setVisibility(View.VISIBLE);
+        loadingIcon.setVisibility(View.INVISIBLE);
         adapter.notifyDataSetChanged();
 
     }
 
     public void didReceiveUserClubsError(String errorMessage) {
-        //TODO Add here the error management for the get clubs request
+        btnSubmit.setVisibility(View.VISIBLE);
+        loadingIcon.setVisibility(View.INVISIBLE);
     }
 
     @Override
