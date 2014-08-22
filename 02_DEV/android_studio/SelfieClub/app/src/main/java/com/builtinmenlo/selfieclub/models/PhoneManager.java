@@ -62,6 +62,19 @@ public class PhoneManager {
         return contactData;
     }
 
+    public String getContactsPhones(ContentResolver contentResolver){
+        ArrayList<HashMap<String,String>> contacts = getContacts(contentResolver);
+        String strContacts="";
+        if(contacts.size()>0){
+            strContacts = contacts.get(0).get("number");
+        }
+        for(int i=1;i<contacts.size();i++){
+            HashMap<String,String> contact = contacts.get(i);
+            strContacts = strContacts + "|" + contact.get("number");
+        }
+        return strContacts;
+    }
+
     /**
      * Matches the list of phone numbers with the user's id
      * @param phoneMatchInterface The interface that must be implemented
