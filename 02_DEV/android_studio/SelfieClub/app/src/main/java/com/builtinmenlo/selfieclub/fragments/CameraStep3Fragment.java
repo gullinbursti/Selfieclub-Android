@@ -69,10 +69,14 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
     public static final String EXTRA_STICKERS = "stickers";
     private static final String UPLOAD_SUCCESS_TAG = "upload_succeed";
     private static final String UPLOAD_FAILED_TAG = "upload_failed";
+    private static final String NO_CLUBS_SELECTED_TAG = "no_clubs";
 
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
+    private boolean uploadedSuccess;
+    private int uploads;
     private ListView listClubs;
     private Button btnSubmit;
+    private ArrayList<String> selectedClubs;
     private ArrayList<Club> clubs;
     private MyCustomAdapter adapter;
 
@@ -101,6 +105,8 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         View view = inflater.inflate(R.layout.camera_step_3, container, false);
+
+        uploads = 0;
 
         bundle = getArguments();
         /*byte[] avatarImage = null;
@@ -131,19 +137,38 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                 transaction.commit();
             }
         });
-        view.findViewById(R.id.btnSubmit).setOnClickListener(new View.OnClickListener() {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ClubManager manager = new ClubManager();
-                byte[] avatarImage = null;
-                ArrayList<String> selected = null;
-                if (bundle != null) {
-                    avatarImage = bundle.getByteArray(CameraFragment.EXTRA_IMAGE);
-                    selected = bundle.getStringArrayList(EXTRA_STICKERS);
+                selectedClubs = new ArrayList<String>();
+                for (Club club:clubs){
+                    if (club.isSelected()){
+                        selectedClubs.add(club.getClubId());
+                        break;
+                    }
                 }
-                waiting = ProgressDialog.show(getActivity(), "", getString(R.string.label_uploading_image));
-                manager.submitPhoto(CameraStep3Fragment.this, getActivity(), "155489", "3560", avatarImage, selected);
-
+                if (selectedClubs.size() < 1) {
+                    SCDialog dialog = new SCDialog();
+                    dialog.setScDialogProtocol(CameraStep3Fragment.this);
+                    dialog.setMessage(getString(R.string.message_no_selected_club));
+                    dialog.setPositiveButtonTitle(getResources().getString(R.string.retry_button_title));
+                    dialog.setNegativeButtonTitle(getResources().getString(R.string.ok_button_title));
+                    dialog.showTwoButtons = true;
+                    dialog.show(getFragmentManager(), UPLOAD_FAILED_TAG);
+                } else {
+                    ClubManager manager = new ClubManager();
+                    byte[] avatarImage = null;
+                    ArrayList<String> selected = null;
+                    if (bundle != null) {
+                        avatarImage = bundle.getByteArray(CameraFragment.EXTRA_IMAGE);
+                        selected = bundle.getStringArrayList(EXTRA_STICKERS);
+                    }
+                    waiting = ProgressDialog.show(getActivity(), "", getString(R.string.label_uploading_image));
+                    ApplicationManager applicationManager = new ApplicationManager(getActivity());
+                    for (String clubId : selectedClubs) {
+                        manager.submitPhoto(CameraStep3Fragment.this, getActivity(), applicationManager.getUserId(), clubId, avatarImage, selected);
+                    }
+                }
             }
         });
 
@@ -311,27 +336,53 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
 
     @Override
     public void didSubmittedPhotoInClub(Boolean result) {
-        waiting.dismiss();
+        uploads ++;
         if (result) {
-            SCDialog dialog = new SCDialog();
-            dialog.setScDialogProtocol(this);
-            dialog.setMessage(getString(R.string.label_successfully_uploaded));
-            dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-            dialog.showTwoButtons = true;
-            dialog.show(getFragmentManager(), UPLOAD_SUCCESS_TAG);
+            uploadedSuccess = true;
+        }
+        if (uploads >= clubs.size()){
+            waiting.dismiss();
+            if (uploadedSuccess){
+                SCDialog dialog = new SCDialog();
+                dialog.setScDialogProtocol(this);
+                dialog.setMessage(getString(R.string.label_successfully_uploaded));
+                dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+                dialog.showTwoButtons = true;
+                dialog.show(getFragmentManager(), UPLOAD_SUCCESS_TAG);
+            }      else {
+                SCDialog dialog = new SCDialog();
+                dialog.setScDialogProtocol(this);
+                dialog.setMessage(getString(R.string.label_upload_failed));
+                dialog.setPositiveButtonTitle(getResources().getString(R.string.retry_button_title));
+                dialog.setNegativeButtonTitle(getResources().getString(R.string.ok_button_title));
+                dialog.showTwoButtons = true;
+                dialog.show(getFragmentManager(), UPLOAD_FAILED_TAG);
+            }
         }
     }
 
     @Override
     public void didFailSubmittingPhotoInClub(String message) {
-        waiting.dismiss();
-        SCDialog dialog = new SCDialog();
-        dialog.setScDialogProtocol(this);
-        dialog.setMessage(message);
-        dialog.setPositiveButtonTitle(getResources().getString(R.string.retry_button_title));
-        dialog.setNegativeButtonTitle(getResources().getString(R.string.ok_button_title));
-        dialog.showTwoButtons = true;
-        dialog.show(getFragmentManager(), UPLOAD_FAILED_TAG);
+        uploads ++;
+        if (uploads >= clubs.size()){
+            waiting.dismiss();
+            if (uploadedSuccess){
+                SCDialog dialog = new SCDialog();
+                dialog.setScDialogProtocol(this);
+                dialog.setMessage(getString(R.string.label_successfully_uploaded));
+                dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+                dialog.showTwoButtons = true;
+                dialog.show(getFragmentManager(), UPLOAD_SUCCESS_TAG);
+            }      else {
+                SCDialog dialog = new SCDialog();
+                dialog.setScDialogProtocol(this);
+                dialog.setMessage(getString(R.string.label_upload_failed));
+                dialog.setPositiveButtonTitle(getResources().getString(R.string.retry_button_title));
+                dialog.setNegativeButtonTitle(getResources().getString(R.string.ok_button_title));
+                dialog.showTwoButtons = true;
+                dialog.show(getFragmentManager(), UPLOAD_FAILED_TAG);
+            }
+        }
     }
 
     @Override

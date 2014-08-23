@@ -147,12 +147,12 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     private void showNoEmoticonDialog(){
-        String message = "You need to select an emotion!";
+        String message = getString(R.string.message_no_selected_emotions);
         SCDialog dialog = new SCDialog();
         dialog.setScDialogProtocol(this);
         dialog.setMessage(message);
         dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        //dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));
+        dialog.showTwoButtons = true;
         dialog.show(getFragmentManager(),NO_EMOTICON_TAG);
     }
 

@@ -66,10 +66,12 @@
     <string name="label_register_user">Authenticating User...</string>
     <string name="label_uploading_image">Uploading Image...</string>
     <string name="label_successfully_uploaded">Successfully Uploaded!</string>
+    <string name="label_upload_failed">Upload Failed. Try Again?</string>
     <string name="label_registration_enter_phone">Enter your phone number\nfor device verification.</string>
     <string name="label_registration_terms">Terms.</string>
 
-
+    <string name="message_no_selected_emotions">You need to select an emotion!</string>
+    <string name="message_no_selected_club">You need to select an club!</string>
 
     <string name="hint_enter_username">Enter Username</string>
     <string name="hint_enter_phone">Enter Phone #</string>
