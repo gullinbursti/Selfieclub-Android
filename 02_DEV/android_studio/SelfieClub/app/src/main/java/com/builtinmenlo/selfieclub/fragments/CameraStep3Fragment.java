@@ -151,7 +151,6 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                     SCDialog dialog = new SCDialog();
                     dialog.setScDialogProtocol(CameraStep3Fragment.this);
                     dialog.setMessage(getString(R.string.message_no_selected_club));
-                    dialog.setPositiveButtonTitle(getResources().getString(R.string.retry_button_title));
                     dialog.setNegativeButtonTitle(getResources().getString(R.string.ok_button_title));
                     dialog.showTwoButtons = true;
                     dialog.show(getFragmentManager(), UPLOAD_FAILED_TAG);
