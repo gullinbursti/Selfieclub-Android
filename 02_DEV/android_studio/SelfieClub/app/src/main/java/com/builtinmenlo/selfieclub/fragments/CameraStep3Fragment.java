@@ -318,7 +318,6 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
     }
 
     public void didReceiveUserClubs(ArrayList<Club> userClubs) {
-        // TODO Add here the rendering on the clubs
         Log.i(this.getActivity().getClass().getName(), userClubs.toString());
         clubs = userClubs;
         btnSubmit.setVisibility(View.VISIBLE);

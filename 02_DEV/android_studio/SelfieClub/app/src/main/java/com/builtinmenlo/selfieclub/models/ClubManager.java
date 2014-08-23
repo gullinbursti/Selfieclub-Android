@@ -323,11 +323,11 @@ public class ClubManager {
         String uniqueString = Util.generateUniqueString(context);
         final String imageUrl = Constants.AMAZON_S3_PATH + uniqueString;
         //Upload large image
-        String largeFilename = uniqueString + "_Large_640x1136.jpg";
+        String largeFilename = uniqueString + "Large_640x1136.jpg";
         File largeImage = Util.resizeImage(Util.IMAGE_SIZES.LARGE_640x1136, imageFile, context);
         Util.uploadPhotoToS3(largeImage, largeFilename);
         //Upload tab image
-        String tabFilename = uniqueString + "_Tab_640x960.jpg";
+        String tabFilename = uniqueString + "Tab_640x960.jpg";
         File tabImage = Util.resizeImage(Util.IMAGE_SIZES.TAB_640x960, imageFile, context);
         Util.uploadPhotoToS3(tabImage, tabFilename);
         //Notify the server
