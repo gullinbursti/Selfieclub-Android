@@ -16,6 +16,7 @@
             android:scrollingCache="true" />
 
     <ProgressBar
+        android:paddingBottom="70dp"
         android:id="@+id/loadingIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

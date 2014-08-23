@@ -391,7 +391,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     }
 
     public void didReceiveNewsFeedError(String errorMessage) {
-        getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
+        if (getActivity() != null && getActivity().findViewById(R.id.txtError) != null)
+            getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
         if (loadingIcon != null)
             loadingIcon.setVisibility(View.INVISIBLE);
     }
