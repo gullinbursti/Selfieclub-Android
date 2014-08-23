@@ -252,7 +252,8 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
 
             Emoticon emoticon = emoticons.get(position);
 
-            viewHolder.lblName.setText(emoticon.getContent().getName());
+            String []stickerName = emoticon.getContent().getName().split("\\.");
+            viewHolder.lblName.setText(stickerName[0]);
 
             Picasso.with(getActivity()).load(emoticon.getContent().getSmall_image()).into(viewHolder.imgEmoticon, new Callback() {
 
