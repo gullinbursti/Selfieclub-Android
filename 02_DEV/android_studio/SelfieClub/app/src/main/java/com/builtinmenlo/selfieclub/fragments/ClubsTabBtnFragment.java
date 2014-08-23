@@ -71,6 +71,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
     private static String INVITE_RANDOM_FRIENDS_TAG = "invite_random_friends";
     private static String RECEIVE_CLUBS_ERROR_TAG = "error_retrieving_clubs";
     private static String NO_CLUBS_ERROR_TAG = "no_clubs";
+    private static String WOULD_YOU_JOIN_TAG = "would_you_join";
 
 
 
@@ -88,8 +89,8 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
 
         UserManager userManager = new UserManager();
         ApplicationManager applicationManager = new ApplicationManager(getActivity());
-        userManager.requestUserClubs(this, applicationManager.getUserId());
-
+        //userManager.requestUserClubs(this, applicationManager.getUserId());
+        userManager.requestUserClubs(this, "3482");
 
         return view;
     }
@@ -155,12 +156,35 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
             gridClubs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    //showInviteDialog(clubs.get(position));
-                    SCDialog dialog = new SCDialog();
-                    dialog.setNeutralButtonTitle(getString(R.string.ok_button_title));
-                    dialog.setMessage(getString(R.string.label_coming_soon));
-                    dialog.showTwoButtons = false;
-                    dialog.show(getFragmentManager(),"");
+                    if (position < 1) {
+                        SCDialog dialog = new SCDialog();
+                        dialog.setNeutralButtonTitle(getString(R.string.ok_button_title));
+                        dialog.setMessage(getString(R.string.label_coming_soon));
+                        dialog.showTwoButtons = false;
+                        dialog.show(getFragmentManager(),"");
+                    } else {
+                        ApplicationManager applicationManager = new ApplicationManager(getActivity());
+                        Club clubSelected = clubs.get(position - 1);
+                        boolean isMember = (clubSelected.getClubOwner().getUserId() == applicationManager.getUserId());
+                        if (!isMember) {
+                            for (int i = 0; i < clubSelected.getClubMembers().length(); i++) {
+                                //User
+                                //if
+                            }
+                        }
+                        if (isMember) {
+                            showInviteDialog(clubSelected);
+                        } else {
+                            SCDialog scdialog = new SCDialog();
+                            scdialog.setScDialogProtocol(ClubsTabBtnFragment.this);
+                            scdialog.setMessage(String.format(getString(R.string.would_you_like_joinclub_dialog), clubSelected.getClubName()));
+                            scdialog.setPositiveButtonTitle(getString(R.string.yes_button_title));
+                            scdialog.setNegativeButtonTitle(getString(R.string.no_button_title));
+                            scdialog.showTwoButtons = true;
+                            scdialog.show(getFragmentManager(), WOULD_YOU_JOIN_TAG);
+                        }
+
+                    }
 
                 }
             });
@@ -272,6 +296,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         scdialog.setScDialogProtocol(this);
         scdialog.setMessage(errorMessage);
         scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+        scdialog.showTwoButtons = true;
         scdialog.show(getFragmentManager(), RECEIVE_CLUBS_ERROR_TAG);
     }
 

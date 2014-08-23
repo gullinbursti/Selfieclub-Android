@@ -141,8 +141,8 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
             @Override
             public void onClick(View view) {
                 selectedClubs = new ArrayList<String>();
-                for (Club club:clubs){
-                    if (club.isSelected()){
+                for (Club club : clubs) {
+                    if (club.isSelected()) {
                         selectedClubs.add(club.getClubId());
                         break;
                     }
@@ -274,7 +274,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                 viewHolder.lblClubName.setText(R.string.label_select_all_clubs);
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
-                layoutParams.setMargins(20,0,0,0);
+                layoutParams.setMargins(20, 0, 0, 0);
                 viewHolder.lblClubName.setLayoutParams(layoutParams);
                 Bitmap image = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
                 image.eraseColor(Color.TRANSPARENT);
@@ -334,20 +334,20 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
 
     @Override
     public void didSubmittedPhotoInClub(Boolean result) {
-        uploads ++;
+        uploads++;
         if (result) {
             uploadedSuccess = true;
         }
-        if (uploads >= clubs.size()){
+        if (uploads >= clubs.size()) {
             waiting.dismiss();
-            if (uploadedSuccess){
+            if (uploadedSuccess) {
                 SCDialog dialog = new SCDialog();
                 dialog.setScDialogProtocol(this);
                 dialog.setMessage(getString(R.string.label_successfully_uploaded));
                 dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
                 dialog.showTwoButtons = true;
                 dialog.show(getFragmentManager(), UPLOAD_SUCCESS_TAG);
-            }      else {
+            } else {
                 SCDialog dialog = new SCDialog();
                 dialog.setScDialogProtocol(this);
                 dialog.setMessage(getString(R.string.label_upload_failed));
@@ -361,17 +361,17 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
 
     @Override
     public void didFailSubmittingPhotoInClub(String message) {
-        uploads ++;
-        if (uploads >= clubs.size()){
+        uploads++;
+        if (uploads >= clubs.size()) {
             waiting.dismiss();
-            if (uploadedSuccess){
+            if (uploadedSuccess) {
                 SCDialog dialog = new SCDialog();
                 dialog.setScDialogProtocol(this);
                 dialog.setMessage(getString(R.string.label_successfully_uploaded));
                 dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
                 dialog.showTwoButtons = true;
                 dialog.show(getFragmentManager(), UPLOAD_SUCCESS_TAG);
-            }      else {
+            } else {
                 SCDialog dialog = new SCDialog();
                 dialog.setScDialogProtocol(this);
                 dialog.setMessage(getString(R.string.label_upload_failed));

@@ -39,7 +39,7 @@
     <string name="invite_friend_dialog">Invite %s to my Selfieclub</string>
     <string name="invite_random_friends_dialog">To enter the club please invite some friends!</string>
     <string name="already_club_member_dialog">You are already a member!</string>
-    <string name="would_you_like_joinclub_dialog">Would you like to join %s ?</string>
+    <string name="would_you_like_joinclub_dialog">Would you like to join %s\'s club?</string>
 
     <!-- Layout messages -->
 

@@ -88,7 +88,6 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     public NewsTabBtnFragment() {
     }
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_tab, container, false);
         lv = (ListView) view.findViewById(android.R.id.list);
