@@ -1,5 +1,6 @@
 package com.builtinmenlo.selfieclub.models;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -10,6 +11,7 @@ import android.provider.ContactsContract;
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.listeners.CountryCodeProtocol;
+import com.builtinmenlo.selfieclub.util.Util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -81,7 +83,10 @@ public class PhoneManager {
      * @param userId User's id
      * @param phoneNumbersArray The array of phone numbers separated by |
      */
-    public void matchPhoneNumbers(final PhoneMatchProtocol phoneMatchInterface,String userId, String[] phoneNumbersArray){
+    public void matchPhoneNumbers(final PhoneMatchProtocol phoneMatchInterface,
+                                  String userId,
+                                  String[] phoneNumbersArray,
+                                  Activity activity){
         StringBuilder builder = new StringBuilder();
         for(String s : phoneNumbersArray){
             builder.append(s);
@@ -94,6 +99,9 @@ public class PhoneManager {
         data.put("action","11");
         data.put("phone",phoneNumbers);
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         RequestParams requestParams = new RequestParams(data);
         client.post(Constants.API_ENDPOINT+Constants.USER_PATH,requestParams,new JsonHttpResponseHandler() {
                     @Override

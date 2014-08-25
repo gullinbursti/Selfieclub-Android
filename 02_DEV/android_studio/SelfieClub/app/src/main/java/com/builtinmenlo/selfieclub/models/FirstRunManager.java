@@ -113,6 +113,9 @@ public class FirstRunManager {
                              String avatarUrl,
                              Activity activity){
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            asyncHttpClient.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("action","9");
         data.put("userID",userId);
@@ -148,6 +151,9 @@ public class FirstRunManager {
                         String phoneNumber,
                         Activity activity){
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            asyncHttpClient.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         data.put("phone",phoneNumber);
@@ -186,6 +192,9 @@ public class FirstRunManager {
                             String pin,
                             Activity activity){
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            asyncHttpClient.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         data.put("phone",phone);

@@ -121,7 +121,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
 
         UserManager userManager = new UserManager();
         ApplicationManager applicationManager = new ApplicationManager(getActivity());
-        userManager.requestUserClubs(this, applicationManager.getUserId());
+        userManager.requestUserClubs(this, applicationManager.getUserId(),this.getActivity());
 
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
 

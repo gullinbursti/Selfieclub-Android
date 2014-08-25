@@ -133,7 +133,7 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         //Request the user's personal club
         UserManager userManager = new UserManager();
         String userId =applicationManager.getUserId();
-        userManager.requestUserClubs(this,userId);
+        userManager.requestUserClubs(this,userId,this);
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 

@@ -1,5 +1,6 @@
 package com.builtinmenlo.selfieclub.models;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.util.Log;
 
@@ -9,6 +10,7 @@ import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
+import com.builtinmenlo.selfieclub.util.Util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -43,9 +45,14 @@ public class UserManager
      * Request the user's activity from the server. Needs to implement the UserActivityProtocol
      * @param userId The user's id
      */
-    public void requestUserActivity(final UserActivityProtocol userActivityProtocol, String userId){
+    public void requestUserActivity(final UserActivityProtocol userActivityProtocol,
+                                    String userId,
+                                    Activity activity){
 
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         RequestParams requestParams = new RequestParams(data);
@@ -79,9 +86,15 @@ public class UserManager
      * @param userId The user's id
      * @param date Date/time in format “YYYY:MM:DD HH:MM:SS”
      */
-    public void requestUserActivity(final UserActivityProtocol userActivityProtocol, String userId, String date){
+    public void requestUserActivity(final UserActivityProtocol userActivityProtocol,
+                                    String userId,
+                                    String date,
+                                    Activity activity){
 
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         data.put("lastUpdated",date);
@@ -116,8 +129,13 @@ public class UserManager
      * @param userClubsProtocol
      * @param userId
      */
-    public void requestUserClubs(final UserClubsProtocol userClubsProtocol, String userId){
+    public void requestUserClubs(final UserClubsProtocol userClubsProtocol,
+                                 String userId,
+                                 Activity activity){
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         RequestParams requestParams = new RequestParams(data);
@@ -151,8 +169,13 @@ public class UserManager
         );
     }
 
-    public void requestOtherUserClubs(final OtherUserClubsProtocol userClubsProtocol, String userId){
+    public void requestOtherUserClubs(final OtherUserClubsProtocol userClubsProtocol,
+                                      String userId,
+                                      Activity activity){
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         RequestParams requestParams = new RequestParams(data);
@@ -205,9 +228,14 @@ public class UserManager
      * @param userFinderProtocol
      * @param username
      */
-    public void findUserByUsername(final UserFinderProtocol userFinderProtocol, final String username){
+    public void findUserByUsername(final UserFinderProtocol userFinderProtocol,
+                                   final String username,
+                                   Activity activity){
 
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("username",username);
         data.put("action","1");
@@ -241,8 +269,15 @@ public class UserManager
         );
     }
 
-    public void requestFriends(final UserFriendsProtocol userFriendsProtocol, String userId, String phoneNumbers, final ContentResolver contentResolver){
+    public void requestFriends(final UserFriendsProtocol userFriendsProtocol,
+                               String userId,
+                               String phoneNumbers,
+                               final ContentResolver contentResolver,
+                               Activity activity){
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         data.put("action","5");
