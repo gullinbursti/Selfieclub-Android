@@ -119,6 +119,7 @@ public class UserManager
     public void requestUserClubs(final UserClubsProtocol userClubsProtocol, String userId){
         AsyncHttpClient client = new AsyncHttpClient();
         HashMap<String, String> data = new HashMap<String, String>();
+        //data.put("userID","155489");
         data.put("userID",userId);
         RequestParams requestParams = new RequestParams(data);
         client.post(Constants.API_ENDPOINT+Constants.GET_USERCLUBS_PATH,requestParams,new JsonHttpResponseHandler() {
