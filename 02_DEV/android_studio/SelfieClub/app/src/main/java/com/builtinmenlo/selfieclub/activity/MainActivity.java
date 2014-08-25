@@ -45,16 +45,23 @@ import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewCameraStep2Fragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
+import com.builtinmenlo.selfieclub.fragments.SCDialog;
 import com.builtinmenlo.selfieclub.fragments.WebviewFragment;
 import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
+import com.builtinmenlo.selfieclub.models.ClubInviteProtocol;
+import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.DeepLinksManager;
 import com.builtinmenlo.selfieclub.models.KeenManager;
+import com.builtinmenlo.selfieclub.models.PhoneManager;
+import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
+import com.builtinmenlo.selfieclub.util.Util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -65,6 +72,7 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     //] class properties ]>
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     public final static String INTENT_PAYLOAD_AS_STRING = "com.builtinmenlo.selfieclub.activity.INTENT_PAYLOAD_AS_STRING";
+
 
     Tab friendsTab, clubsTab, newsTab, notificationsTab;
 

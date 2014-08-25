@@ -37,17 +37,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
+import com.builtinmenlo.selfieclub.models.ClubInviteProtocol;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.CreateClubProtocol;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
 import com.builtinmenlo.selfieclub.models.FirstRunProtocol;
 import com.builtinmenlo.selfieclub.models.PINVerificationProtocol;
+import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
+import com.builtinmenlo.selfieclub.util.Util;
 import com.couchbase.lite.Context;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 ;
@@ -55,7 +61,13 @@ import java.util.Random;
 
 
 // <[!] class delaration [¡]>
-public class FirstRunRegistrationFragment extends Fragment implements FirstRunProtocol, SCDialogProtocol, PINVerificationProtocol, CreateClubProtocol{
+public class FirstRunRegistrationFragment
+        extends Fragment
+        implements FirstRunProtocol,
+        SCDialogProtocol,
+        PINVerificationProtocol,
+        CreateClubProtocol,
+        ClubInviteProtocol{
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     public static final String EXTRA_USERNAME = "username";
@@ -74,6 +86,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     private static String FAILED_VALIDATING_TAG = "validation_failed";
     private static String FAILED_VALIDATING_PIN_TAG = "validation_pin_failed";
     private static String FIELDS_NOT_FILLED_TAG = "fields_not fill";
+    private final static String INVITE_RANDOM_FRIENDS_TAG = "invite_random";
 
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -252,12 +265,13 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
             }
             String clubAvatar = String.format("http://hotornot-challenges.s3.amazonaws.com/pc-0%sMedium_320x320.jpg", suffix);
             clubManager.createClub(this,freeUserId,txtUsername.getText().toString(),"Personal club",clubAvatar,this.getActivity());
-            Log.w("","");
         }
     }
     @Override
-    public void didCreateClub(){
-        TelephonyManager tMgr =(TelephonyManager)this.getActivity().getSystemService(this.getActivity().TELEPHONY_SERVICE);
+    public void didCreateClub(String clubId,String clubName){
+        //Store the user's personal club info
+        ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
+        applicationManager.setUserPersonalClubId(clubId);
         String mPhoneNumber = txtPhone.getText().toString();
         FirstRunManager manager = new FirstRunManager();
         manager.registerUser(this, freeUserId, txtUsername.getText().toString(), mPhoneNumber, mPhoneNumber,"https://s3.amazonaws.com/hotornot-avatars/defaultAvatar",this.getActivity());
@@ -282,9 +296,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     @Override
     public void didRegisteredUser(String userId) {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        getActivity().startActivity(intent);
-        getActivity().finish();
+        showInviteDialog();
     }
 
     @Override
@@ -297,6 +309,19 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         if (dialogTag.equalsIgnoreCase(FAILED_VALIDATING_TAG)) {
             if (buttonIndex == 1) {
 
+            }
+        }
+        if (dialogTag.equalsIgnoreCase(INVITE_RANDOM_FRIENDS_TAG)) {
+            if (buttonIndex == 1) {
+                inviteRandomFriends();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                getActivity().startActivity(intent);
+                getActivity().finish();
+            }
+            else{
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                getActivity().startActivity(intent);
+                getActivity().finish();
             }
         }
     }
@@ -334,5 +359,52 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
     @Override
     public void didFailValidatingPIN(String message) {
 
+    }
+
+    public void showInviteDialog() {
+        String message = getResources().getString(R.string.would_you_like_invite_friends_dialog);
+        SCDialog dialog = new SCDialog();
+        dialog.setScDialogProtocol(this);
+        dialog.showTwoButtons = true;
+        dialog.setMessage(message);
+        dialog.setPositiveButtonTitle(getResources().getString(R.string.yes_button_title));
+        dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));
+        dialog.show(getFragmentManager(), INVITE_RANDOM_FRIENDS_TAG);
+    }
+
+    public void inviteRandomFriends() {
+        ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
+        String userId = applicationManager.getUserId();
+        String clubId = applicationManager.getUserPersonalClubId();
+        PhoneManager phoneManager = new PhoneManager();
+        ArrayList<HashMap<String, String>> contactsList = phoneManager.getContacts(this.getActivity().getContentResolver());
+        HashMap<String, String> contact;
+        ArrayList<HashMap<String, String>> friendsToInvite = new ArrayList<HashMap<String, String>>();
+        ArrayList<String> registeredFriends = new ArrayList<String>();
+        if (contactsList.size() > Constants.NUMBER_OF_RANDOM_FRIENDS) {
+            int[] randomNumbers = Util.randomNumbers(Constants.NUMBER_OF_RANDOM_FRIENDS, 0, contactsList.size());
+            for (int i = 0; i < randomNumbers.length; i++) {
+                contact = contactsList.get(randomNumbers[i]);
+                friendsToInvite.add(contact);
+            }
+        } else {
+            for (int i = 0; i < contactsList.size(); i++) {
+                contact = contactsList.get(i);
+                friendsToInvite.add(contact);
+            }
+        }
+
+        ClubManager clubManager = new ClubManager();
+        clubManager.sendClubInvite(this,userId,clubId,registeredFriends,friendsToInvite,this.getActivity());
+
+    }
+
+
+    public void didSendCubInvite(Boolean response){
+        Log.w("MainActivity","Invite send");
+
+    }
+    public void didFailSendingClubInvite(String errorMessage){
+        Log.w("MainActivity","Failed sending invites");
     }
 }

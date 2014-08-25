@@ -174,7 +174,7 @@ public class ClubManager {
                     public void onSuccess(JSONObject data) {
                         try {
                             if (data != null) {
-                                createClubProtocol.didCreateClub();
+                                createClubProtocol.didCreateClub(data.getString("id"),data.getString("name"));
                             }
 
 
