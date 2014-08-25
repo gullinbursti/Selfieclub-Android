@@ -1,6 +1,7 @@
 package com.builtinmenlo.selfieclub.models;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -39,6 +40,9 @@ public class ClubManager {
                          String clubId,
                          String ownedId) {
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
         data.put("clubID", clubId);
@@ -314,13 +318,13 @@ public class ClubManager {
      * @param subjects                    An arraylist with all the subjects
      */
     public void submitPhoto(final ClubPhotoSubmissionProtocol clubPhotoSubmissionProtocol,
-                            Context context,
+                            Activity activity,
                             String userId,
                             String clubId,
                             byte[] imageFile,
                             ArrayList<String> subjects) {
-
-        String uniqueString = Util.generateUniqueString(context);
+        Context context = activity.getApplicationContext();
+        String uniqueString = Util.generateUniqueString(activity);
         final String imageUrl = Constants.AMAZON_S3_PATH + uniqueString;
         //Upload large image
         String largeFilename = uniqueString + "Large_640x1136.jpg";

@@ -84,4 +84,6 @@ public class ApplicationManager {
         preferences.edit().putString("userPersonalClubId",userPersonalClubId).apply();
     }
 
+
+
 }

@@ -1,6 +1,9 @@
 package com.builtinmenlo.selfieclub.util;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -25,10 +28,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.text.MessageFormat;
+import java.util.Formatter;
 import java.util.Random;
 import java.util.UUID;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Created by Leonardo on 6/25/14.
@@ -65,7 +76,77 @@ public class Util {
         return String.format("%0" + (data.length*2) + "X", new BigInteger(1, data));
     }
 
-    public static String generateRandomString(int lenght){
+    public static String generateHMAC(Activity activity){
+        String deviceWithDash = getDeviceId(activity);
+        String deviceNoDash = deviceWithDash.replace("-","");
+        String combinedHash = deviceNoDash+"+"+deviceWithDash;
+        String hash;
+        try {
+            hash = hashMac(combinedHash,"YARJSuo6/r47LczzWjUx/T8ioAJpUKdI/ZshlTUP8q4ujEVjC0seEUAAtS6YEE1Veghz+IDbNQ");
+        }
+        catch (Exception e){
+            hash="";
+        }
+        String result = hash+"+"+combinedHash;
+        return result;
+    }
+
+
+
+    public static String getDeviceId(Activity activity){
+        Context context = activity.getApplicationContext();
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        String deviceId = sharedPreferences.getString("DEVICE_ID","");
+        if(deviceId.equalsIgnoreCase("")){
+            String rawHash = sha1(getUDID(context)+generateRandomString(40));
+
+            MessageFormat messageFormat = new MessageFormat("{0}-{1}-{2}-{3}");
+            String[] hashArray = {rawHash.substring(0,9),rawHash.substring(10, 19),rawHash.substring(20,29),rawHash.substring(30,39)};
+            deviceId = messageFormat.format(hashArray);
+            SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+            preferences.edit().putString("DEVICE_ID",deviceId).apply();
+        }
+        return deviceId;
+    }
+
+    /**
+     * Generates hashMac256
+     * @param text Text to generate
+     * @param secretKey Secret key
+     * @return
+     * @throws SignatureException
+     */
+    private static String hashMac(String text, String secretKey)
+            throws SignatureException {
+
+        try {
+            Key sk = new SecretKeySpec(secretKey.getBytes(), "HmacSHA256");
+            Mac mac = Mac.getInstance(sk.getAlgorithm());
+            mac.init(sk);
+            final byte[] hmac = mac.doFinal(text.getBytes());
+            return toHexString(hmac);
+        } catch (NoSuchAlgorithmException e1) {
+            // throw an exception or pick a different encryption method
+            throw new SignatureException(
+                    "error building signature, no such algorithm in device "
+                            + "HmacSHA256");
+        } catch (InvalidKeyException e) {
+            throw new SignatureException(
+                    "error building signature, invalid key " + "HmacSHA256");
+        }
+    }
+    private static String toHexString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
+
+        Formatter formatter = new Formatter(sb);
+        for (byte b : bytes) {
+            formatter.format("%02x", b);
+        }
+
+        return sb.toString();
+    }
+
+    private static String generateRandomString(int lenght){
         String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random random = new Random();
         StringBuffer sb = new StringBuffer(lenght);
@@ -76,10 +157,13 @@ public class Util {
         return sb.toString();
     }
 
-    public static String generateUniqueString(Context context){
-        return sha1(getUDID(context)+generateRandomString(40));
 
+
+    public static String generateUniqueString(Activity activity){
+        String string = sha1(getUDID(activity.getApplicationContext())+generateRandomString(40));
+        return  string;
     }
+
 
 
 
