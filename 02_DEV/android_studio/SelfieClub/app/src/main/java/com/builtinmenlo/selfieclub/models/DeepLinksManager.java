@@ -123,7 +123,7 @@ public class DeepLinksManager implements UserFinderProtocol,OtherUserClubsProtoc
             if(buttonIndex==1){
                 ApplicationManager applicationManager = new ApplicationManager(activity);
                 ClubManager clubManager = new ClubManager();
-                clubManager.joinClub(this,applicationManager.getUserId(),clubId,ownerId);
+                clubManager.joinClub(this,applicationManager.getUserId(),clubId,ownerId,activity);
 
             }
 

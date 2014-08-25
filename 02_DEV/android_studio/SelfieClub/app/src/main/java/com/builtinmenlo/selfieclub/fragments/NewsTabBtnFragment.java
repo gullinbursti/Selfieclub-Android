@@ -401,7 +401,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
         ClubManager clubManager = new ClubManager();
         if (getActivity() != null) {
             ApplicationManager applicationManager = new ApplicationManager(getActivity());
-            clubManager.requestNews(this, applicationManager.getUserId());
+            clubManager.requestNews(this, applicationManager.getUserId(),this.getActivity());
         }
     }
 

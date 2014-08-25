@@ -38,10 +38,11 @@ public class ClubManager {
     public void joinClub(final ClubJoinProtocol clubJoinProtocol,
                          String userId,
                          String clubId,
-                         String ownedId) {
+                         String ownedId,
+                         Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
         if(Constants.USE_HMAC){
-
+            client.addHeader("HMAC",Util.generateHMAC(activity));
         }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
@@ -86,7 +87,8 @@ public class ClubManager {
                                String userId,
                                String clubId,
                                ArrayList<String> users,
-                               ArrayList<HashMap<String, String>> nonUsers) {
+                               ArrayList<HashMap<String, String>> nonUsers,
+                               Activity activity) {
         String usersStr = "";
         if (users.size() > 0) {
             usersStr = users.get(0);
@@ -108,6 +110,9 @@ public class ClubManager {
             }
         }
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
         data.put("clubID", clubId);
@@ -148,8 +153,16 @@ public class ClubManager {
      * @param clubDescription Club's description
      * @param clubImageUrl
      */
-    public void createClub(final CreateClubProtocol createClubProtocol, String userId, String clubName, String clubDescription, String clubImageUrl) {
+    public void createClub(final CreateClubProtocol createClubProtocol,
+                           String userId,
+                           String clubName,
+                           String clubDescription,
+                           String clubImageUrl,
+                           Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
         data.put("name", clubName);
@@ -161,10 +174,6 @@ public class ClubManager {
                     public void onSuccess(JSONObject data) {
                         try {
                             if (data != null) {
-                                //track event
-                                //KeenManager keenManager = KeenManager.sharedInstance();
-                                //keenManager.trackEvent(Constants.KEEN_EVENT_CREATECLUB);
-
                                 createClubProtocol.didCreateClub();
                             }
 
@@ -191,8 +200,14 @@ public class ClubManager {
      * @param userId           User's id
      * @param clubId           Club's id
      */
-    public void requestClubInfo(final ClubInfoProtocol clubInfoProtocol, String userId, String clubId) {
+    public void requestClubInfo(final ClubInfoProtocol clubInfoProtocol,
+                                String userId,
+                                String clubId,
+                                Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
         data.put("clubID", clubId);
@@ -241,8 +256,13 @@ public class ClubManager {
      * @param newsFeedProtocol The interface that must be implemented
      * @param userId           User's id
      */
-    public void requestNews(final NewsFeedProtocol newsFeedProtocol, String userId) {
+    public void requestNews(final NewsFeedProtocol newsFeedProtocol,
+                            String userId,
+                            Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
 
@@ -311,7 +331,7 @@ public class ClubManager {
      * Submit a photo into a club
      *
      * @param clubPhotoSubmissionProtocol The interface that must be implemented
-     * @param context                     Activity context. Used to grab de UIID
+     * @param activity                    Activity context. Used to grab de UIID
      * @param userId                      User's id
      * @param clubId                      Clubs's id
      * @param imageFile                   The photo's file
@@ -337,6 +357,9 @@ public class ClubManager {
         //Notify the server
         JSONArray emotionsJson = new JSONArray(subjects);
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
         data.put("clubID", clubId);

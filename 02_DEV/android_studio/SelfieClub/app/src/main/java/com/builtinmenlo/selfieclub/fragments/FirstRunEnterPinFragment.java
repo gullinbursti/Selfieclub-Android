@@ -86,7 +86,7 @@ public class FirstRunEnterPinFragment extends Fragment implements FirstRunProtoc
                     String[] tokens = email.split("@");
                     String phone = tokens[0];
                     dialog = ProgressDialog.show(getActivity(), "", "Validating PIN...");
-                    manager.validatePIN(FirstRunEnterPinFragment.this,userId,phone,txtPin.getText().toString());
+                    manager.validatePIN(FirstRunEnterPinFragment.this,userId,phone,txtPin.getText().toString(),getActivity());
                 } else {
                     String message = "You need to enter the PIN";
                     SCDialog dialog = new SCDialog();
@@ -177,7 +177,7 @@ public class FirstRunEnterPinFragment extends Fragment implements FirstRunProtoc
         if (result) {
             FirstRunManager manager = new FirstRunManager();
             dialog = ProgressDialog.show(getActivity(), "", getString(R.string.label_register_user));
-            manager.registerUser(FirstRunEnterPinFragment.this, userId, username, email, txtPin.getText().toString(), "");
+            manager.registerUser(FirstRunEnterPinFragment.this, userId, username, email, txtPin.getText().toString(), "",this.getActivity());
         }
     }
 

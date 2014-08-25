@@ -228,14 +228,14 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             contact.put("number",selectedFriend.getPhoneNumber());
             nonUsers.add(contact);
             ClubManager clubManager = new ClubManager();
-            clubManager.sendClubInvite(this,userId,clubId,friends,nonUsers);
+            clubManager.sendClubInvite(this,userId,clubId,friends,nonUsers,this.getActivity());
         }
         else{
             ArrayList<String> friends = new ArrayList<String>();
             friends.add(selectedFriendId);
             ArrayList<HashMap<String,String>> nonUsers = new ArrayList<HashMap<String, String>>();
             ClubManager clubManager = new ClubManager();
-            clubManager.sendClubInvite(this,userId,clubId,friends,nonUsers);
+            clubManager.sendClubInvite(this,userId,clubId,friends,nonUsers,this.getActivity());
         }
 
     }

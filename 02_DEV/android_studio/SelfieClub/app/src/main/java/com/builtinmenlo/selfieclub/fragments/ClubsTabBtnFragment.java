@@ -346,7 +346,7 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol,S
         }
 
         ClubManager clubManager = new ClubManager();
-        clubManager.sendClubInvite(this,userId,clubId,registeredFriends,friendsToInvite);
+        clubManager.sendClubInvite(this,userId,clubId,registeredFriends,friendsToInvite,this.getActivity());
 
 
     }

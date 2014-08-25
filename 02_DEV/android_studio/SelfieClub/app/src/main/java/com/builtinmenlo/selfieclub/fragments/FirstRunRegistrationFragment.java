@@ -100,7 +100,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
 
         manager = new FirstRunManager();
-        manager.requestFreeUserId(this);
+        manager.requestFreeUserId(this,this.getActivity());
 
         String countryCode = "";
         String username = "";
@@ -176,7 +176,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
                 if (txtPhone.getText().length() > 0 && txtUsername.getText().length() > 0) {
                     getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.INVISIBLE);
                     dialog = ProgressDialog.show(getActivity(), "", getString(R.string.label_checking_username));
-                    manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString() + "@selfieclub.com");
+                    manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString() + "@selfieclub.com",getActivity());
                 } else {
                     SCDialog scdialog = new SCDialog();
                     scdialog.setScDialogProtocol(FirstRunRegistrationFragment.this);
@@ -230,13 +230,12 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
 
     @Override
     public void didFailReceivingFreeUserId(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-        manager.requestFreeUserId(this);
+        manager.requestFreeUserId(this,this.getActivity());
     }
 
     @Override
     public void didValidateUsernamePhone(Boolean isValid, String message) {
         dialog.dismiss();
-        System.err.println(message);
         if (isValid) {
             getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.imgCheckPhone).setVisibility(View.VISIBLE);
@@ -252,7 +251,8 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
                 suffix="0"+rnd;
             }
             String clubAvatar = String.format("http://hotornot-challenges.s3.amazonaws.com/pc-0%sMedium_320x320.jpg", suffix);
-            clubManager.createClub(this,freeUserId,txtUsername.getText().toString(),"Personal club",clubAvatar);
+            clubManager.createClub(this,freeUserId,txtUsername.getText().toString(),"Personal club",clubAvatar,this.getActivity());
+            Log.w("","");
         }
     }
     @Override
@@ -260,7 +260,7 @@ public class FirstRunRegistrationFragment extends Fragment implements FirstRunPr
         TelephonyManager tMgr =(TelephonyManager)this.getActivity().getSystemService(this.getActivity().TELEPHONY_SERVICE);
         String mPhoneNumber = txtPhone.getText().toString();
         FirstRunManager manager = new FirstRunManager();
-        manager.registerUser(this, freeUserId, txtUsername.getText().toString(), mPhoneNumber, mPhoneNumber,"https://s3.amazonaws.com/hotornot-avatars/defaultAvatar");
+        manager.registerUser(this, freeUserId, txtUsername.getText().toString(), mPhoneNumber, mPhoneNumber,"https://s3.amazonaws.com/hotornot-avatars/defaultAvatar",this.getActivity());
 
 
 
