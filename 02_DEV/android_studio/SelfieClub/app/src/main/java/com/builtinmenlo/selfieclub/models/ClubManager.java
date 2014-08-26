@@ -2,7 +2,6 @@ package com.builtinmenlo.selfieclub.models;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
@@ -343,16 +342,15 @@ public class ClubManager {
                             String clubId,
                             byte[] imageFile,
                             ArrayList<String> subjects) {
-        Context context = activity.getApplicationContext();
         String uniqueString = Util.generateUniqueString(activity);
         final String imageUrl = Constants.AMAZON_S3_PATH + uniqueString;
         //Upload large image
         String largeFilename = uniqueString + "Large_640x1136.jpg";
-        File largeImage = Util.resizeImage(Util.IMAGE_SIZES.LARGE_640x1136, imageFile, context);
+        File largeImage = Util.resizeImage(Util.IMAGE_SIZES.LARGE_640x1136, imageFile, activity);
         Util.uploadPhotoToS3(largeImage, largeFilename);
         //Upload tab image
         String tabFilename = uniqueString + "Tab_640x960.jpg";
-        File tabImage = Util.resizeImage(Util.IMAGE_SIZES.TAB_640x960, imageFile, context);
+        File tabImage = Util.resizeImage(Util.IMAGE_SIZES.TAB_640x960, imageFile, activity);
         Util.uploadPhotoToS3(tabImage, tabFilename);
         //Notify the server
         JSONArray emotionsJson = new JSONArray(subjects);
@@ -409,8 +407,9 @@ public class ClubManager {
                     }
                 }
         );
-
     }
+
+
 
     private NewsItem parseNewsItem(JSONObject data, String clubname) {
         NewsItem newsItem = new NewsItem();

@@ -1,7 +1,6 @@
 package com.builtinmenlo.selfieclub.util;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -164,9 +163,6 @@ public class Util {
         return  string;
     }
 
-
-
-
     public static File resizeImage(IMAGE_SIZES size, byte[] imageFile, Context context){
         int width = 50;
         int height = 50;
@@ -193,7 +189,8 @@ public class Util {
 
         try{
             Bitmap source = BitmapFactory.decodeByteArray(imageFile, 0, imageFile.length);
-            Bitmap result = Bitmap.createScaledBitmap(source, width, height, false);
+            Bitmap result = Bitmap.createBitmap(source, (source.getWidth() / 2) - (width / 2) ,(source.getHeight() / 2) - (height / 2),width, height);
+
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             result.compress(Bitmap.CompressFormat.JPEG,100,bos);
             byte[] bitmapData = bos.toByteArray();
