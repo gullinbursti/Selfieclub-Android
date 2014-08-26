@@ -192,7 +192,7 @@ public class Util {
             Bitmap result = Bitmap.createBitmap(source, (source.getWidth() / 2) - (width / 2) ,(source.getHeight() / 2) - (height / 2),width, height);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            result.compress(Bitmap.CompressFormat.JPEG,100,bos);
+            result.compress(Bitmap.CompressFormat.JPEG,75,bos);
             byte[] bitmapData = bos.toByteArray();
             bos.flush();
             bos.close();
