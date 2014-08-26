@@ -64,7 +64,7 @@ public class TabButtonListener implements ActionBar.TabListener {
             }
         }
 
-        fragmentTransaction.replace(R.id.tab_fragment_layout, fragment);
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
     }
 
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {

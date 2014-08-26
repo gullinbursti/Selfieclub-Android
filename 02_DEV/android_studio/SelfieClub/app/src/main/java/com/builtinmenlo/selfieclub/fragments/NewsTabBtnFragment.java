@@ -90,6 +90,20 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_tab, container, false);
+
+        view.findViewById(R.id.imagebutton_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CameraFragment newFragment = new CameraFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_container, newFragment);
+                transaction.setCustomAnimations(R.anim.no_amin,R.anim.no_amin);
+                transaction.setTransition(0);
+                newFragment.setNextView(new NewCameraStep2Fragment());
+                transaction.commit();
+            }
+        });
+
         lv = (ListView) view.findViewById(android.R.id.list);
         news = new ArrayList<NewsItem>();
         loadingIcon = (ProgressBar)view.findViewById(R.id.loadingIcon);

@@ -146,16 +146,7 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onMainCameraClick(View view) {
-        CameraFragment newFragment = new CameraFragment();
-        //NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_container, newFragment);
-        //transaction.replace(R.id.tab_fragment_layout, newFragment);
-        transaction.setCustomAnimations(R.anim.no_amin,R.anim.no_amin);
-        transaction.setTransition(0);
-        //newFragment.setNextView(new CameraStep2Fragment());
-        newFragment.setNextView(new NewCameraStep2Fragment());
-        transaction.commit();
+
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     private void getOverflowMenu() {

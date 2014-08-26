@@ -343,7 +343,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         if (bundle == null)
             bundle = new Bundle();
 
-
         Bitmap thePicture = BitmapFactory.decodeByteArray(data, 0, data.length);
         if (isUsingFrontCamera) {
             Matrix m = new Matrix();

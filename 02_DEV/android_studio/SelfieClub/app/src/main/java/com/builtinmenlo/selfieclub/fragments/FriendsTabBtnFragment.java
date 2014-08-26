@@ -21,6 +21,7 @@ package com.builtinmenlo.selfieclub.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,6 +67,21 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.friends_tab, container, false);
+
+        view.findViewById(R.id.imagebutton_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CameraFragment newFragment = new CameraFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_container, newFragment);
+                transaction.setCustomAnimations(R.anim.no_amin,R.anim.no_amin);
+                transaction.setTransition(0);
+                newFragment.setNextView(new NewCameraStep2Fragment());
+                transaction.commit();
+            }
+        });
+
+
         loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
         lv = (ListView) view.findViewById(android.R.id.list);
