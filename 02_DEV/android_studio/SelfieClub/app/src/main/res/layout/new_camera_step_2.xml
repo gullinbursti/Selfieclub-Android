@@ -32,11 +32,9 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/actionbar_text_color"
-            android:text="@string/btn_next_label"
             android:id="@+id/btnNext"
             android:layout_alignParentRight="true"
-            android:background="@android:color/transparent" />
+            android:background="@drawable/btn_next_selector" />
     </RelativeLayout>
 
 

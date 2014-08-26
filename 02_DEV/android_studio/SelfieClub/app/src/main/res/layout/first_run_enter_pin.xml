@@ -40,9 +40,8 @@
         />
 
     <Button
-        android:background="#00E942"
+        android:background="@drawable/btn_submit_selector"
         android:id="@+id/btnSubmit"
-        android:text="@string/btn_submit_label"
         android:layout_below="@+id/txtEnterPin"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

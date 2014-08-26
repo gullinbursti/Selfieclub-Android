@@ -73,9 +73,7 @@
             android:layout_width="fill_parent"
             android:layout_margin="10dp"
             android:layout_height="wrap_content"
-            android:background="#00E942"
-            android:textColor="#FFFFFF"
-            android:text="@string/btn_submit_label" />
+            android:background="@drawable/btn_submit_selector" />
 
     </LinearLayout>
 
