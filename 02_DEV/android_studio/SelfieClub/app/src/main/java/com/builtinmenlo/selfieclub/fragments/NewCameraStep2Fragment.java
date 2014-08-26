@@ -252,6 +252,11 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
 
             Emoticon emoticon = emoticons.get(position);
 
+            if (emoticon.isSelected())
+                convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+            else
+                convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+
             String []stickerName = emoticon.getContent().getName().split("\\.");
             viewHolder.lblName.setText(stickerName[0]);
 
