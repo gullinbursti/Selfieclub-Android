@@ -26,7 +26,6 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -50,7 +49,6 @@ import com.builtinmenlo.selfieclub.models.PINVerificationProtocol;
 import com.builtinmenlo.selfieclub.models.PhoneManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.util.Util;
-import com.couchbase.lite.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -195,6 +193,7 @@ public class FirstRunRegistrationFragment
                     scdialog.setScDialogProtocol(FirstRunRegistrationFragment.this);
                     scdialog.setMessage(getString(R.string.label_fill_phone_username));
                     scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
+                    scdialog.showTwoButtons = true;
                     scdialog.show(getFragmentManager(), FIELDS_NOT_FILLED_TAG);
                 }
             }
@@ -205,7 +204,7 @@ public class FirstRunRegistrationFragment
             public void onClick(View view) {
                 WebviewFragment newFragment = new WebviewFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, newFragment);
+                transaction.add(R.id.fragment_container, newFragment);
                 Bundle bundle = new Bundle();
                 bundle.putString(WebviewFragment.EXTRA_URL_ITEM, "http://www.getselfieclub.com/terms.html");
                 newFragment.setArguments(bundle);

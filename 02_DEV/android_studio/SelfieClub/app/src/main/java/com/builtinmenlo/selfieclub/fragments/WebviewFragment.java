@@ -54,6 +54,12 @@ public class WebviewFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.remove(WebviewFragment.this);
+                if (getActivity().getClass().getSimpleName().equals(MainActivity.class.getSimpleName())){
+                    if (((MainActivity)getActivity()).tabSelected != null) {
+                        transaction.replace(R.id.fragment_container, ((MainActivity)getActivity()).tabSelected);
+                        ((MainActivity)getActivity()).tabSelected = null;
+                    }
+                }
                 transaction.commit();
             }
         });

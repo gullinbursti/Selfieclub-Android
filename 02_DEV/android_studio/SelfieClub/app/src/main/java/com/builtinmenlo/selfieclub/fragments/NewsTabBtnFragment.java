@@ -42,6 +42,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.dataSources.NewsItem;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubManager;
@@ -96,10 +97,13 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             public void onClick(View view) {
                 CameraFragment newFragment = new CameraFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.remove(NewsTabBtnFragment.this);
                 transaction.add(R.id.fragment_container, newFragment);
-                transaction.setCustomAnimations(R.anim.no_amin,R.anim.no_amin);
+                transaction.setCustomAnimations(R.anim.no_amin, R.anim.no_amin);
                 transaction.setTransition(0);
-                newFragment.setNextView(new NewCameraStep2Fragment());
+                ((MainActivity)getActivity()).tabSelected = NewsTabBtnFragment.this;
+                //newFragment.setNextView(new NewCameraStep2Fragment());
+                //newFragment.setBackView(NewsTabBtnFragment.this);
                 transaction.commit();
             }
         });

@@ -37,6 +37,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.dataSources.Friend;
 import com.builtinmenlo.selfieclub.dataSources.FriendsViewData;
 import com.builtinmenlo.selfieclub.dataSources.User;
@@ -73,10 +74,13 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
             public void onClick(View view) {
                 CameraFragment newFragment = new CameraFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                //transaction.remove(FriendsTabBtnFragment.this);
                 transaction.add(R.id.fragment_container, newFragment);
-                transaction.setCustomAnimations(R.anim.no_amin,R.anim.no_amin);
+                /*transaction.setCustomAnimations(R.anim.no_amin,R.anim.no_amin);
                 transaction.setTransition(0);
-                newFragment.setNextView(new NewCameraStep2Fragment());
+                newFragment.setNextView(new NewCameraStep2Fragment());*/
+                //newFragment.setBackView(FriendsTabBtnFragment.this);
+                ((MainActivity)getActivity()).tabSelected = FriendsTabBtnFragment.this;
                 transaction.commit();
             }
         });
@@ -88,7 +92,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         friends = new ArrayList<Friend>();
         populate();
         PhoneManager phoneManager = new PhoneManager();
-        ArrayList<HashMap<String, String>> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
+        //ArrayList<HashMap<String, String>> countryCodes = phoneManager.getCountryCodes(getActivity().getApplicationContext());
         UserManager userManager = new UserManager();
 
         ApplicationManager applicationManager = new ApplicationManager(getActivity());

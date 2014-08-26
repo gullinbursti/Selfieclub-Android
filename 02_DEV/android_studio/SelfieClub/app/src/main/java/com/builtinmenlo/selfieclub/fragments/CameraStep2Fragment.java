@@ -113,7 +113,8 @@ public class CameraStep2Fragment extends Fragment {
                 CameraFragment newFragment = new CameraFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
-                newFragment.setNextView(new CameraStep2Fragment());
+                //transaction.replace(R.id.fragment_container, newFragment);
+                //newFragment.setNextView(new CameraStep2Fragment());
                 transaction.commit();
             }
         });

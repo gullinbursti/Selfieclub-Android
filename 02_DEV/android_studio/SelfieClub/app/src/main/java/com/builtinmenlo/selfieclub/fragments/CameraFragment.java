@@ -32,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -141,6 +142,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
                 Fragment newFragment;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.remove(CameraFragment.this);
+                //if (backView != null)
+                //transaction.replace(R.id.fragment_container, backView);
+                if (((MainActivity)getActivity()).tabSelected != null) {
+                    transaction.replace(R.id.fragment_container, ((MainActivity)getActivity()).tabSelected);
+                    ((MainActivity)getActivity()).tabSelected = null;
+                }
                 transaction.commit();
             }
         });
@@ -332,14 +339,14 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
-        Fragment newFragment;
-        if (nextView == null)
+        Fragment newFragment = new NewCameraStep2Fragment();
+        /*if (nextView == null)
             newFragment = new FirstRunRegistrationFragment();
         else
-            newFragment = nextView;
+            newFragment = nextView;*/
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.remove(CameraFragment.this);
-        transaction.replace(R.id.fragment_container, newFragment);
+        //transaction.remove(CameraFragment.this);
+        transaction.add(R.id.fragment_container, newFragment);
         if (bundle == null)
             bundle = new Bundle();
 

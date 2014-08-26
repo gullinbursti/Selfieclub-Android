@@ -40,6 +40,7 @@ import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubInviteProtocol;
@@ -88,10 +89,10 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol, 
             public void onClick(View view) {
                 CameraFragment newFragment = new CameraFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.remove(ClubsTabBtnFragment.this);
                 transaction.add(R.id.fragment_container, newFragment);
-                transaction.setCustomAnimations(R.anim.no_amin,R.anim.no_amin);
-                transaction.setTransition(0);
-                newFragment.setNextView(new NewCameraStep2Fragment());
+                ((MainActivity)getActivity()).tabSelected = ClubsTabBtnFragment.this;
+                //newFragment.setBackView(ClubsTabBtnFragment.this);
                 transaction.commit();
             }
         });

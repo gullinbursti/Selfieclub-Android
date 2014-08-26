@@ -43,6 +43,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubManager;
@@ -132,6 +133,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
             public void onClick(View view) {
                 NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.remove(CameraStep3Fragment.this);
                 transaction.replace(R.id.fragment_container, newFragment);
                 newFragment.setArguments(bundle);
                 transaction.commit();
@@ -402,6 +404,12 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
         } else if (dialogTag.equalsIgnoreCase(UPLOAD_SUCCESS_TAG)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.remove(this);
+            if (((MainActivity)getActivity()).tabSelected != null) {
+                transaction.replace(R.id.fragment_container, ((MainActivity)getActivity()).tabSelected);
+                ((MainActivity)getActivity()).tabSelected = null;
+            } else {
+                transaction.replace(R.id.fragment_container, new NewsTabBtnFragment());
+            }
             transaction.commit();
         }
 
