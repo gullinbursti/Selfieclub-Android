@@ -67,10 +67,7 @@ public class PicoCandyManager {
             stikersProtocol.didReceiveStickers(contentGroupsList, stickerList);
         else {
             final ArrayList<String> ids = new ArrayList<String>();
-            ids.add("883");
-            ids.add("884");
-            ids.add("885");
-            ids.add("886");
+            ids.add("971");
             PCContentHelper contentHelper = new PCContentHelper();
             final ArrayList<PCContentGroup> contentGroupArrayList = new ArrayList<PCContentGroup>();
             for (int i = 0; i < ids.size(); i++) {
