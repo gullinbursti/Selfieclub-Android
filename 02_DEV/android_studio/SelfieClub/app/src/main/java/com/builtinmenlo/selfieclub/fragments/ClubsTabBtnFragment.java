@@ -24,8 +24,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -133,32 +131,6 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol, 
         ProgressBar loadingImage;
     }
 
-    private class DownloadAsyncTask extends AsyncTask<ViewHolder, Void, ViewHolder> {
-
-        @Override
-        protected ViewHolder doInBackground(ViewHolder... params) {
-            //load image directly
-            ViewHolder viewHolder = params[0];
-            try {
-                URL imageURL = new URL(viewHolder.imageURL);
-                viewHolder.bitmap = BitmapFactory.decodeStream(imageURL.openStream());
-            } catch (Exception e) {
-                viewHolder.bitmap = null;
-            }
-            return viewHolder;
-        }
-
-        @Override
-        protected void onPostExecute(ViewHolder result) {
-            if (result.bitmap == null) {
-                result.imageView.setImageResource(R.drawable.friends_item_image_mask);
-            } else {
-                //result.imageView.setImageBitmap(getRoundedCornerBitmap(result.bitmap));
-                result.imageView.setImageBitmap(result.bitmap);
-            }
-        }
-    }
-
     public void populate() {
         if (gridClubs != null) {
             adapter = new MyCustomAdapter(getActivity(), R.layout.clubs_item, clubs);
@@ -172,11 +144,13 @@ public class ClubsTabBtnFragment extends Fragment implements UserClubsProtocol, 
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                     if (position < 1) {
-                        SCDialog dialog = new SCDialog();
+                        /*SCDialog dialog = new SCDialog();
                         dialog.setNeutralButtonTitle(getString(R.string.ok_button_title));
                         dialog.setMessage(getString(R.string.label_coming_soon));
                         dialog.showTwoButtons = false;
-                        dialog.show(getFragmentManager(), "");
+                        dialog.show(getFragmentManager(), "");*/
+                        showInviteDialog(clubs.get(0));
+
                     } else {
                         ApplicationManager applicationManager = new ApplicationManager(getActivity());
                         Club clubSelected = clubs.get(position - 1);

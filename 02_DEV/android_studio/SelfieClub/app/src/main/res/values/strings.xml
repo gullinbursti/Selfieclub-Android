@@ -58,7 +58,8 @@
     <string name="label_no_friends">No contacts available</string>
     <string name="label_no_news">No posts yet, tap here to create</string>
     <string name="label_select_all_clubs">Select All</string>
-    <string name="label_create_a_club">Create a club</string>
+    <!--<string name="label_create_a_club">Create a club</string>-->
+    <string name="label_create_a_club">Add Friends</string>
     <string name="label_coming_soon">Coming soon ...</string>
     <string name="label_fill_phone_username">Please Fill Both Username and Phone Fields</string>
     <string name="label_minutes_ago"> mins ago</string>
