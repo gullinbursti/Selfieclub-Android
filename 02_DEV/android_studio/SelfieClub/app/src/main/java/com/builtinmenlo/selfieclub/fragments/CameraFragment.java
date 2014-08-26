@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -256,11 +257,14 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         Camera.Parameters parameters = mCamera.getParameters();
         Camera.Size size = getBestPreviewSize(w, h, parameters);
         parameters.setPreviewSize(size.width, size.height);
-        //parameters.setPictureFormat(PixelFormat.JPEG);
+        Camera.Size previewSize = getBestPictureSize(w,h);
+        parameters.setPictureFormat(ImageFormat.JPEG);
+        //parameters.setPreviewFormat(ImageFormat.JPEG);
+        parameters.setPictureSize(previewSize.width, previewSize.height);
         //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         //setFlash(parameters);
         //setZoom(parameters);
-        //mCamera.setParameters(parameters);
+        mCamera.setParameters(parameters);
         mCamera.setDisplayOrientation(90);
 
         mCamera.startPreview();
@@ -269,7 +273,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     private Camera.Size getBestPictureSize(int width, int height) {
         Camera.Size result = null;
-        for (Camera.Size size : mCamera.getParameters().getSupportedPreviewSizes()) {
+        for (Camera.Size size : mCamera.getParameters().getSupportedPictureSizes()) {
             if (size.width <= width && size.height <= height) {
                 if (result == null) {
                     result = size;

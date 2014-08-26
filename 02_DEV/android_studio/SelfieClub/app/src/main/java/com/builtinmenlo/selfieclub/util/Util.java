@@ -51,13 +51,14 @@ public class Util {
         MEDIUM_320x320,
         SMALL_160x160
     }
-    public static String getUDID(Context context){
+
+    public static String getUDID(Context context) {
         final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         final String tmDevice, tmSerial, androidId;
         tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
         androidId = "" + android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
         String deviceId = deviceUuid.toString();
         return deviceId;
     }
@@ -72,45 +73,44 @@ public class Util {
         }
         digest.reset();
         byte[] data = digest.digest(s.getBytes());
-        return String.format("%0" + (data.length*2) + "X", new BigInteger(1, data));
+        return String.format("%0" + (data.length * 2) + "X", new BigInteger(1, data));
     }
 
-    public static String generateHMAC(Activity activity){
+    public static String generateHMAC(Activity activity) {
         String deviceWithDash = getDeviceId(activity);
-        String deviceNoDash = deviceWithDash.replace("-","");
-        String combinedHash = deviceNoDash+"+"+deviceWithDash;
+        String deviceNoDash = deviceWithDash.replace("-", "");
+        String combinedHash = deviceNoDash + "+" + deviceWithDash;
         String hash;
         try {
-            hash = hashMac(combinedHash,"YARJSuo6/r47LczzWjUx/T8ioAJpUKdI/ZshlTUP8q4ujEVjC0seEUAAtS6YEE1Veghz+IDbNQ");
+            hash = hashMac(combinedHash, "YARJSuo6/r47LczzWjUx/T8ioAJpUKdI/ZshlTUP8q4ujEVjC0seEUAAtS6YEE1Veghz+IDbNQ");
+        } catch (Exception e) {
+            hash = "";
         }
-        catch (Exception e){
-            hash="";
-        }
-        String result = hash+"+"+combinedHash;
+        String result = hash + "+" + combinedHash;
         return result;
     }
 
 
-
-    public static String getDeviceId(Activity activity){
+    public static String getDeviceId(Activity activity) {
         Context context = activity.getApplicationContext();
         SharedPreferences sharedPreferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
-        String deviceId = sharedPreferences.getString("DEVICE_ID","");
-        if(deviceId.equalsIgnoreCase("")){
-            String rawHash = sha1(getUDID(context)+generateRandomString(40));
+        String deviceId = sharedPreferences.getString("DEVICE_ID", "");
+        if (deviceId.equalsIgnoreCase("")) {
+            String rawHash = sha1(getUDID(context) + generateRandomString(40));
 
             MessageFormat messageFormat = new MessageFormat("{0}-{1}-{2}-{3}");
-            String[] hashArray = {rawHash.substring(0,9),rawHash.substring(10, 19),rawHash.substring(20,29),rawHash.substring(30,39)};
+            String[] hashArray = {rawHash.substring(0, 9), rawHash.substring(10, 19), rawHash.substring(20, 29), rawHash.substring(30, 39)};
             deviceId = messageFormat.format(hashArray);
             SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
-            preferences.edit().putString("DEVICE_ID",deviceId).apply();
+            preferences.edit().putString("DEVICE_ID", deviceId).apply();
         }
         return deviceId;
     }
 
     /**
      * Generates hashMac256
-     * @param text Text to generate
+     *
+     * @param text      Text to generate
      * @param secretKey Secret key
      * @return
      * @throws SignatureException
@@ -128,12 +128,14 @@ public class Util {
             // throw an exception or pick a different encryption method
             throw new SignatureException(
                     "error building signature, no such algorithm in device "
-                            + "HmacSHA256");
+                            + "HmacSHA256"
+            );
         } catch (InvalidKeyException e) {
             throw new SignatureException(
                     "error building signature, invalid key " + "HmacSHA256");
         }
     }
+
     private static String toHexString(byte[] bytes) {
         StringBuilder sb = new StringBuilder(bytes.length * 2);
 
@@ -145,11 +147,11 @@ public class Util {
         return sb.toString();
     }
 
-    private static String generateRandomString(int lenght){
+    private static String generateRandomString(int lenght) {
         String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random random = new Random();
         StringBuffer sb = new StringBuffer(lenght);
-        for (int i=0;i<lenght;i++){
+        for (int i = 0; i < lenght; i++) {
             sb.append(AB.charAt(random.nextInt(AB.length())));
         }
 
@@ -157,42 +159,47 @@ public class Util {
     }
 
 
-
-    public static String generateUniqueString(Activity activity){
-        String string = sha1(getUDID(activity.getApplicationContext())+generateRandomString(40));
-        return  string;
+    public static String generateUniqueString(Activity activity) {
+        String string = sha1(getUDID(activity.getApplicationContext()) + generateRandomString(40));
+        return string;
     }
 
-    public static File resizeImage(IMAGE_SIZES size, byte[] imageFile, Context context){
+    public static File resizeImage(IMAGE_SIZES size, byte[] imageFile, Context context) {
         int width = 50;
         int height = 50;
-        switch (size){
+        switch (size) {
             case LARGE_640x1136:
-                width=640;
-                height=1136;
+                width = 640;
+                height = 1136;
                 break;
             case TAB_640x960:
-                width=640;
-                height=960;
+                width = 640;
+                height = 960;
                 break;
             case MEDIUM_320x320:
-                width=320;
-                height=320;
+                width = 320;
+                height = 320;
                 break;
             case SMALL_160x160:
-                width=160;
-                height=160;
+                width = 160;
+                height = 160;
                 break;
 
 
         }
 
-        try{
-            Bitmap source = BitmapFactory.decodeByteArray(imageFile, 0, imageFile.length);
-            Bitmap result = Bitmap.createBitmap(source, (source.getWidth() / 2) - (width / 2) ,(source.getHeight() / 2) - (height / 2),width, height);
-
+        Bitmap source = BitmapFactory.decodeByteArray(imageFile, 0, imageFile.length);
+        int tempWidth = ((source.getWidth() / 2) - (width / 2) > 0) ? (source.getWidth() / 2) - (width / 2) : 0;
+        int tempHeight = ((source.getHeight() / 2) - (height / 2) > 0) ? (source.getHeight() / 2) - (height / 2) : 0;
+        Bitmap result = null;
+        try {
+            result = Bitmap.createBitmap(source, tempWidth, tempHeight, width, height);
+        } catch (Exception e) {
+            result = Bitmap.createScaledBitmap(source, width, height, true);
+        }
+        try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            result.compress(Bitmap.CompressFormat.JPEG,75,bos);
+            result.compress(Bitmap.CompressFormat.JPEG, 75, bos);
             byte[] bitmapData = bos.toByteArray();
             bos.flush();
             bos.close();
@@ -201,14 +208,13 @@ public class Util {
             fos.write(bitmapData);
             fos.close();
             return file;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
 
-    public static void playDefaultNotificationSound(Context context){
+    public static void playDefaultNotificationSound(Context context) {
         Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         MediaPlayer mediaPlayer = new MediaPlayer();
@@ -220,8 +226,7 @@ public class Util {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                 @Override
-                public void onCompletion(MediaPlayer mp)
-                {
+                public void onCompletion(MediaPlayer mp) {
                     mp.release();
                 }
             });
@@ -239,8 +244,9 @@ public class Util {
 
     /**
      * Returns an array of unique ramdom numbers
-     * @param count Number of items
-     * @param minInclusive Inclusive lower number
+     *
+     * @param count           Number of items
+     * @param minInclusive    Inclusive lower number
      * @param maxNonInclusive Exclusive max number
      * @return
      */
@@ -248,13 +254,13 @@ public class Util {
         int randoms[] = new int[count];
         Random rand = new Random();
         int impossibleValue = minInclusive - 1;
-        for(int i = 0; i < randoms.length; i++) {
+        for (int i = 0; i < randoms.length; i++) {
             randoms[i] = impossibleValue;
         }
-        for(int x = 0; x < count; x++) {
+        for (int x = 0; x < count; x++) {
             int thisTry = impossibleValue;
-            while(thisTry == impossibleValue || arrayContainsInt(randoms, thisTry, x)) {
-                thisTry = (int)(rand.nextFloat() * (float)(maxNonInclusive - minInclusive)) + minInclusive;
+            while (thisTry == impossibleValue || arrayContainsInt(randoms, thisTry, x)) {
+                thisTry = (int) (rand.nextFloat() * (float) (maxNonInclusive - minInclusive)) + minInclusive;
             }
             randoms[x] = thisTry;
         }
@@ -270,8 +276,8 @@ public class Util {
         return false;
     }
 
-    public static void uploadPhotoToS3(File imageFile, String fileName){
-        AWSCredentials credential = new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET);
+    public static void uploadPhotoToS3(File imageFile, String fileName) {
+        AWSCredentials credential = new BasicAWSCredentials(Constants.AMAZON_S3_KEY, Constants.AMAZON_S3_SECRET);
 
 // TransferManager manages its own thread pool, so
 // please share it when possible.
@@ -298,7 +304,7 @@ public class Util {
             System.out.println("Bucket:" + bucket.getName());
         }*/
         //Upload upload = manager.upload(Constants.AMAZON_S3_BUCKET, fileName, imageFile);
-        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile);
+        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET, fileName, imageFile);
         Upload upload = manager.upload(por);
         try {
             /*if (upload.isDone() == false) {

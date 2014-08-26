@@ -144,7 +144,6 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                 for (Club club : clubs) {
                     if (club.isSelected()) {
                         selectedClubs.add(club.getClubId());
-                        break;
                     }
                 }
                 if (selectedClubs.size() < 1) {

@@ -126,7 +126,6 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
                     if (emoticon.isSelected()){
                         String []stickerName = emoticon.getContent().getName().split("\\.");
                         selected.add(stickerName[0]);
-                        break;
                     }
                 }
                 if (selected.size() < 1){

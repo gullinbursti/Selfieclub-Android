@@ -231,8 +231,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             for (int i = 0; i < newsItem.getStatus().length(); i++) {
                 try {
                     ImageView imgSticker = new ImageView(getActivity());
-                    //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(48,48);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(88,88);
+                    //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
                     imgSticker.setLayoutParams(params);
                     viewHolder.listStickers.addView(imgSticker);
                     if (newsItem.getStatus() != null && newsItem.getStatus().length() > 0) {
