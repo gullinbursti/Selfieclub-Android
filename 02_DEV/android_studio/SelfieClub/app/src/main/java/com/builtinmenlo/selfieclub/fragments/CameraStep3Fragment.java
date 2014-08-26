@@ -275,7 +275,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
                 viewHolder.lblClubName.setText(R.string.label_select_all_clubs);
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
-                layoutParams.setMargins(20, 0, 0, 0);
+                //layoutParams.setMargins(100, 0, 0, 0);
                 viewHolder.lblClubName.setLayoutParams(layoutParams);
                 Bitmap image = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
                 image.eraseColor(Color.TRANSPARENT);
