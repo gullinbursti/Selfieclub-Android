@@ -3,11 +3,14 @@ package com.builtinmenlo.selfieclub.models;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.util.Log;
 
 
+import com.amazonaws.util.StringUtils;
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.util.Util;
@@ -35,35 +38,62 @@ public class PhoneManager {
 
     /**
      * Retuens the number list of contacts stored in the phone's address book
-     * @param contentResolver The caller activity's ContentResolver
+     * @param activity The caller activity's
      * @return An array list with the contacts
      */
-    public ArrayList<HashMap<String,String>> getContacts(ContentResolver contentResolver) {
+    public ArrayList<HashMap<String,String>> getContacts(Activity activity) {
+        ContentResolver contentResolver = activity.getContentResolver();
         ArrayList<HashMap<String,String>> contactData=new ArrayList<HashMap<String,String>>();
-        ContentResolver cr = contentResolver;
-        Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
-        while (cursor.moveToNext()) {
-            try{
-                String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                String name=cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-                    Cursor phones = cr.query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId, null, null);
-                    while (phones.moveToNext()) {
-                        String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        HashMap<String,String> map=new HashMap<String,String>();
-                        map.put("name", name);
-                        map.put("number", phoneNumber);
-                        contactData.add(map);
+        //Read the contacts
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        String contacts = preferences.getString("contacts","");
+        if(contacts.equalsIgnoreCase("")){
+            ContentResolver cr = contentResolver;
+            Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
+            while (cursor.moveToNext()) {
+                try{
+                    String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    String name=cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                        Cursor phones = cr.query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId, null, null);
+                        while (phones.moveToNext()) {
+                            String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            HashMap<String,String> map=new HashMap<String,String>();
+                            map.put("name", name);
+                            map.put("number", phoneNumber);
+                            contactData.add(map);
+                        }
+                        phones.close();
                     }
-                    phones.close();
+                }catch(Exception e){}
+            }
+            JSONArray jsonArray = new JSONArray(contactData);
+            String jsonString = jsonArray.toString();
+            preferences.edit().putString("contacts",jsonString).apply();
+        }
+        else {
+            try {
+                JSONArray jsonArray = new JSONArray(contacts);
+                for (int i=0;i<jsonArray.length();i++){
+                    String itemString = jsonArray.getString(i);
+                    JSONObject item = new JSONObject(itemString.replace(" ","_"));
+                    HashMap<String,String> map=new HashMap<String,String>();
+                    map.put("name", item.getString("_name").replace("_"," "));
+                    map.put("number", item.getString("number"));
+                    contactData.add(map);
                 }
-            }catch(Exception e){}
+            }
+            catch (Exception e){
+                Log.w("",e.toString());
+            }
+
+
         }
         return contactData;
     }
 
-    public String getContactsPhones(ContentResolver contentResolver){
-        ArrayList<HashMap<String,String>> contacts = getContacts(contentResolver);
+    public String getContactsPhones(Activity activity){
+        ArrayList<HashMap<String,String>> contacts = getContacts(activity);
         String strContacts="";
         if(contacts.size()>0){
             strContacts = contacts.get(0).get("number");

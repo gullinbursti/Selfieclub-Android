@@ -86,13 +86,6 @@ public class ActivityTabBtnFragment extends Fragment implements UserActivityProt
         lv = (ListView) view.findViewById(android.R.id.list);
         notifications = new ArrayList<ActivityItem>();
         populate();
-        //PhoneManager phoneManager = new PhoneManager(this.getActivity().getContentResolver());
-        //contacts = phoneManager.getContacts();
-
-        UserManager userManager = new UserManager();
-        userManager.requestUserActivity(this, "2394",this.getActivity());
-        userManager.requestFriends(this, "2394", "+17143309754|+15617164724|+15617164831|+17409726939|+16505754720|+14086210100|+15303041380|+141 52646152|+16192042875|+16179397216|+15612369460|+18475305634|+14089215625|+19783175663|+14159354255|+14255032279|+16502244999|+14159028877|+12393709811|+12 135098296|+14083109905|+19196560716|+14087181396|+14085069784|+14152549391|+16509969693|+15612719211|+17869735014|+15624539140|+16506192664|+13107078969|+1 4152609007|+16263750676|+14079219866|+18187266581|+18312220104|+19312496956|+13105978645|+13106262124|+19493502980|+14084995523|+14153788924|+17816161660|+ 14156867366|+17816161660|+16507434738|+14153368700|+15105797189|+14153086768|+16506192665|+12068566868|+13105005463|+13035266649|+12133009127|+14156095557| +14084293828|+16507968877|+12135905745",getActivity().getContentResolver(),this.getActivity());
-
 
         //return (inflater.inflate(R.layout.friends_tab, container, false));
         return view;

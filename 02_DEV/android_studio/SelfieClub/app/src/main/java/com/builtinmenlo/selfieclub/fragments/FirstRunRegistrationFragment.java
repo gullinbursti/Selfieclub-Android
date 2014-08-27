@@ -379,7 +379,7 @@ public class FirstRunRegistrationFragment
         String userId = applicationManager.getUserId();
         String clubId = applicationManager.getUserPersonalClubId();
         PhoneManager phoneManager = new PhoneManager();
-        ArrayList<HashMap<String, String>> contactsList = phoneManager.getContacts(this.getActivity().getContentResolver());
+        ArrayList<HashMap<String, String>> contactsList = phoneManager.getContacts(this.getActivity());
         HashMap<String, String> contact;
         ArrayList<HashMap<String, String>> friendsToInvite = new ArrayList<HashMap<String, String>>();
         ArrayList<String> registeredFriends = new ArrayList<String>();

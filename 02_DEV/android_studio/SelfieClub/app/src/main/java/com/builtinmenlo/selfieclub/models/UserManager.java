@@ -273,8 +273,7 @@ public class UserManager
     public void requestFriends(final UserFriendsProtocol userFriendsProtocol,
                                String userId,
                                String phoneNumbers,
-                               final ContentResolver contentResolver,
-                               Activity activity){
+                               final Activity activity){
         AsyncHttpClient client = new AsyncHttpClient();
         if(Constants.USE_HMAC){
             client.addHeader("HMAC", Util.generateHMAC(activity));
@@ -302,7 +301,7 @@ public class UserManager
                             }
                             //Add the phone's contacts
                             PhoneManager phoneManager = new PhoneManager();
-                            ArrayList<HashMap<String,String>> phoneContacts = phoneManager.getContacts(contentResolver);
+                            ArrayList<HashMap<String,String>> phoneContacts = phoneManager.getContacts(activity);
                             for(int i=0;i<phoneContacts.size();i++){
                                 HashMap<String,String> contact = phoneContacts.get(i);
                                 Friend friend = new Friend();

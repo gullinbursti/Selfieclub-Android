@@ -96,7 +96,7 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         UserManager userManager = new UserManager();
 
         ApplicationManager applicationManager = new ApplicationManager(getActivity());
-        userManager.requestFriends(this, applicationManager.getUserId(), phoneManager.getContactsPhones(getActivity().getContentResolver()),getActivity().getContentResolver(),this.getActivity());
+        userManager.requestFriends(this, applicationManager.getUserId(), phoneManager.getContactsPhones(getActivity()),this.getActivity());
         return view;
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
