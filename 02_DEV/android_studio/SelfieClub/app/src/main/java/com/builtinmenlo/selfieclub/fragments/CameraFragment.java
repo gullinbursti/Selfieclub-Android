@@ -144,9 +144,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
                 transaction.remove(CameraFragment.this);
                 //if (backView != null)
                 //transaction.replace(R.id.fragment_container, backView);
-                if (((MainActivity)getActivity()).tabSelected != null) {
-                    transaction.replace(R.id.fragment_container, ((MainActivity)getActivity()).tabSelected);
-                    ((MainActivity)getActivity()).tabSelected = null;
+                if (((MainActivity) getActivity()).tabSelected != null) {
+                    transaction.replace(R.id.fragment_container, ((MainActivity) getActivity()).tabSelected);
+                    ((MainActivity) getActivity()).tabSelected = null;
                 }
                 transaction.commit();
             }
@@ -264,7 +264,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         Camera.Parameters parameters = mCamera.getParameters();
         Camera.Size size = getBestPreviewSize(w, h, parameters);
         parameters.setPreviewSize(size.width, size.height);
-        Camera.Size previewSize = getBestPictureSize(w,h);
+        Camera.Size previewSize = getBestPictureSize();
         parameters.setPictureFormat(ImageFormat.JPEG);
         //parameters.setPreviewFormat(ImageFormat.JPEG);
         parameters.setPictureSize(previewSize.width, previewSize.height);
@@ -278,24 +278,19 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         // mCamera.autoFocus(this);
     }
 
-    private Camera.Size getBestPictureSize(int width, int height) {
+    private Camera.Size getBestPictureSize() {
         Camera.Size result = null;
         for (Camera.Size size : mCamera.getParameters().getSupportedPictureSizes()) {
-            if (size.width <= width && size.height <= height) {
-                if (result == null) {
+            if (result == null) {
+                result = size;
+            } else {
+                int resultArea = result.width * result.height;
+                int newArea = size.width * size.height;
+                if (newArea > resultArea) {
                     result = size;
-                } else {
-                    if (size.width >= 1600 && size.height >= 1200) {
-                        result = size;
-                        break;
-                    }
-                    int resultArea = result.width * result.height;
-                    int newArea = size.width * size.height;
-                    if (newArea > resultArea) {
-                        result = size;
-                    }
                 }
             }
+
         }
         return (result);
     }
