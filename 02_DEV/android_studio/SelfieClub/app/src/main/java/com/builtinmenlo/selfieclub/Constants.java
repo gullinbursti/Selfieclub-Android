@@ -62,4 +62,5 @@ public final class Constants {
     public static final int NUMBER_OF_RANDOM_FRIENDS = 10;
     //Images
     public static final String DEFAULT_AVATAR_URL = " http://hotornot-challenges.s3.amazonaws.com/userSignupClubCoverMedium_320x320.jpg";
+    public static final String DEFAULT_CLUB_AVATAR_URL = "http://hotornot-challenges.s3.amazonaws.com/pc-0%sMedium_320x320.jpg";
 }

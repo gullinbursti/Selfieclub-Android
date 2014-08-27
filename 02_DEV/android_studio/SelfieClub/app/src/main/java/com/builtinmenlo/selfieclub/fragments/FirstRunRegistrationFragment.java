@@ -265,7 +265,7 @@ public class FirstRunRegistrationFragment
             if(rnd!=10){
                 suffix="0"+rnd;
             }
-            String clubAvatar = String.format("http://hotornot-challenges.s3.amazonaws.com/pc-0%sMedium_320x320.jpg", suffix);
+            String clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
             clubManager.createClub(this,freeUserId,txtUsername.getText().toString(),"Personal club",clubAvatar,this.getActivity());
         }
     }
