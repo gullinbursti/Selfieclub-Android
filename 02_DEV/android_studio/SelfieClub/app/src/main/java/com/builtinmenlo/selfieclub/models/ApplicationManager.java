@@ -21,8 +21,7 @@ public class ApplicationManager {
         Boolean response = preferences.getBoolean("firstRun",true);
         if(response){
             //Log event
-            KeenManager keenManager = KeenManager.sharedInstance();
-            keenManager.initialize(activity.getApplicationContext());
+            KeenManager keenManager = KeenManager.sharedInstance(activity.getApplicationContext());
             keenManager.trackEvent(Constants.KEEN_EVENT_FRESHBOOT);
         }
         return response;

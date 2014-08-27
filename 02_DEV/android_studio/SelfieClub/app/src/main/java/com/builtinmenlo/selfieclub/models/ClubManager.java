@@ -40,7 +40,7 @@ public class ClubManager {
                          String userId,
                          String clubId,
                          String ownedId,
-                         Activity activity) {
+                         final Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
         if(Constants.USE_HMAC){
             client.addHeader("HMAC",Util.generateHMAC(activity));
@@ -55,7 +55,7 @@ public class ClubManager {
                     public void onSuccess(JSONObject data) {
                         try {
                             //track event
-                            KeenManager keenManager = KeenManager.sharedInstance();
+                            KeenManager keenManager = KeenManager.sharedInstance(activity.getApplicationContext());
                             keenManager.trackEvent(Constants.KEEN_EVENT_JOINCLUB);
 
                             clubJoinProtocol.didJoinClub(data.getBoolean("result"));
@@ -89,7 +89,7 @@ public class ClubManager {
                                String clubId,
                                ArrayList<String> users,
                                ArrayList<HashMap<String, String>> nonUsers,
-                               Activity activity) {
+                               final Activity activity) {
         String usersStr = "";
         if (users.size() > 0) {
             usersStr = users.get(0);
@@ -125,7 +125,7 @@ public class ClubManager {
                     public void onSuccess(JSONObject data) {
                         try {
                             //track the event
-                            KeenManager keenManager = KeenManager.sharedInstance();
+                            KeenManager keenManager = KeenManager.sharedInstance(activity.getApplicationContext());
                             keenManager.trackEvent(Constants.KEEN_EVENT_INVITECLUB);
 
 
@@ -159,7 +159,7 @@ public class ClubManager {
                            String clubName,
                            String clubDescription,
                            String clubImageUrl,
-                           Activity activity) {
+                           final Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
         if(Constants.USE_HMAC){
             client.addHeader("HMAC",Util.generateHMAC(activity));
@@ -175,6 +175,8 @@ public class ClubManager {
                     public void onSuccess(JSONObject data) {
                         try {
                             if (data != null) {
+                                KeenManager keenManager = KeenManager.sharedInstance(activity.getApplicationContext());
+                                keenManager.trackEvent(Constants.KEEN_EVENT_CREATECLUB);
                                 createClubProtocol.didCreateClub(data.getString("id"),data.getString("name"));
                             }
 

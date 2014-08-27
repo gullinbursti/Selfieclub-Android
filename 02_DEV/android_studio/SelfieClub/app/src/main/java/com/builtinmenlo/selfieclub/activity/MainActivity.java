@@ -210,8 +210,7 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     @Override
     public void onResume(){
         super.onResume();
-        KeenManager keenManager = KeenManager.sharedInstance();
-        keenManager.initialize(this.getApplicationContext());
+        KeenManager keenManager = KeenManager.sharedInstance(this.getApplicationContext());
         keenManager.trackEvent(Constants.KEEN_EVENT_RESUMEBACKGROUND);
     }
 
