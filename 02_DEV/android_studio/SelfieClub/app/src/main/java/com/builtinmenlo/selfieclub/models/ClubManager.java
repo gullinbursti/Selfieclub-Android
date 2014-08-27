@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -309,6 +311,12 @@ public class ClubManager {
                                     newsFeedArray.add(parseNewsItem(submissionsArray.getJSONObject(j), object.getString("name")));
                                 }
                             }
+                            Collections.sort(newsFeedArray, new Comparator<NewsItem>() {
+                                @Override
+                                public int compare(NewsItem lhs, NewsItem rhs) {
+                                    return rhs.getTimestamp().compareTo(lhs.getTimestamp());
+                                }
+                            });
                             newsFeedProtocol.didReceiveNewsFeed(newsFeedArray);
 
                         } catch (Exception e) {
