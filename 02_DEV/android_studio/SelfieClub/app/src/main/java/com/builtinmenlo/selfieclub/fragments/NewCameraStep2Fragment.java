@@ -134,6 +134,7 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
                 }else{
                     Fragment newFragment = new CameraStep3Fragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.remove(NewCameraStep2Fragment.this);
                     transaction.add(R.id.fragment_container, newFragment);
                     bundle.putStringArrayList(CameraStep3Fragment.EXTRA_STICKERS,selected);
                     newFragment.setArguments(bundle);
