@@ -89,7 +89,7 @@ public class ClubManager {
                                String clubId,
                                ArrayList<String> users,
                                ArrayList<HashMap<String, String>> nonUsers,
-                               Activity activity) {
+                               final Activity activity) {
         String usersStr = "";
         if (users.size() > 0) {
             usersStr = users.get(0);
@@ -126,6 +126,7 @@ public class ClubManager {
                         try {
                             //track the event
                             KeenManager keenManager = KeenManager.sharedInstance();
+                            keenManager.initialize(activity.getApplicationContext());
                             keenManager.trackEvent(Constants.KEEN_EVENT_INVITECLUB);
 
 

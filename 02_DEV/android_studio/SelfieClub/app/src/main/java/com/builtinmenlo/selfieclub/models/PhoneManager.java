@@ -9,8 +9,6 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-
-import com.amazonaws.util.StringUtils;
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.User;
 import com.builtinmenlo.selfieclub.util.Util;
@@ -25,6 +23,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +89,12 @@ public class PhoneManager {
 
 
         }
+        Collections.sort(contactData, new Comparator<HashMap<String, String>>() {
+            @Override
+            public int compare(HashMap<String, String> stringStringHashMap, HashMap<String, String> stringStringHashMap2) {
+                return stringStringHashMap.get("name").compareTo(stringStringHashMap2.get("name"));
+            }
+        });
         return contactData;
     }
 
