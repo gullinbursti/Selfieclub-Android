@@ -1,5 +1,7 @@
 package com.builtinmenlo.selfieclub;
 
+import org.json.JSONArray;
+
 /**
  * Created by Leonardo on 5/29/14.
  */
@@ -61,6 +63,7 @@ public final class Constants {
     public static final String KEEN_EVENT_NEWSFEED_AVATARUSER_TAP = "Newsfeed avatar user tap";
     //Invite
     public static final int NUMBER_OF_RANDOM_FRIENDS = 10;
+    public static String DEFAULT_CLUBS;
     //Images
     public static final String DEFAULT_AVATAR_URL = " http://hotornot-challenges.s3.amazonaws.com/userSignupClubCoverMedium_320x320.jpg";
     public static final String DEFAULT_CLUB_AVATAR_URL = "http://hotornot-challenges.s3.amazonaws.com/pc-0%sMedium_320x320.jpg";
