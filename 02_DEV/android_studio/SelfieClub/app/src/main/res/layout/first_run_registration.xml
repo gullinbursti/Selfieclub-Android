@@ -133,9 +133,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/btnCountrySelect"
         android:layout_margin="10dp"
-        android:background="@drawable/check_mark"
+        android:layout_alignBottom="@id/btnCountrySelect"
+        android:layout_alignTop="@id/btnCountrySelect"
+        android:src="@drawable/check_mark"
         android:visibility="invisible" />
 
     <!--<TextView
@@ -148,24 +149,14 @@
         android:layout_marginTop="25dp" /> -->
 
     <TextView
-        android:id="@+id/lblEnterPhoneText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textColor="#b4b4b4"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/lblEnterPhone"
-        android:text="@string/label_registration_enter_phone"
-        android:layout_marginTop="25dp" />
-    <TextView
-        android:textColor="#b4b4b4"
         android:id="@+id/lblTermsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/lblEnterPhoneText"
-        android:textStyle="bold"
-        android:text="@string/label_registration_terms" />
+        android:layout_below="@+id/lblEnterPhone"
+        android:background="@drawable/enter_phone_text"
+        android:layout_marginTop="25dp" />
+
 
     <ProgressBar
         android:id="@+id/loadingIcon"

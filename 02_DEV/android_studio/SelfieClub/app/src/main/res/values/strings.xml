@@ -81,4 +81,10 @@
     <string name="default_country_code">1</string>
     <string name="default_followers_number">0</string>
 
+    <string name="default_user_club">Personal Club</string>
+    <string name="default_school_club">My School Club</string>
+    <string name="default_family_club">My Family Club</string>
+    <string name="default_area_code_club">My %s Club</string>
+
+
 </resources>

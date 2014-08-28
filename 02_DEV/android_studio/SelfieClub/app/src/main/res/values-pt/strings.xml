@@ -28,26 +28,26 @@
 
     <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
 
-    <string name="title_activity_invite">Invite</string>
+    <string name="title_activity_invite">Convidar</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">configurações</string>
 
     <string name="yes_button_title">Sim</string>
     <string name="no_button_title">Não</string>
     <string name="ok_button_title">OK</string>
-    <string name="retry_button_title">RETRY</string>
+    <string name="retry_button_title">Repetir</string>
 
     <!-- Dialog messages -->
     <string name="invite_friend_dialog">Convide %s para entrar clube!</string>
-    <string name="invite_random_friends_dialog">To enter the club please invite some friends!</string>
-    <string name="already_club_member_dialog">You are already a member!</string>
-    <string name="would_you_like_joinclub_dialog">Would you like to join %s ?</string>
+    <string name="invite_random_friends_dialog">Para entrar no clube, por favor convide alguns amigos!</string>
+    <string name="already_club_member_dialog">Você já é membro!</string>
+    <string name="would_you_like_joinclub_dialog">Você gostaria de participar %s ?</string>
 
     <!-- Layout messages -->
 
     <string name="btn_close_label">Voltar</string>
-    <string name="btn_flip_label">Flip</string>
-    <string name="btn_camera_roll_label">Camera Roll</string>
+    <string name="btn_flip_label">Aleta</string>
+    <string name="btn_camera_roll_label">rolo da Câmera</string>
     <string name="btn_next_label">Avançar</string>
     <string name="btn_submit_label">Enviar</string>
 
@@ -55,19 +55,19 @@
     <string name="title_select_club">Selecionar clube</string>
 
     <string name="label_is_feeling">está se sentindo...</string>
-    <string name="label_no_clubs">No clubs available</string>
-    <string name="label_no_friends">No contacts available</string>
+    <string name="label_no_clubs">Não há clubes disponíveis</string>
+    <string name="label_no_friends">Nenhum contato disponíveis</string>
     <string name="label_no_news">Ainda não há publicações. Clique aqui para criar.</string>
     <string name="label_select_all_clubs">Selecionar todos os clubes</string>
     <string name="label_create_a_club">Criar um clube</string>
-    <string name="label_coming_soon">Coming soon ...</string>
-    <string name="label_fill_phone_username">Please Fill Both Username and Phone Fields</string>
+    <string name="label_coming_soon">Em breve ...</string>
+    <string name="label_fill_phone_username">Por favor, preencha os dois campos usuário e telefone</string>
     <string name="label_minutes_ago"> mins ago</string>
     <string name="label_checking_username">Verificando nome de usuário...</string>
     <string name="label_please_wait">Carregando...</string>
     <string name="label_register_user">Authenticating User...</string>
     <string name="label_uploading_image">Uploading Image...</string>
-    <string name="label_successfully_uploaded">Succesfully Uploaded!</string>
+    <string name="label_successfully_uploaded">Enviado com sucesso!</string>
 
 
 
