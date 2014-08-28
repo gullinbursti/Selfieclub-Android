@@ -16,6 +16,7 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -170,18 +171,20 @@ public class ClubManager {
         data.put("description", clubDescription);
         data.put("imgURL", clubImageUrl);
         RequestParams requestParams = new RequestParams(data);
-        client.post(Constants.API_ENDPOINT + Constants.CREATE_CLUB_PATH, requestParams, new JsonHttpResponseHandler() {
+        client.post(Constants.API_ENDPOINT + Constants.CREATE_CLUB_PATH, requestParams, new AsyncHttpResponseHandler() {
+
                     @Override
-                    public void onSuccess(JSONObject data) {
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        super.onSuccess(statusCode, headers, responseBody);
+                        String responseString = new String(responseBody);
                         try {
+                            JSONObject data = new JSONObject(responseString);
                             if (data != null) {
                                 KeenManager keenManager = KeenManager.sharedInstance(activity.getApplicationContext());
                                 keenManager.trackEvent(Constants.KEEN_EVENT_CREATECLUB);
                                 createClubProtocol.didCreateClub(data.getString("id"),data.getString("name"));
                             }
-
-
-                        } catch (Exception e) {
+                        } catch (JSONException e){
                             createClubProtocol.didFailCreatingClub(e.toString());
                         }
                     }

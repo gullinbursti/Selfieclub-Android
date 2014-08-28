@@ -41,6 +41,7 @@ import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubInviteProtocol;
+import com.builtinmenlo.selfieclub.models.ClubJoinProtocol;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.CreateClubProtocol;
 import com.builtinmenlo.selfieclub.models.FirstRunManager;
@@ -65,7 +66,8 @@ public class FirstRunRegistrationFragment
         SCDialogProtocol,
         PINVerificationProtocol,
         CreateClubProtocol,
-        ClubInviteProtocol{
+        ClubInviteProtocol,
+        ClubJoinProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     public static final String EXTRA_USERNAME = "username";
@@ -83,6 +85,8 @@ public class FirstRunRegistrationFragment
     private Button btnCountrySelector;
 
     private int clubCounter;
+    private int clubsToJoinCounter;
+    private int numberOfClubsToJoin;
 
     private static String FAILED_VALIDATING_TAG = "validation_failed";
     private static String FAILED_VALIDATING_PIN_TAG = "validation_pin_failed";
@@ -114,7 +118,7 @@ public class FirstRunRegistrationFragment
 
 
         manager = new FirstRunManager();
-        manager.requestFreeUserId(this,this.getActivity());
+        manager.requestFreeUserId(this, this.getActivity());
 
         String countryCode = "";
         String username = "";
@@ -163,7 +167,7 @@ public class FirstRunRegistrationFragment
                 if (txtPhone.getText().length() > 0 && txtUsername.getText().length() > 0) {
                     getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.INVISIBLE);
                     dialog = ProgressDialog.show(getActivity(), "", getString(R.string.label_checking_username));
-                    manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString() + "@selfieclub.com",getActivity());
+                    manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this, freeUserId, txtUsername.getText().toString(), btnCountrySelector.getText().toString() + txtPhone.getText().toString() + "@selfieclub.com", getActivity());
                 } else {
                     SCDialog scdialog = new SCDialog();
                     scdialog.setScDialogProtocol(FirstRunRegistrationFragment.this);
@@ -218,12 +222,11 @@ public class FirstRunRegistrationFragment
 
     @Override
     public void didFailReceivingFreeUserId(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-        manager.requestFreeUserId(this,this.getActivity());
+        manager.requestFreeUserId(this, this.getActivity());
     }
 
     @Override
     public void didValidateUsernamePhone(Boolean isValid, String message) {
-        dialog.dismiss();
         if (isValid) {
             getActivity().findViewById(R.id.imgCheckUserName).setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.imgCheckPhone).setVisibility(View.VISIBLE);
@@ -235,59 +238,85 @@ public class FirstRunRegistrationFragment
 
             ClubManager clubManager = new ClubManager();
             Random rn = new Random();
-            int rnd = rn.nextInt(10)+1;
-            String suffix="10";
-            if(rnd!=10){
-                suffix="0"+rnd;
+            int rnd = rn.nextInt(10) + 1;
+            String suffix = "10";
+            if (rnd != 10) {
+                suffix = "0" + rnd;
             }
             String clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
-            clubManager.createClub(this,freeUserId,txtUsername.getText().toString(),getString(R.string.default_user_club),clubAvatar,this.getActivity());
+            clubManager.createClub(this, freeUserId, txtUsername.getText().toString(), getString(R.string.default_user_club), clubAvatar, this.getActivity());
 
-            rnd = rn.nextInt(10)+1;
-            suffix="10";
-            if(rnd!=10){
-                suffix="0"+rnd;
+        }
+    }
+
+    @Override
+    public void didCreateClub(String clubId, String clubName) {
+        if (++clubCounter < 2){
+            ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
+            applicationManager.setUserPersonalClubId(clubId);
+            ClubManager clubManager = new ClubManager();
+            Random rn = new Random();
+            int rnd = rn.nextInt(10) + 1;
+            String suffix = "10";
+            if (rnd != 10) {
+                suffix = "0" + rnd;
+            }
+            String clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
+            String familyClubDescription = String.format(getString(R.string.default_family_club_description), txtUsername.getText().toString());
+            //clubManager.createClub(this, freeUserId, getString(R.string.default_family_club), familyClubDescription, clubAvatar, this.getActivity());
+            clubManager.createClub(this, freeUserId, familyClubDescription, familyClubDescription, clubAvatar, this.getActivity());
+
+            rnd = rn.nextInt(10) + 1;
+            suffix = "10";
+            if (rnd != 10) {
+                suffix = "0" + rnd;
             }
             clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
-            clubManager.createClub(this,freeUserId,getString(R.string.default_family_club),getString(R.string.default_family_club),clubAvatar,this.getActivity());
+            String schoolClubDescription = String.format(getString(R.string.default_school_club_description), txtUsername.getText().toString());
+            //clubManager.createClub(this, freeUserId, getString(R.string.default_school_club), schoolClubDescription, clubAvatar, this.getActivity());
+            clubManager.createClub(this, freeUserId, schoolClubDescription, schoolClubDescription, clubAvatar, this.getActivity());
 
-            rnd = rn.nextInt(10)+1;
-            suffix="10";
-            if(rnd!=10){
-                suffix="0"+rnd;
-            }
-            clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
-            clubManager.createClub(this,freeUserId,getString(R.string.default_school_club),getString(R.string.default_school_club),clubAvatar,this.getActivity());
-
-            rnd = rn.nextInt(10)+1;
-            suffix="10";
-            if(rnd!=10){
-                suffix="0"+rnd;
+            rnd = rn.nextInt(10) + 1;
+            suffix = "10";
+            if (rnd != 10) {
+                suffix = "0" + rnd;
             }
             clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
             String areaCodeClubName = String.format(getString(R.string.default_area_code_club), btnCountrySelector.getText().toString());
-            clubManager.createClub(this,freeUserId,areaCodeClubName,areaCodeClubName,clubAvatar,this.getActivity());
+            String areaCodeClubDescription = String.format(getString(R.string.default_area_code_club_description), txtUsername.getText().toString());
+            //clubManager.createClub(this, freeUserId, areaCodeClubName, areaCodeClubDescription, clubAvatar, this.getActivity());
+            clubManager.createClub(this, freeUserId, areaCodeClubDescription, areaCodeClubDescription, clubAvatar, this.getActivity());
 
+        } else if (clubCounter >= Constants.NUMBER_OF_CLUBS_INITIALLY_CREATED) {
+            ClubManager clubManager = new ClubManager();
+            String [] allClubsToJoin = Constants.DEFAULT_CLUBS.split("\\,");
+            clubsToJoinCounter = 0;
+            numberOfClubsToJoin = allClubsToJoin.length;
+            for (int i = 0; i < allClubsToJoin.length; i++) {
+                String[] clubToJoin = allClubsToJoin[i].split("\\:");
+                String clubToJoinId = clubToJoin[0];
+                String ownedId = clubToJoin[1];
+                clubManager.joinClub(FirstRunRegistrationFragment.this, freeUserId, clubToJoinId, ownedId, getActivity());
+            }
         }
     }
+
     @Override
-    public void didCreateClub(String clubId,String clubName){
+    public void didFailCreatingClub(String errorMessage) {
         if (++clubCounter >= Constants.NUMBER_OF_CLUBS_INITIALLY_CREATED) {
-            //Store the user's personal club info
-            ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
-            applicationManager.setUserPersonalClubId(clubId);
-            String mPhoneNumber = txtPhone.getText().toString();
-            FirstRunManager manager = new FirstRunManager();
-            manager.registerUser(this, freeUserId, txtUsername.getText().toString(), mPhoneNumber, mPhoneNumber,"https://s3.amazonaws.com/hotornot-avatars/defaultAvatar",this.getActivity());
-        }
-    }
-
-    @Override
-    public void didFailCreatingClub(String errorMessage){
-        if (++clubCounter >= Constants.NUMBER_OF_CLUBS_INITIALLY_CREATED){
+            ClubManager clubManager = new ClubManager();
+            String [] allClubsToJoin = Constants.DEFAULT_CLUBS.split("\\,");
+            clubsToJoinCounter = 0;
+            numberOfClubsToJoin = allClubsToJoin.length;
+            for (int i = 0; i < allClubsToJoin.length; i++) {
+                String[] clubToJoin = allClubsToJoin[i].split("\\:");
+                String clubToJoinId = clubToJoin[0];
+                String ownedId = clubToJoin[1];
+                clubManager.joinClub(FirstRunRegistrationFragment.this, freeUserId, clubToJoinId, ownedId, getActivity());
+            }
 
         }
-        Log.w("FirstRunRegistrationFragment",errorMessage);
+        Log.w("FirstRunRegistrationFragment", errorMessage);
     }
 
     @Override
@@ -307,7 +336,7 @@ public class FirstRunRegistrationFragment
 
     @Override
     public void didFailRegisteringUser(FirstRunManager.FIRSTRUN_ERROR errorType, String message) {
-        Log.w("FirstRunRegistrationFragment",message);
+        Log.w("FirstRunRegistrationFragment", message);
     }
 
     @Override
@@ -323,8 +352,7 @@ public class FirstRunRegistrationFragment
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 getActivity().startActivity(intent);
                 getActivity().finish();
-            }
-            else{
+            } else {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 getActivity().startActivity(intent);
                 getActivity().finish();
@@ -401,16 +429,38 @@ public class FirstRunRegistrationFragment
         }
 
         ClubManager clubManager = new ClubManager();
-        clubManager.sendClubInvite(this,userId,clubId,registeredFriends,friendsToInvite,this.getActivity());
+        clubManager.sendClubInvite(this, userId, clubId, registeredFriends, friendsToInvite, this.getActivity());
 
     }
 
 
-    public void didSendCubInvite(Boolean response){
-        Log.w("MainActivity","Invite send");
+    public void didSendCubInvite(Boolean response) {
+        Log.w("MainActivity", "Invite send");
 
     }
-    public void didFailSendingClubInvite(String errorMessage){
-        Log.w("MainActivity","Failed sending invites");
+
+    public void didFailSendingClubInvite(String errorMessage) {
+        Log.w("MainActivity", "Failed sending invites");
+    }
+
+    @Override
+    public void didJoinClub(Boolean result) {
+        if (++clubsToJoinCounter >= numberOfClubsToJoin) {
+            //Store the user's personal club info
+            dialog.dismiss();
+            String mPhoneNumber = txtPhone.getText().toString();
+            FirstRunManager manager = new FirstRunManager();
+            manager.registerUser(this, freeUserId, txtUsername.getText().toString(), mPhoneNumber, mPhoneNumber, "https://s3.amazonaws.com/hotornot-avatars/defaultAvatar", this.getActivity());
+        }
+    }
+
+    @Override
+    public void didFailJoiningClub(String errorMessage) {
+        if (++clubsToJoinCounter >= numberOfClubsToJoin) {
+            dialog.dismiss();
+            String mPhoneNumber = txtPhone.getText().toString();
+            FirstRunManager manager = new FirstRunManager();
+            manager.registerUser(this, freeUserId, txtUsername.getText().toString(), mPhoneNumber, mPhoneNumber, "https://s3.amazonaws.com/hotornot-avatars/defaultAvatar", this.getActivity());
+        }
     }
 }
