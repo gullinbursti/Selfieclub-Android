@@ -37,7 +37,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.models.KeenManager;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -87,9 +89,7 @@ public class CameraStep2Fragment extends Fragment {
         final ActionBar actionBar = getActivity().getActionBar();
         actionBar.hide();
 
-        /*final ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setTitle("How do I feel?");
-        actionBar.setBackgroundDrawable(new ColorDrawable());*/
+
 
         bundle = getArguments();
         byte[] avatarImage = null;
@@ -145,6 +145,8 @@ public class CameraStep2Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
+        KeenManager keenManager = KeenManager.sharedInstance(getActivity().getApplicationContext());
+        keenManager.trackEvent(Constants.KEEN_EVENT_CAMERA_SETEP2);
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {
@@ -174,13 +176,7 @@ public class CameraStep2Fragment extends Fragment {
                 transaction.commit();
                 return true;
 
-            /*case R.id.copyLink:
-                showToast("Copy link was clicked.");
-                return true;
 
-            case R.id.share:
-                showToast("Share was clicked.");
-                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }

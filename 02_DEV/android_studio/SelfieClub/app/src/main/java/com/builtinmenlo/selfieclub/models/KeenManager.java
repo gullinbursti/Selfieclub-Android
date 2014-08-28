@@ -14,20 +14,25 @@ public class KeenManager {
     private static KeenManager instance = null;
 
 
-    private KeenManager(){}
+    private KeenManager(Context context){
+        initialize(context);
+    }
 
-    public static synchronized KeenManager sharedInstance(){
+    public static synchronized KeenManager sharedInstance(Context context){
         if(instance==null) {
-            instance = new KeenManager();
+            instance = new KeenManager(context);
         }
         return instance;
     }
 
-    public void initialize(Context context){
+    private void initialize(Context context){
         this.client = new AndroidKeenClientBuilder(context).build();
         KeenProject project = new KeenProject(Constants.KEEN_PROJECT_ID,Constants.KEEN_WRITE_KEY,Constants.KEEN_READ_KEY);
         this.client.setDefaultProject(project);
     }
+
+
+
 
     public void trackEvent(String strEvent){
         HashMap<String,Object> event = new HashMap<String,Object>();

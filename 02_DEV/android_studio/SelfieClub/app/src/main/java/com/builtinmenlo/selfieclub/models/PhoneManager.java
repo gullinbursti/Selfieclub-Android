@@ -78,7 +78,7 @@ public class PhoneManager {
                     String itemString = jsonArray.getString(i);
                     JSONObject item = new JSONObject(itemString.replace(" ","_"));
                     HashMap<String,String> map=new HashMap<String,String>();
-                    map.put("name", item.getString("_name").replace("_"," "));
+                    map.put("name", item.getString("name").replace("_"," "));
                     map.put("number", item.getString("number"));
                     contactData.add(map);
                 }
