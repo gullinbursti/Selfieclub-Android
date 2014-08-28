@@ -23,10 +23,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
+import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
+import com.builtinmenlo.selfieclub.models.KeenManager;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
+import com.builtinmenlo.selfieclub.util.Util;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -41,6 +52,47 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
+        AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC", Util.generateHMAC(this));
+        }
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("epoch", "1409203197");
+        RequestParams requestParams = new RequestParams(data);
+        client.get(Constants.API_ENDPOINT_CONFIG, requestParams, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        try {
+                            Log.w("","success");
+                            JSONObject endpoints = data.getJSONObject("endpts");
+                            String api = endpoints.getString("data_api");
+                            Constants.API_ENDPOINT = api+"/";
+                            init();
+                        } catch (Exception e) {
+                            init();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e, String response) {
+                        Log.w("","");
+                    }
+
+                }
+        );
+        init();
+    }
+
+
+
+
+
+
+
+
+
+
+    private void init(){
         PicoCandyManager.sharedInstance().registerApp(getApplicationContext());
 
         new Handler().postDelayed(new Runnable() {
@@ -64,5 +116,4 @@ public class SplashActivity extends Activity {
             }
         }, SPLASH_TIME_OUT);
     }
-
 }
