@@ -10,6 +10,8 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
+import android.util.Log;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
@@ -22,11 +24,15 @@ import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
 import com.builtinmenlo.selfieclub.Constants;
 
+import org.apache.commons.codec.binary.Hex;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+
+import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.MessageDigest;
@@ -39,6 +45,7 @@ import java.util.UUID;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
 
 /**
  * Created by Leonardo on 6/25/14.
@@ -75,11 +82,12 @@ public class Util {
         byte[] data = digest.digest(s.getBytes());
         return String.format("%0" + (data.length * 2) + "X", new BigInteger(1, data));
     }
-
+    /*
     public static String generateHMAC(Activity activity) {
         String deviceWithDash = getDeviceId(activity);
         String deviceNoDash = deviceWithDash.replace("-", "");
-        String combinedHash = deviceNoDash + "+" + deviceWithDash;
+        //String combinedHash = deviceNoDash + "+" + deviceWithDash;
+        String combinedHash = deviceNoDash + deviceWithDash;
         String hash;
         try {
             hash = hashMac(combinedHash, "YARJSuo6/r47LczzWjUx/T8ioAJpUKdI/ZshlTUP8q4ujEVjC0seEUAAtS6YEE1Veghz+IDbNQ");
@@ -89,6 +97,27 @@ public class Util {
         String result = hash + "+" + combinedHash;
         return result;
     }
+    */
+    public static String generateHMAC(Activity activity) {
+        try {
+            String deviceWithDash = getDeviceId(activity);
+            String deviceNoDash = deviceWithDash.replace("-", "");
+            String combinedHash = deviceNoDash + "+" + deviceWithDash;
+            String hmac = HmacSha1Signature.calculateRFC2104HMAC(combinedHash,"YARJSuo6/r47LczzWjUx/T8ioAJpUKdI/ZshlTUP8q4ujEVjC0seEUAAtS6YEE1Veghz+IDbNQ");
+            return hmac;
+        } catch (SignatureException e) {
+            e.printStackTrace();
+            return "";
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "";
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
+
 
 
     public static String getDeviceId(Activity activity) {

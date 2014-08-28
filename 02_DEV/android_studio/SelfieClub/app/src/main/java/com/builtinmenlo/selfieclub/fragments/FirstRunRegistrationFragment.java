@@ -118,36 +118,10 @@ public class FirstRunRegistrationFragment
 
         String countryCode = "";
         String username = "";
-        //byte[] avatarImage = null;
         if (bundle != null) {
             countryCode = bundle.getString(FirstRunCountrySelectorFragment.EXTRA_CODE);
             username = bundle.getString(EXTRA_USERNAME);
-            //avatarImage = getArguments().getByteArray(CameraPreview.EXTRA_IMAGE);
         }
-
-
-
-
-        /*ImageView avatar = (ImageView) view.findViewById(R.id.imgAvatar);
-        if (avatarImage != null){
-            Bitmap bmp = BitmapFactory.decodeByteArray(avatarImage, 0, avatarImage.length);
-            avatar.setImageBitmap(bmp);
-            //mutableBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
-        }
-        avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(getActivity(), CameraPreview.class);
-                //startActivity(intent);
-                Fragment newFragment = new CameraFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, newFragment);
-                if (bundle == null)
-                    bundle = new Bundle();
-                newFragment.setArguments(bundle);
-                transaction.commit();
-            }
-        });*/
 
         txtUsername = (EditText) view.findViewById(R.id.txtUserName);
         if (username != null && username.length() > 0)
@@ -177,7 +151,6 @@ public class FirstRunRegistrationFragment
                 if (actionId == EditorInfo.IME_ACTION_DONE ||
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    //manager.usernameAndPhoneCheck(FirstRunRegistrationFragment.this,freeUserId,txtUsername.getText().toString(),btnCountrySelector.getText().toString()+txtPhone.getText().toString());
                     return true;
                 }
                 return false;

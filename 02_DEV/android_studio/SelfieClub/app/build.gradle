@@ -55,5 +55,7 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.0.+'
     compile files('libs/aws-android-sdk-2.0.5-core.debug.jar')
     compile files('libs/aws-android-sdk-2.0.5-s3.debug.jar')
+    compile files('libs/bcprov-jdk15on-151.jar')
+    compile files('libs/commons-codec-1.9.jar')
 }
 

@@ -6,7 +6,7 @@ package com.builtinmenlo.selfieclub;
 public final class Constants {
     //Endpoints
     public static final Boolean PLAYSTOREBUILD = false; //this is used for debug and tracking. It must be set to true before building the apk for the store
-    public static final String API_ENDPOINT = "http://volley-api.devint.selfieclubapp.com/master/";
+    public static String API_ENDPOINT = "http://volley-api.devint.selfieclubapp.com/master/";
     public static final String GET_ACTIVITY_PATH = "users/getactivity";
     public static final String GET_USERCLUBS_PATH = "users/getclubs";
     public static final String GET_OTHER_CLUBS_PATH = "users/getOtherUsersClubs";
@@ -21,7 +21,7 @@ public final class Constants {
     public static final String CREATE_CLUB_PATH = "clubs/create";
     public static final String INVITE_CLUB_PATH = "clubs/invite";
     public static final String JOIN_CLUB_PATH = "clubs/join";
-    public static final boolean USE_HMAC = false;
+    public static final boolean USE_HMAC = true;
     //Amazon S3
     public static final String AMAZON_S3_PATH = "https://d1fqnfrnudpaz6.cloudfront.net/";
     public static final String AMAZON_S3_KEY = "AKIAIHUQ42RE7R7CIMEA";
