@@ -75,12 +75,12 @@ public class SplashActivity extends Activity {
 
                     @Override
                     public void onFailure(Throwable e, String response) {
-                        Log.w("","");
+                        init();
                     }
 
                 }
         );
-        init();
+
     }
 
 
