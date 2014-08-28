@@ -67,4 +67,6 @@ public final class Constants {
     //Images
     public static final String DEFAULT_AVATAR_URL = " http://hotornot-challenges.s3.amazonaws.com/userSignupClubCoverMedium_320x320.jpg";
     public static final String DEFAULT_CLUB_AVATAR_URL = "http://hotornot-challenges.s3.amazonaws.com/pc-0%sMedium_320x320.jpg";
+
+    public static final int NUMBER_OF_CLUBS_INITIALLY_CREATED = 4;
 }

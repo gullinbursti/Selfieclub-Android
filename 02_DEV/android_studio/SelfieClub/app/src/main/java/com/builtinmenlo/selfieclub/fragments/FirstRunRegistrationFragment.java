@@ -25,16 +25,13 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -83,6 +80,9 @@ public class FirstRunRegistrationFragment
     private FirstRunManager manager;
     private EditText txtUsername;
     private EditText txtPhone;
+    private Button btnCountrySelector;
+
+    private int clubCounter;
 
     private static String FAILED_VALIDATING_TAG = "validation_failed";
     private static String FAILED_VALIDATING_PIN_TAG = "validation_pin_failed";
@@ -127,7 +127,7 @@ public class FirstRunRegistrationFragment
         if (username != null && username.length() > 0)
             txtUsername.setText(username);
 
-        final Button btnCountrySelector = (Button) view.findViewById(R.id.btnCountrySelect);
+        btnCountrySelector = (Button) view.findViewById(R.id.btnCountrySelect);
         if (countryCode != null && countryCode.length() > 0)
             btnCountrySelector.setText(countryCode);
         btnCountrySelector.setOnClickListener(new View.OnClickListener() {
@@ -231,6 +231,8 @@ public class FirstRunRegistrationFragment
             applicationManager.setUserId(freeUserId);
             applicationManager.setUserName(txtUsername.getText().toString());
 
+            clubCounter = 0;
+
             ClubManager clubManager = new ClubManager();
             Random rn = new Random();
             int rnd = rn.nextInt(10)+1;
@@ -239,23 +241,52 @@ public class FirstRunRegistrationFragment
                 suffix="0"+rnd;
             }
             String clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
-            clubManager.createClub(this,freeUserId,txtUsername.getText().toString(),"Personal club",clubAvatar,this.getActivity());
+            clubManager.createClub(this,freeUserId,txtUsername.getText().toString(),getString(R.string.default_user_club),clubAvatar,this.getActivity());
+
+            rnd = rn.nextInt(10)+1;
+            suffix="10";
+            if(rnd!=10){
+                suffix="0"+rnd;
+            }
+            clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
+            clubManager.createClub(this,freeUserId,getString(R.string.default_family_club),getString(R.string.default_family_club),clubAvatar,this.getActivity());
+
+            rnd = rn.nextInt(10)+1;
+            suffix="10";
+            if(rnd!=10){
+                suffix="0"+rnd;
+            }
+            clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
+            clubManager.createClub(this,freeUserId,getString(R.string.default_school_club),getString(R.string.default_school_club),clubAvatar,this.getActivity());
+
+            rnd = rn.nextInt(10)+1;
+            suffix="10";
+            if(rnd!=10){
+                suffix="0"+rnd;
+            }
+            clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
+            String areaCodeClubName = String.format(getString(R.string.default_area_code_club), btnCountrySelector.getText().toString());
+            clubManager.createClub(this,freeUserId,areaCodeClubName,areaCodeClubName,clubAvatar,this.getActivity());
+
         }
     }
     @Override
     public void didCreateClub(String clubId,String clubName){
-        //Store the user's personal club info
-        ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
-        applicationManager.setUserPersonalClubId(clubId);
-        String mPhoneNumber = txtPhone.getText().toString();
-        FirstRunManager manager = new FirstRunManager();
-        manager.registerUser(this, freeUserId, txtUsername.getText().toString(), mPhoneNumber, mPhoneNumber,"https://s3.amazonaws.com/hotornot-avatars/defaultAvatar",this.getActivity());
-
-
-
+        if (++clubCounter >= Constants.NUMBER_OF_CLUBS_INITIALLY_CREATED) {
+            //Store the user's personal club info
+            ApplicationManager applicationManager = new ApplicationManager(this.getActivity());
+            applicationManager.setUserPersonalClubId(clubId);
+            String mPhoneNumber = txtPhone.getText().toString();
+            FirstRunManager manager = new FirstRunManager();
+            manager.registerUser(this, freeUserId, txtUsername.getText().toString(), mPhoneNumber, mPhoneNumber,"https://s3.amazonaws.com/hotornot-avatars/defaultAvatar",this.getActivity());
+        }
     }
+
     @Override
     public void didFailCreatingClub(String errorMessage){
+        if (++clubCounter >= Constants.NUMBER_OF_CLUBS_INITIALLY_CREATED){
+
+        }
         Log.w("FirstRunRegistrationFragment",errorMessage);
     }
 
