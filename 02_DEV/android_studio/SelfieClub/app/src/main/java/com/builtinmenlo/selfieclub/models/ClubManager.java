@@ -16,7 +16,6 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -43,8 +42,8 @@ public class ClubManager {
                          String ownedId,
                          final Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
-        if (Constants.USE_HMAC) {
-            client.addHeader("HMAC", Util.generateHMAC(activity));
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
         }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
@@ -103,18 +102,18 @@ public class ClubManager {
         String nonUsersStr = "";
         if (nonUsers.size() > 0) {
             HashMap<String, String> buffer = nonUsers.get(0);
-            nonUsersStr = buffer.get("name") + ":::" + buffer.get("number").replaceAll("[^0-9]", "") + "::";
+            nonUsersStr = buffer.get("name") + ":::" + buffer.get("number").replaceAll("[^0-9]", "") + ":::";
             if (nonUsers.size() > 1) {
                 for (int i = 1; i < nonUsers.size(); i++) {
                     buffer = nonUsers.get(i);
 
-                    nonUsersStr = nonUsersStr + "|||" + buffer.get("name") + ":::" + buffer.get("number").replaceAll("[^0-9]", "") + "::";
+                    nonUsersStr = nonUsersStr + "|||" + buffer.get("name") + ":::" + buffer.get("number").replaceAll("[^0-9]", "") + ":::";
                 }
             }
         }
         AsyncHttpClient client = new AsyncHttpClient();
-        if (Constants.USE_HMAC) {
-            client.addHeader("HMAC", Util.generateHMAC(activity));
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
         }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
@@ -163,8 +162,8 @@ public class ClubManager {
                            String clubImageUrl,
                            final Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
-        if (Constants.USE_HMAC) {
-            client.addHeader("HMAC", Util.generateHMAC(activity));
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
         }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
@@ -172,20 +171,18 @@ public class ClubManager {
         data.put("description", clubDescription);
         data.put("imgURL", clubImageUrl);
         RequestParams requestParams = new RequestParams(data);
-        client.post(Constants.API_ENDPOINT + Constants.CREATE_CLUB_PATH, requestParams, new AsyncHttpResponseHandler() {
-
+        client.post(Constants.API_ENDPOINT + Constants.CREATE_CLUB_PATH, requestParams, new JsonHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        super.onSuccess(statusCode, headers, responseBody);
-                        String responseString = new String(responseBody);
+                    public void onSuccess(JSONObject data) {
                         try {
-                            JSONObject data = new JSONObject(responseString);
                             if (data != null) {
                                 KeenManager keenManager = KeenManager.sharedInstance(activity.getApplicationContext());
                                 keenManager.trackEvent(Constants.KEEN_EVENT_CREATECLUB);
-                                createClubProtocol.didCreateClub(data.getString("id"), data.getString("name"));
+                                createClubProtocol.didCreateClub(data.getString("id"),data.getString("name"));
                             }
-                        } catch (JSONException e) {
+
+
+                        } catch (Exception e) {
                             createClubProtocol.didFailCreatingClub(e.toString());
                         }
                     }
@@ -212,8 +209,8 @@ public class ClubManager {
                                 String clubId,
                                 Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
-        if (Constants.USE_HMAC) {
-            client.addHeader("HMAC", Util.generateHMAC(activity));
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
         }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
@@ -267,8 +264,8 @@ public class ClubManager {
                             String userId,
                             Activity activity) {
         AsyncHttpClient client = new AsyncHttpClient();
-        if (Constants.USE_HMAC) {
-            client.addHeader("HMAC", Util.generateHMAC(activity));
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
         }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
@@ -369,8 +366,8 @@ public class ClubManager {
         //Notify the server
         JSONArray emotionsJson = new JSONArray(subjects);
         AsyncHttpClient client = new AsyncHttpClient();
-        if (Constants.USE_HMAC) {
-            client.addHeader("HMAC", Util.generateHMAC(activity));
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC",Util.generateHMAC(activity));
         }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID", userId);
@@ -381,15 +378,10 @@ public class ClubManager {
         data.put("subject", "");
         data.put("targets", "");
         RequestParams requestParams = new RequestParams(data);
-        client.post(Constants.API_ENDPOINT + Constants.CLUB_PHOTO_SUBMIT, requestParams, new AsyncHttpResponseHandler() {
-
-
+        client.post(Constants.API_ENDPOINT + Constants.CLUB_PHOTO_SUBMIT, requestParams, new JsonHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        super.onSuccess(statusCode, headers, responseBody);
-                        String response = new String(responseBody);
+                    public void onSuccess(JSONObject data) {
                         try {
-                            JSONObject data = new JSONObject(response);
                             String id = data.getString("id");
                             if (id != null) {
                                 AsyncHttpClient client1 = new AsyncHttpClient();
@@ -398,15 +390,15 @@ public class ClubManager {
                                 RequestParams requestParams1 = new RequestParams(data1);
                                 client1.post(Constants.API_ENDPOINT + Constants.CLUB_PHOTO_SUBMIT_VALIDATION, requestParams1, new AsyncHttpResponseHandler() {
                                             @Override
-                                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                                super.onSuccess(statusCode, headers, responseBody);
+                                            public void onSuccess(int statusCode, String content) {
+                                                super.onSuccess(statusCode, content);
                                                 clubPhotoSubmissionProtocol.didSubmittedPhotoInClub(true);
                                             }
 
                                             @Override
-                                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                super.onFailure(statusCode, headers, responseBody, error);
-                                                clubPhotoSubmissionProtocol.didFailSubmittingPhotoInClub(new String(responseBody));
+                                            public void onFailure(int statusCode, Header[] headers, Throwable error, String content) {
+                                                super.onFailure(statusCode, headers, error, content);
+                                                clubPhotoSubmissionProtocol.didFailSubmittingPhotoInClub(content);
                                             }
 
                                         }
@@ -420,15 +412,14 @@ public class ClubManager {
 
                     }
 
-
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        super.onFailure(statusCode, headers, responseBody, error);
-                        clubPhotoSubmissionProtocol.didFailSubmittingPhotoInClub(new String(responseBody));
+                    public void onFailure(Throwable e, String response) {
+                        clubPhotoSubmissionProtocol.didFailSubmittingPhotoInClub(response);
                     }
                 }
         );
     }
+
 
 
     private NewsItem parseNewsItem(JSONObject data, String clubname) {

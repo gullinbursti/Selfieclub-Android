@@ -63,18 +63,10 @@ public class SplashActivity extends Activity {
                     @Override
                     public void onSuccess(JSONObject data) {
                         try {
-                            //Get the base endpoint
+                            Log.w("","success");
                             JSONObject endpoints = data.getJSONObject("endpts");
                             String api = endpoints.getString("data_api");
                             Constants.API_ENDPOINT = api+"/";
-                            //Get the default clubs
-                            String defaultClubsString = data.getJSONArray("auto_clubs").toString();
-                            defaultClubsString = defaultClubsString.replace("[","");
-                            defaultClubsString = defaultClubsString.replace("]","");
-                            defaultClubsString = defaultClubsString.replace("{","");
-                            defaultClubsString = defaultClubsString.replace("}","");
-                            defaultClubsString = defaultClubsString.replace("\"","");
-                            Constants.DEFAULT_CLUBS = defaultClubsString;
                             init();
                         } catch (Exception e) {
                             init();

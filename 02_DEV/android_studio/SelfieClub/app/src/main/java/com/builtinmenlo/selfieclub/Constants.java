@@ -1,7 +1,5 @@
 package com.builtinmenlo.selfieclub;
 
-import org.json.JSONArray;
-
 /**
  * Created by Leonardo on 5/29/14.
  */
@@ -19,7 +17,7 @@ public final class Constants {
     public static final String USER_REGISTRATION = "users/firstruncomplete";
     public static final String UPDATE_PHONE = "userPhone/updatePhone";
     public static final String CLUB_PHOTO_SUBMIT = "challenges/create";
-    public static final String CLUB_PHOTO_SUBMIT_VALIDATION = "/challenges/processimages";
+    public static final String CLUB_PHOTO_SUBMIT_VALIDATION = "challenges/processimage";
     public static final String CREATE_CLUB_PATH = "clubs/create";
     public static final String INVITE_CLUB_PATH = "clubs/invite";
     public static final String JOIN_CLUB_PATH = "clubs/join";
@@ -33,6 +31,9 @@ public final class Constants {
     //Pico Candy
     public static final String PICOCANDY_APP_ID = "1c9e092303a1";
     public static final String PICOCANDY_API_KEY = "abhPJYuSKPfRBNmQ7UvS";
+	//TapStream
+	public static final String TAPSTREAM_PROJECT_NAME = "volley";
+	public static final String TAPSTREAM_SECRET_KEY = "xJCRiJCqSMWFVF6QmWdp8g";
     //KEEN Tracker
     public static final String KEEN_PROJECT_ID = "5390d1f705cd660561000003";
     public static final String KEEN_READ_KEY = "19c453075e8eaf3d30b11292819aaa5e268c6c0855eaacb86637f25afbcde7774a605636fc6a61f2b09ac3e01833c3ad8cf6b1e469a5f5ba2f4bc9beedfc2376910748d47acadd89e3e18a8bf5ee95b6ed3698aee6f48ede001bf73c8ba31dbace6170ff86bb735eefc67dae6df0b52e";
@@ -63,7 +64,6 @@ public final class Constants {
     public static final String KEEN_EVENT_NEWSFEED_AVATARUSER_TAP = "Newsfeed avatar user tap";
     //Invite
     public static final int NUMBER_OF_RANDOM_FRIENDS = 10;
-    public static String DEFAULT_CLUBS;
     //Images
     public static final String DEFAULT_AVATAR_URL = " http://hotornot-challenges.s3.amazonaws.com/userSignupClubCoverMedium_320x320.jpg";
     public static final String DEFAULT_CLUB_AVATAR_URL = "http://hotornot-challenges.s3.amazonaws.com/pc-0%sMedium_320x320.jpg";
