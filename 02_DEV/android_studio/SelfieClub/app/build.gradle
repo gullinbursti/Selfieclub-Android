@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 19
-        versionCode 3
-        versionName '1.0.3'
+        versionCode 1
+        versionName '1.0'
     }
     buildTypes {
         release {
@@ -15,9 +15,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-	lintOptions {
-		checkReleaseBuilds false
-	}
     productFlavors {
     }
     packagingOptions {
@@ -42,26 +39,23 @@ android {
 
 
 dependencies {
-	compile 'com.android.support:appcompat-v7:19.1.0'
-	compile 'com.android.support:appcompat-v7:20.+'
-	compile 'com.android.support:support-v4:19.1.0'
-	compile 'com.google.android.gms:play-services:5.+'
-	compile fileTree(dir: 'libs', include: ['*.jar'])
-	compile files('libs/android-async-http-1.4.4.jar')
-	compile files('libs/xmlwise-1_2.jar')
-	compile files('libs/tapjoyconnectlibrary.jar')
-	compile files('libs/picasso-2.3.3.jar')
-	compile files('libs/commons-io-2.4.jar')
-	compile files('libs/commons-codec-1.2.jar')
-	compile 'io.keen:keen-client-api-android:2.0.1@aar'
-	compile(name: 'picocandy-android-sdk-0.5.1', ext: 'aar')
-	compile(name: 'stickerintentmanager-0.5', ext: 'aar')
-	compile 'com.couchbase.lite:couchbase-lite-android:1.0.0'
-	compile 'pl.droidsonroids.gif:android-gif-drawable:1.0.+'
-	compile files('libs/aws-android-sdk-2.0.5-core.debug.jar')
-	compile files('libs/aws-android-sdk-2.0.5-s3.debug.jar')
-	compile files('libs/bcprov-jdk15on-151.jar')
-	compile files('libs/commons-codec-1.9.jar')
-	compile files('libs/Tapstream.jar')
+    compile 'com.android.support:appcompat-v7:19.1.0'
+    compile 'com.android.support:support-v4:19.1.0'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/android-async-http-1.4.4.jar')
+    compile files('libs/xmlwise-1_2.jar')
+    compile files('libs/tapjoyconnectlibrary.jar')
+    compile files('libs/picasso-2.3.3.jar')
+    compile files('libs/commons-io-2.4.jar')
+    compile files('libs/commons-codec-1.2.jar')
+    compile 'io.keen:keen-client-api-android:2.0.1@aar'
+    compile(name: 'picocandy-android-sdk-0.5.1', ext: 'aar')
+    compile(name: 'stickerintentmanager-0.5', ext: 'aar')
+    compile 'com.couchbase.lite:couchbase-lite-android:1.0.0'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.0.+'
+    compile files('libs/aws-android-sdk-2.0.5-core.debug.jar')
+    compile files('libs/aws-android-sdk-2.0.5-s3.debug.jar')
+    compile files('libs/bcprov-jdk15on-151.jar')
+    compile files('libs/commons-codec-1.9.jar')
 }
 

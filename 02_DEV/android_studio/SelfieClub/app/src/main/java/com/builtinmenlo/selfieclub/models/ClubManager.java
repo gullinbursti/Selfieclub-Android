@@ -102,12 +102,11 @@ public class ClubManager {
         String nonUsersStr = "";
         if (nonUsers.size() > 0) {
             HashMap<String, String> buffer = nonUsers.get(0);
-            nonUsersStr = buffer.get("name") + ":::" + buffer.get("number").replaceAll("[^0-9]", "") + ":::";
+            nonUsersStr = buffer.get("name") + ":::" + buffer.get("number") + "::";
             if (nonUsers.size() > 1) {
                 for (int i = 1; i < nonUsers.size(); i++) {
                     buffer = nonUsers.get(i);
-
-                    nonUsersStr = nonUsersStr + "|||" + buffer.get("name") + ":::" + buffer.get("number").replaceAll("[^0-9]", "") + ":::";
+                    nonUsersStr = nonUsersStr + "|||" + buffer.get("name") + ":::" + buffer.get("number") + "::";
                 }
             }
         }
