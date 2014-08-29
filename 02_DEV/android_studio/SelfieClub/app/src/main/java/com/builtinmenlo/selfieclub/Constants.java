@@ -19,7 +19,7 @@ public final class Constants {
     public static final String USER_REGISTRATION = "users/firstruncomplete";
     public static final String UPDATE_PHONE = "userPhone/updatePhone";
     public static final String CLUB_PHOTO_SUBMIT = "challenges/create";
-    public static final String CLUB_PHOTO_SUBMIT_VALIDATION = "/challenges/processimages";
+    public static final String CLUB_PHOTO_SUBMIT_VALIDATION = "challenges/processimage";
     public static final String CREATE_CLUB_PATH = "clubs/create";
     public static final String INVITE_CLUB_PATH = "clubs/invite";
     public static final String JOIN_CLUB_PATH = "clubs/join";
