@@ -54,6 +54,12 @@
             android:theme="@style/AppTheme">
         </activity>
 
+	    <receiver android:name="com.tapstream.sdk.ReferrerReceiver" android:exported="true" >
+		    <intent-filter>
+			    <action android:name="com.android.vending.INSTALL_REFERRER" />
+		    </intent-filter>
+	    </receiver>
+
     </application>
 
 </manifest>
