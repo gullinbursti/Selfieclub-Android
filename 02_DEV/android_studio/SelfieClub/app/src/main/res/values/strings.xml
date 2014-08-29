@@ -85,8 +85,6 @@
     <string name="default_school_club">My School Club</string>
     <string name="default_family_club">My Family Club</string>
     <string name="default_area_code_club">My %s Club</string>
-    <string name="default_school_club_description">%s\'s School Club</string>
-    <string name="default_family_club_description">%s\'s Family Club</string>
-    <string name="default_area_code_club_description">%s\'s Area Code Club</string>
+
 
 </resources>
