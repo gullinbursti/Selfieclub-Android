@@ -67,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -279,6 +280,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             status += "...</strong>";*/
             viewHolder.lblStatus.setText(Html.fromHtml(status));
             SimpleDateFormat from_format = new SimpleDateFormat("yyyy-MM-d HH:mm:ss");
+            from_format.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date rowDate = null;
             try {
                 rowDate = from_format.parse(newsItem.getTimestamp());
