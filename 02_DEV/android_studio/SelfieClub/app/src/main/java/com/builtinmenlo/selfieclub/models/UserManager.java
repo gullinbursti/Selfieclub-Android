@@ -274,31 +274,39 @@ public class UserManager
                                String userId,
                                String phoneNumbers,
                                final Activity activity){
+        phoneNumbers = phoneNumbers.replaceAll("[^(0-9 | \\|) ]","");
         AsyncHttpClient client = new AsyncHttpClient();
         if(Constants.USE_HMAC){
             client.addHeader("HMAC", Util.generateHMAC(activity));
         }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
-        data.put("action","5");
+        data.put("action","11");
         data.put("phone",phoneNumbers);
         RequestParams requestParams = new RequestParams(data);
         client.post(Constants.API_ENDPOINT+Constants.USER_PATH,requestParams,new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String strData) {
+                        ArrayList<Friend> friends = new ArrayList<Friend>();
+                        Friend owner = new Friend();
                         try{
                             JSONObject data = new JSONObject( strData);
-                            Friend owner = new Friend();
                             owner.setUserId(data.getString("id"));
                             owner.setAvatarUrl(data.getString("avatar_url"));
                             owner.setUsername(data.getString("username"));
                             boolean smsVerified = data.getBoolean("sms_verified");
                             owner.setState(smsVerified?1:0);
                             JSONArray friendsArray = data.getJSONArray("friends");
-                            ArrayList<Friend> friends = new ArrayList<Friend>();
+
                             for(int i=0 ; i<friendsArray.length();i++){
                                 friends.add(parseFriend(friendsArray.getJSONObject(i)));
                             }
+
+
+
+                            }
+                        catch (Exception e){}
+                        finally {
                             //Add the phone's contacts
                             PhoneManager phoneManager = new PhoneManager();
                             ArrayList<HashMap<String,String>> phoneContacts = phoneManager.getContacts(activity);
@@ -313,17 +321,11 @@ public class UserManager
                                 friend.setAvatarUrl(Constants.DEFAULT_AVATAR_URL);
                                 friends.add(friend);
                             }
-
-
                             FriendsViewData friendsViewData = new FriendsViewData();
                             friendsViewData.setOwner(owner);
                             friendsViewData.setFriends(friends);
                             if (userFriendsProtocol != null)
                                 userFriendsProtocol.didReceiveFriendsList(friendsViewData);
-                            }
-                        catch (Exception e){
-                            if (userFriendsProtocol != null)
-                                userFriendsProtocol.didReceiveFriendsListError(e.toString());
                         }
                     }
                     @Override

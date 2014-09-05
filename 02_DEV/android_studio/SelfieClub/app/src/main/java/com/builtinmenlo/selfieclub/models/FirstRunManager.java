@@ -73,8 +73,9 @@ public class FirstRunManager {
         RequestParams requestParams = new RequestParams(data);
         asyncHttpClient.post(Constants.API_ENDPOINT + Constants.CHECK_USERNAMEPASSWORD_PATH, requestParams, new JsonHttpResponseHandler() {
                     @Override
-                    public void onSuccess(JSONObject data) {
+                    public void onSuccess(String strData) {
                         try {
+                            JSONObject data = new JSONObject(strData);
                             int result = data.getInt("result");
                             switch (result){
                                 case 0:

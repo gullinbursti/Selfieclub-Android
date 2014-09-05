@@ -38,6 +38,11 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
+
+import io.keen.client.android.AndroidKeenClientBuilder;
+import io.keen.client.java.KeenClient;
+import io.keen.client.java.KeenProject;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -51,7 +56,6 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-
         AsyncHttpClient client = new AsyncHttpClient();
         if(Constants.USE_HMAC){
             client.addHeader("HMAC", Util.generateHMAC(this));
