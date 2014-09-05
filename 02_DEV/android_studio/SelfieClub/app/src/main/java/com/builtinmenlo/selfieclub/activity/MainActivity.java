@@ -53,6 +53,8 @@ import com.builtinmenlo.selfieclub.models.DeepLinksManager;
 import com.builtinmenlo.selfieclub.models.KeenManager;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
+import com.tapstream.sdk.Config;
+import com.tapstream.sdk.Tapstream;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -91,6 +93,10 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         deepLinksManager.context = this.getApplicationContext();
         deepLinksManager.activity = this;
         deepLinksManager.deepLinkRegistry(data);
+
+        Config config = new Config();
+        Tapstream.create(getApplication(), Constants.TAPSTREAM_PROJECT_NAME, Constants.TAPSTREAM_SECRET_KEY, config);
+
 
         setContentView(R.layout.activity_main);
         getOverflowMenu();

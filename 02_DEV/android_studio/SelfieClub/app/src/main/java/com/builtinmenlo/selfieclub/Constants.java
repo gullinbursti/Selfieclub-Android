@@ -23,6 +23,9 @@ public final class Constants {
     public static final String JOIN_CLUB_PATH = "clubs/join";
     public static final String API_ENDPOINT_CONFIG = "http://volley-api.selfieclubapp.com/boot_sc0007.json";
     public static final boolean USE_HMAC = true;
+    //TapStream
+    public static final String TAPSTREAM_PROJECT_NAME = "volley";
+    public static final String TAPSTREAM_SECRET_KEY = "xJCRiJCqSMWFVF6QmWdp8g";
     //Amazon S3
     public static final String AMAZON_S3_PATH = "https://d1fqnfrnudpaz6.cloudfront.net/";
     public static final String AMAZON_S3_KEY = "AKIAIHUQ42RE7R7CIMEA";
