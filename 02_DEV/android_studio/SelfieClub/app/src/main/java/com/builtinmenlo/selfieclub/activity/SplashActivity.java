@@ -55,6 +55,10 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        KeenManager keenManager = KeenManager.sharedInstance(this);
+        keenManager.trackEvent(Constants.KEEN_EVENT_FRESHBOOT);
+
         setContentView(R.layout.splash);
         AsyncHttpClient client = new AsyncHttpClient();
         if(Constants.USE_HMAC){

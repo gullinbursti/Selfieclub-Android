@@ -38,18 +38,15 @@ public class KeenManager {
 
 
 
-    public void trackEvent(String strEvent){
+    public void trackEvent(String sEvent){
+        String[] tokens = sEvent.split("-");
+        String eventConllection = tokens[0];
+        String stringEvent = tokens[1];
         Map<String, Object> properties = new HashMap<String, Object>();
         Map<String, Object> event = new HashMap<String, Object>();
-        event.put("action",strEvent);
-        String eventConllection = "";
-        if(Constants.PLAYSTOREBUILD){
-            eventConllection = Constants.KEEN_PROD_COLLECTION;
-        }
-        else{
-            eventConllection = Constants.KEEN_DEV_COLLECTION;
-        }
-        KeenProject project = new KeenProject(Constants.KEEN_PROJECT_ID,Constants.KEEN_WRITE_KEY,Constants.KEEN_READ_KEY);
+        event.put("action",stringEvent);
+
+       KeenProject project = new KeenProject(Constants.KEEN_PROJECT_ID,Constants.KEEN_WRITE_KEY,Constants.KEEN_READ_KEY);
         KeenClient.client().addEventAsync(project,eventConllection,event,properties,new KeenCallback() {
             @Override
             public void onSuccess() {
