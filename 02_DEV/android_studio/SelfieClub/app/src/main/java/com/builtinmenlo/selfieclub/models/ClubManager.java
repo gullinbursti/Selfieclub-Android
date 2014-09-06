@@ -55,8 +55,8 @@ public class ClubManager {
                     public void onSuccess(JSONObject data) {
                         try {
                             //track event
-                            KeenManager keenManager = KeenManager.sharedInstance(activity.getApplicationContext());
-                            keenManager.trackEvent(Constants.KEEN_EVENT_JOINCLUB);
+                            AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(activity.getApplication());
+                            analyticsManager.trackEvent(Constants.KEEN_EVENT_JOINCLUB);
 
                             clubJoinProtocol.didJoinClub(data.getBoolean("result"));
 
@@ -125,8 +125,8 @@ public class ClubManager {
                     public void onSuccess(JSONObject data) {
                         try {
                             //track the event
-                            KeenManager keenManager = KeenManager.sharedInstance(activity.getApplicationContext());
-                            keenManager.trackEvent(Constants.KEEN_EVENT_INVITECLUB);
+                            AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(activity.getApplication());
+                            analyticsManager.trackEvent(Constants.KEEN_EVENT_INVITECLUB);
 
 
                             clubInviteProtocol.didSendCubInvite(data.getBoolean("result"));
@@ -175,8 +175,8 @@ public class ClubManager {
                     public void onSuccess(JSONObject data) {
                         try {
                             if (data != null) {
-                                KeenManager keenManager = KeenManager.sharedInstance(activity.getApplicationContext());
-                                keenManager.trackEvent(Constants.KEEN_EVENT_CREATECLUB);
+                                AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(activity.getApplication());
+                                analyticsManager.trackEvent(Constants.KEEN_EVENT_CREATECLUB);
                                 createClubProtocol.didCreateClub(data.getString("id"),data.getString("name"));
                             }
 

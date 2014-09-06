@@ -34,7 +34,7 @@ import android.widget.Toast;
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
-import com.builtinmenlo.selfieclub.models.KeenManager;
+import com.builtinmenlo.selfieclub.models.AnalyticsManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -79,9 +79,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     private Camera openCamera() {
         stopCamera();
-        KeenManager keenManager = KeenManager.sharedInstance(this.getActivity());
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getActivity().getApplication());
         if (isUsingFrontCamera) {
-            keenManager.trackEvent(Constants.KEEN_EVENT_CAMERA_SETEP1);
+            analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_SETEP1);
             int cameraCount = 0;
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             cameraCount = Camera.getNumberOfCameras();
@@ -100,7 +100,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
         } else {
             try {
-                keenManager.trackEvent(Constants.KEEN_EVENT_CAMERA_FLIP);
+                analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_FLIP);
                 mCamera = Camera.open();
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Failed to Open Camera", Toast.LENGTH_SHORT).show();
@@ -126,8 +126,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        KeenManager keenManager = KeenManager.sharedInstance(this.getActivity().getApplicationContext());
-        keenManager.trackEvent(Constants.KEEN_EVENT_CAMERA_ROLL);
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(this.getActivity().getApplication());
+        analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_ROLL);
         View view = inflater.inflate(R.layout.camera_fragment, container, false);
 
         container.setOnClickListener(new OnClickListener() {
@@ -309,8 +309,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     }
 
     private void stopCamera() {
-        KeenManager keenManager = KeenManager.sharedInstance(this.getActivity().getApplicationContext());
-        keenManager.trackEvent(Constants.KEEN_EVENT_CAMERA_CANCEL);
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(this.getActivity().getApplication());
+        analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_CANCEL);
         if (mCamera != null) {
             mCamera.stopPreview();
             mCamera.setPreviewCallback(null);

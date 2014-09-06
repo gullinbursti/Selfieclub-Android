@@ -46,10 +46,10 @@ import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.dataSources.Club;
+import com.builtinmenlo.selfieclub.models.AnalyticsManager;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.ClubPhotoSubmissionProtocol;
-import com.builtinmenlo.selfieclub.models.KeenManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
@@ -183,8 +183,8 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
-        KeenManager keenManager = KeenManager.sharedInstance(this.getActivity().getApplicationContext());
-        keenManager.trackEvent(Constants.KEEN_EVENT_CAMERA_SETEP3);
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(this.getActivity().getApplication());
+        analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_SETEP3);
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {

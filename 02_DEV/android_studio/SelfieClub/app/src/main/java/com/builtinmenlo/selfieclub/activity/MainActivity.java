@@ -48,9 +48,9 @@ import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.WebviewFragment;
+import com.builtinmenlo.selfieclub.models.AnalyticsManager;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.DeepLinksManager;
-import com.builtinmenlo.selfieclub.models.KeenManager;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
 import com.tapstream.sdk.Config;
@@ -216,8 +216,8 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     @Override
     public void onResume(){
         super.onResume();
-        KeenManager keenManager = KeenManager.sharedInstance(this.getApplicationContext());
-        keenManager.trackEvent(Constants.KEEN_EVENT_RESUMEBACKGROUND);
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getApplication());
+        analyticsManager.trackEvent(Constants.KEEN_EVENT_RESUMEBACKGROUND);
     }
 
     public void didReceiveUserClubs(ArrayList<Club> userClubs){

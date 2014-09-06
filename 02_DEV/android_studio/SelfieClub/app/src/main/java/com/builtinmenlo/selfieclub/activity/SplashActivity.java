@@ -27,8 +27,8 @@ import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.models.AnalyticsManager;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
-import com.builtinmenlo.selfieclub.models.KeenManager;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.util.Util;
 import com.loopj.android.http.AsyncHttpClient;
@@ -38,11 +38,6 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import io.keen.client.android.AndroidKeenClientBuilder;
-import io.keen.client.java.KeenClient;
-import io.keen.client.java.KeenProject;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -56,8 +51,8 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        KeenManager keenManager = KeenManager.sharedInstance(this);
-        keenManager.trackEvent(Constants.KEEN_EVENT_FRESHBOOT);
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getApplication());
+        analyticsManager.trackEvent(Constants.KEEN_EVENT_FRESHBOOT);
 
         setContentView(R.layout.splash);
         AsyncHttpClient client = new AsyncHttpClient();
