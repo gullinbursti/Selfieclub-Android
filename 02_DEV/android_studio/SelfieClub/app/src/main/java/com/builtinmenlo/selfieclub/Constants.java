@@ -5,7 +5,7 @@ package com.builtinmenlo.selfieclub;
  */
 public final class Constants {
     //Endpoints
-    //public static final Boolean PLAYSTOREBUILD = false; //this is used for debug and tracking. It must be set to true before building the apk for the store
+    public static final Boolean PLAYSTOREBUILD = false; //this is used for debug and tracking. It must be set to true before building the apk for the store
     public static String API_ENDPOINT = "http://volley-api.devint.selfieclubapp.com/master/";
     public static final String GET_ACTIVITY_PATH = "users/getactivity";
     public static final String GET_USERCLUBS_PATH = "users/getclubs";
@@ -38,8 +38,10 @@ public final class Constants {
     public static final String KEEN_PROJECT_ID = "5390d1f705cd660561000003";
     public static final String KEEN_READ_KEY = "19c453075e8eaf3d30b11292819aaa5e268c6c0855eaacb86637f25afbcde7774a605636fc6a61f2b09ac3e01833c3ad8cf6b1e469a5f5ba2f4bc9beedfc2376910748d47acadd89e3e18a8bf5ee95b6ed3698aee6f48ede001bf73c8ba31dbace6170ff86bb735eefc67dae6df0b52e";
     public static final String KEEN_WRITE_KEY = "7f1b91140d0fcf8aeb5ccde1a22567ea9073838582ee4725fae19a822f22d19ee243e95469f6b3d952007641901eaa8d5b4793af6ff7fe78f3d326e901d9fc14ed758e49f60c15b49cd85de79d7d04eace16ed79f79a7c9c012612c078f2d806b12f5ae060ec2a6f5c482720a4bdb3a8";
-    public static final String KEEN_EVENT_FRESHBOOT = "App-Fresh boot";
-    public static final String KEEN_EVENT_RESUMEBACKGROUND = "App-Background resume";
+    public static final String KEEN_DEV_COLLECTION = "Android - Dev:";
+    public static final String KEEN_PROD_COLLECTION = "Android - Prod:";
+    public static final String KEEN_EVENT_FRESHBOOT = "Application-Fresh boot";
+    public static final String KEEN_EVENT_RESUMEBACKGROUND = "Application-Background resume";
     public static final String KEEN_EVENT_CREATECLUB = "Club-Create club";
     public static final String KEEN_EVENT_JOINCLUB = "Club-Join club";
     public static final String KEEN_EVENT_INVITECLUB = "Friends-Invite friend";

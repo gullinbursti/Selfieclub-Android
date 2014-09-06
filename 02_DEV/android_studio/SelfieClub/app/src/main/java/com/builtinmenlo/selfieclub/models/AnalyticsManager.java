@@ -46,7 +46,8 @@ public class AnalyticsManager {
 
     public void trackEvent(String sEvent){
         String[] tokens = sEvent.split("-");
-        String eventConllection = tokens[0];
+        String collectionPrefix = (Constants.PLAYSTOREBUILD)?Constants.KEEN_PROD_COLLECTION:Constants.KEEN_DEV_COLLECTION;
+        String eventConllection = collectionPrefix+tokens[0];
         String stringEvent = tokens[1];
         Map<String, Object> properties = new HashMap<String, Object>();
         Map<String, Object> event = new HashMap<String, Object>();
