@@ -6,7 +6,7 @@ package com.builtinmenlo.selfieclub;
 public final class Constants {
     //Endpoints
     public static final Boolean PLAYSTOREBUILD = false; //this is used for debug and tracking. It must be set to true before building the apk for the store
-    public static String API_ENDPOINT = "http://volley-api.devint.selfieclubapp.com/master/";
+    public static String API_ENDPOINT = "http://volley-api.selfieclubapp.com/android_105.json/";
     public static final String GET_ACTIVITY_PATH = "users/getactivity";
     public static final String GET_USERCLUBS_PATH = "users/getclubs";
     public static final String GET_OTHER_CLUBS_PATH = "users/getOtherUsersClubs";
