@@ -47,6 +47,7 @@ import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
+import com.builtinmenlo.selfieclub.fragments.NewClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.WebviewFragment;
 import com.builtinmenlo.selfieclub.models.AnalyticsManager;
@@ -76,7 +77,7 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     public Fragment tabSelected;
 
     private Fragment friendsFragment = new FriendsTabBtnFragment();
-    private Fragment clubsFragment = new ClubsTabBtnFragment();
+    private Fragment clubsFragment = new NewClubsTabBtnFragment();
     private Fragment newsFragment = new NewsTabBtnFragment();
     private Fragment notificationsFragment = new ActivityTabBtnFragment();
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
