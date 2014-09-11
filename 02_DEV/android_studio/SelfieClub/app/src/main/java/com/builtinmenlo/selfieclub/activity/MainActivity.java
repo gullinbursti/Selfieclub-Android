@@ -41,6 +41,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.Keen;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
@@ -217,7 +218,7 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     public void onResume(){
         super.onResume();
         AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getApplication());
-        analyticsManager.trackEvent(Constants.KEEN_EVENT_RESUMEBACKGROUND);
+        analyticsManager.trackEvent(Keen.LEAVING_BACKGROUND);
     }
 
     public void didReceiveUserClubs(ArrayList<Club> userClubs){

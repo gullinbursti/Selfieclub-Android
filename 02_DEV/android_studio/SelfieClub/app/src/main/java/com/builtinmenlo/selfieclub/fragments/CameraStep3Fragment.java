@@ -43,6 +43,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.Keen;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.dataSources.Club;
@@ -184,7 +185,7 @@ public class CameraStep3Fragment extends Fragment implements UserClubsProtocol, 
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
         AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(this.getActivity().getApplication());
-        analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_SETEP3);
+        analyticsManager.trackEvent(Keen.CAMERA3_SELECTED_CLUB);
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {

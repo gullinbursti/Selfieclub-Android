@@ -32,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.Keen;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.models.AnalyticsManager;
@@ -81,7 +82,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         stopCamera();
         AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getActivity().getApplication());
         if (isUsingFrontCamera) {
-            analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_SETEP1);
+            analyticsManager.trackEvent(Keen.CAMERA1_TAKE);
             int cameraCount = 0;
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             cameraCount = Camera.getNumberOfCameras();
@@ -100,7 +101,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
         } else {
             try {
-                analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_FLIP);
+                analyticsManager.trackEvent(Keen.CAMERA1_FLIP);
                 mCamera = Camera.open();
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Failed to Open Camera", Toast.LENGTH_SHORT).show();
@@ -127,7 +128,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(this.getActivity().getApplication());
-        analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_ROLL);
+        analyticsManager.trackEvent(Keen.CAMERA1_ROLL);
         View view = inflater.inflate(R.layout.camera_fragment, container, false);
 
         container.setOnClickListener(new OnClickListener() {
@@ -310,7 +311,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     private void stopCamera() {
         AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(this.getActivity().getApplication());
-        analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_CANCEL);
+        analyticsManager.trackEvent(Keen.CAMERA1_CANCEL);
         if (mCamera != null) {
             mCamera.stopPreview();
             mCamera.setPreviewCallback(null);

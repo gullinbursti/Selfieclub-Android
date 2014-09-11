@@ -40,28 +40,6 @@ public final class Constants {
     public static final String KEEN_WRITE_KEY = "7f1b91140d0fcf8aeb5ccde1a22567ea9073838582ee4725fae19a822f22d19ee243e95469f6b3d952007641901eaa8d5b4793af6ff7fe78f3d326e901d9fc14ed758e49f60c15b49cd85de79d7d04eace16ed79f79a7c9c012612c078f2d806b12f5ae060ec2a6f5c482720a4bdb3a8";
     public static final String KEEN_DEV_COLLECTION = "Android - Dev:";
     public static final String KEEN_PROD_COLLECTION = "Android - Prod:";
-    public static final String KEEN_EVENT_FRESHBOOT = "Application-Fresh boot";
-    public static final String KEEN_EVENT_RESUMEBACKGROUND = "Application-Background resume";
-    public static final String KEEN_EVENT_CREATECLUB = "Club-Create club";
-    public static final String KEEN_EVENT_JOINCLUB = "Club-Join club";
-    public static final String KEEN_EVENT_INVITECLUB = "Friends-Invite friend";
-    public static final String KEEN_EVENT_NEWS_UPVOTE = "News-Feed up vote";
-    public static final String KEEN_EVENT_TIMELINE_UPVOTE = "Timeline-Up vote";
-    public static final String KEEN_EVENT_NEWS_REPLAY = "News-Feed replay";
-    public static final String KEEN_EVENT_TIMELINE_REPLAY = "Timeline-Replay";
-    public static final String KEEN_EVENT_NEWS_ROWTAP = "News-Feed row tap";
-    public static final String KEEN_EVENT_CAMERA_SETEP1 = "Camera-Step 1";
-    public static final String KEEN_EVENT_CAMERA_SETEP2 = "Camera-Step 2";
-    public static final String KEEN_EVENT_CAMERA_SETEP3 = "Camera-Step 3";
-    public static final String KEEN_EVENT_CAMERA_FLIP = "Camera-Flip";
-    public static final String KEEN_EVENT_CAMERA_ROLL = "Camera-Roll";
-    public static final String KEEN_EVENT_CAMERA_CANCEL = "Camera-Cancel";
-    public static final String KEEN_EVENT_STICKERBOARD_SELECT = "Sticker-Board select";
-    public static final String KEEN_EVENT_STICKERBOARD_SWIPE = "Sticker-Board swipe";
-    public static final String KEEN_EVENT_STICKERBOARD_GLOBAL = "Sticker-Board global button";
-    public static final String KEEN_EVENT_SELECT_CLUB_STEP3 = "Club-Select step 3";
-    public static final String KEEN_EVENT_CAMERA_STATUS_UPDATE = "Camera-Status update";
-    public static final String KEEN_EVENT_NEWSFEED_AVATARUSER_TAP = "News-Avatar user tap";
     //Invite
     public static final int NUMBER_OF_RANDOM_FRIENDS = 10;
     //Images

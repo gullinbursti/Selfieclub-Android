@@ -19,11 +19,6 @@ public class ApplicationManager {
     public  boolean isFirstRun(){
         SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
         Boolean response = preferences.getBoolean("firstRun",true);
-        if(response){
-            //Log event
-            AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(activity.getApplication());
-            analyticsManager.trackEvent(Constants.KEEN_EVENT_FRESHBOOT);
-        }
         return response;
     }
 
