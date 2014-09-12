@@ -31,7 +31,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -119,10 +118,10 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
         TextView lblName;
         // TextView lblFollowers;
         // ImageView imgFollowers;
-        ImageView imgAddOrCheck;
-        ImageView imgAvatarCheck;
-        ImageView imgAvatar;
-        ProgressBar imgLoading;
+        //ImageView imgAddOrCheck;
+        //ImageView imgAvatarCheck;
+        //ImageView imgAvatar;
+        //ProgressBar imgLoading;
     }
 
     public void populate() {
@@ -184,14 +183,14 @@ public class FriendsTabBtnFragment extends Fragment implements UserFriendsProtoc
 
             viewHolder = new ViewHolder();
             viewHolder.lblName = (TextView) convertView.findViewById(R.id.lblName);
-            viewHolder.imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
+            //viewHolder.imgAddOrCheck = (ImageView) convertView.findViewById(R.id.imgAddOrCheck);
             convertView.setTag(viewHolder);
             Friend friend = friends.get(position);
 
-            if (friend.isSelected())
+            /*if (friend.isSelected())
                 convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
             else
-                convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+                convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);*/
             viewHolder.lblName.setText(friend.getUsername());
             return convertView;
         }

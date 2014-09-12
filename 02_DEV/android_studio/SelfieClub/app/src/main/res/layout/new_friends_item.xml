@@ -6,36 +6,27 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/common_row_background"
-    android:paddingRight="25dp"
-    tools:showIn="@layout/notifications_tab">
+    android:paddingRight="25dp">
+
 
     <ImageView
-        android:id="@+id/imgAddOrCheck"
+        android:id="@+id/imgArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_margin="5dp"
-        android:background="@drawable/gray_selection_dot" />
-
-    <ImageView
-        android:id="@+id/imgFollowers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/gray_arrow" />
+        android:background="@drawable/arrow_chevron" />
 
 
 
     <TextView
         android:id="@+id/lblName"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="25dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/imgAddOrCheck"
-        android:layout_toRightOf="@id/imgFollowers"
+        android:layout_toLeftOf="@+id/imgArrow"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@android:color/black"
