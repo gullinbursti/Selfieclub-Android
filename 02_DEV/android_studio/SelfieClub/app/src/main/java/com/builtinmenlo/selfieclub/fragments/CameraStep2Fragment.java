@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.Keen;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.models.AnalyticsManager;
 
@@ -146,7 +147,7 @@ public class CameraStep2Fragment extends Fragment {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
         AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getActivity().getApplication());
-        analyticsManager.trackEvent(Constants.KEEN_EVENT_CAMERA_SETEP2);
+        analyticsManager.trackEvent(Keen.CAMERA2_NEXT);
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {

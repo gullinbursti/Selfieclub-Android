@@ -4,6 +4,7 @@ import android.app.Activity;
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.util.Util;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
@@ -71,7 +72,7 @@ public class FirstRunManager {
         data.put("username",username);
         data.put("password",phoneNumber);
         RequestParams requestParams = new RequestParams(data);
-        asyncHttpClient.post(Constants.API_ENDPOINT + Constants.CHECK_USERNAMEPASSWORD_PATH, requestParams, new JsonHttpResponseHandler() {
+        asyncHttpClient.post(Constants.API_ENDPOINT + Constants.CHECK_USERNAMEPASSWORD_PATH, requestParams, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String strData) {
                         try {

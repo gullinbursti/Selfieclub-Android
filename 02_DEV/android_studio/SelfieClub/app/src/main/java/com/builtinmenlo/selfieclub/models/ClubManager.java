@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.Keen;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.dataSources.NewsItem;
 import com.builtinmenlo.selfieclub.dataSources.User;
@@ -56,7 +57,7 @@ public class ClubManager {
                         try {
                             //track event
                             AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(activity.getApplication());
-                            analyticsManager.trackEvent(Constants.KEEN_EVENT_JOINCLUB);
+                            analyticsManager.trackEvent(Keen.CLUB_ALERT_JOIN);
 
                             clubJoinProtocol.didJoinClub(data.getBoolean("result"));
 
@@ -126,7 +127,7 @@ public class ClubManager {
                         try {
                             //track the event
                             AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(activity.getApplication());
-                            analyticsManager.trackEvent(Constants.KEEN_EVENT_INVITECLUB);
+                            analyticsManager.trackEvent(Keen.CLUB_INVITE);
 
 
                             clubInviteProtocol.didSendCubInvite(data.getBoolean("result"));
@@ -176,7 +177,7 @@ public class ClubManager {
                         try {
                             if (data != null) {
                                 AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(activity.getApplication());
-                                analyticsManager.trackEvent(Constants.KEEN_EVENT_CREATECLUB);
+                                analyticsManager.trackEvent(Keen.CLUB_CREATE);
                                 createClubProtocol.didCreateClub(data.getString("id"),data.getString("name"));
                             }
 

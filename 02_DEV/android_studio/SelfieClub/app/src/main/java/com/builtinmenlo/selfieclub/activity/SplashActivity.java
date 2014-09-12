@@ -26,6 +26,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.Keen;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.models.AnalyticsManager;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
@@ -52,7 +53,7 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getApplication());
-        analyticsManager.trackEvent(Constants.KEEN_EVENT_FRESHBOOT);
+        analyticsManager.trackEvent(Keen.LAUNCHING);
 
         setContentView(R.layout.splash);
         AsyncHttpClient client = new AsyncHttpClient();
