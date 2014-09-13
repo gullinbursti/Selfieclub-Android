@@ -221,6 +221,9 @@ public class FirstRunRegistrationFragment
         manager.requestFreeUserId(this,this.getActivity());
     }
 
+
+
+
     @Override
     public void didValidateUsernamePhone(Boolean isValid, String message) {
         dialog.dismiss();

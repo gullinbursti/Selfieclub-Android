@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import xmlwise.Plist;
 
@@ -36,6 +38,53 @@ import xmlwise.Plist;
  */
 public class PhoneManager {
 
+    /**
+     * Gets the most common email domain from the contact's list
+     * @param activity Parent Activity
+     * @return
+     */
+    public String getDomain(Activity activity){
+        String response ="";
+        HashMap<String,Integer>ocurrences = new HashMap<String, Integer>();
+        ContentResolver contentResolver = activity.getContentResolver();
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
+        while (cursor.moveToNext()){
+            try {
+                String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                    Cursor emails = contentResolver.query( ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.CommonDataKinds.Email.CONTACT_ID +" = "+ contactId, null, null);
+                    while (emails.moveToNext()){
+                        String email = emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
+                        String[] tokens = email.split("@");
+                        if(tokens.length>1){
+                            String domain = tokens[1];
+                            if(ocurrences.get(domain)!=null){
+                                int counter = ocurrences.get(domain);
+                                ocurrences.put(domain,counter+1);
+                            }
+                            else{
+                                ocurrences.put(domain,1);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e){}
+        }
+        cursor.close();
+        if(!ocurrences.isEmpty()){
+            List sorted = Util.sortHasMapByValues(ocurrences);
+            Map.Entry<String,Integer>pair = (Map.Entry)sorted.get(0);
+            int mode = pair.getValue();
+            String strDomain = pair.getKey();
+            if(mode>=4){
+                response=strDomain;
+            }
+
+
+        }
+        return response;
+    }
     /**
      * Retuens the number list of contacts stored in the phone's address book
      * @param activity The caller activity's
@@ -47,7 +96,8 @@ public class PhoneManager {
         //Read the contacts
         SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
         String contacts = preferences.getString("contacts","");
-        if(contacts.equalsIgnoreCase("")){
+        //if(contacts.equalsIgnoreCase("")){
+        if(true){
             ContentResolver cr = contentResolver;
             Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
             while (cursor.moveToNext()) {
