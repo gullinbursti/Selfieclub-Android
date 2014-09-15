@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="app_name">SelfieClub</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="accessibility_topnav_tab">TOPNAV</string>
+    <string name="accessibility_imagebutton_maincamera">カメラ</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="empty_string"></string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="tab_friends_title">友達</string>
+    <string name="tab_clubs_title">クラブ</string>
+    <string name="tab_news_title">ニュース</string>
+
+    <string name="menu_terms">サービス規約</string>
+    <string name="menu_privacy_policy">プライバシーポリシー</string>
+    <string name="menu_support">サポート</string>
+    <string name="menu_rate_app">このアプリを評価する</string>
+    <string name="menu_network_status">ネットワークステータス</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="title_activity_invite">招待</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">設定</string>
+
+    <string name="yes_button_title">はい</string>
+    <string name="no_button_title">いいえ</string>
+    <string name="ok_button_title">OK</string>
+    <string name="retry_button_title">再試行</string>
+
+    <!-- Dialog messages -->
+    <string name="invite_friend_dialog">私のSelfieclubに ％s の招待</string>
+    <string name="invite_random_friends_dialog">クラブに入るには、いくつかの友人を招待してください！</string>
+    <string name="already_club_member_dialog">あなたは既にメンバーです！</string>
+    <string name="would_you_like_joinclub_dialog">あなたは ％s のに参加するか？</string>
+
+    <!-- Layout messages -->
+
+    <string name="btn_close_label">戻る</string>
+    <string name="btn_flip_label">フリップ</string>
+    <string name="btn_camera_roll_label">国事ロール</string>
+    <string name="btn_next_label">進む</string>
+    <string name="btn_submit_label">送信する</string>
+
+    <string name="title_how_do_you_feel">気持ちを選択する</string>
+    <string name="title_select_club">クラブを選択する</string>
+
+    <string name="label_is_feeling">感じていること...</string>
+    <string name="label_no_clubs">ご利用いただけませんクラブ</string>
+    <string name="label_no_friends">利用可能な連絡先なし</string>
+    <string name="label_no_news">まだ投稿がありません、ここをタップして作成します</string>
+    <string name="label_select_all_clubs">全てのクラブを選択する</string>
+    <string name="label_create_a_club">クラブを作る</string>
+    <string name="label_coming_soon">Coming soon ...</string>
+    <string name="label_fill_phone_username">ユーザー名と電話番号のフィールドの両方を記入してください</string>
+    <string name="label_minutes_ago"> 分前</string>
+    <string name="label_checking_username">ユーザーネームを調べています_</string>
+    <string name="label_please_wait">ロード中...</string>
+    <string name="label_register_user">ユーザを認証する...</string>
+    <string name="label_uploading_image">イメージのアップロード...</string>
+    <string name="label_successfully_uploaded">正常にアップロード！</string>
+
+    <string name="hint_enter_username">ユーザー名を入力する</string>
+    <string name="hint_enter_phone">電話番号を入力する</string>
+
+    <string name="default_country_code">1</string>
+    <string name="default_followers_number">0</string>
+
+</resources>

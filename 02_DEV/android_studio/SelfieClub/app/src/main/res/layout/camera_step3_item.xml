@@ -6,6 +6,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/common_row_background"
+    android:padding="20dp"
    >
 
     <ImageView
@@ -14,14 +15,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_margin="20dp"
         android:background="@drawable/gray_selection_dot" />
 
 
     <RelativeLayout
         android:layout_width="48dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
         android:id="@+id/relClub"
         android:layout_height="48dp">
 
@@ -32,6 +31,14 @@
             android:scaleType="fitXY"
             android:src="@drawable/friends_item_image_mask"
             app:svg_raw_resource="@raw/image" />
+
+       <!-- <com.builtinmenlo.selfieclub.views.SVGImageView
+            android:id="@+id/imgClub"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/friends_item_image_mask"
+            app:svg_raw_resource="@raw/image" /> -->
 
         <ProgressBar
             android:id="@+id/loadingImage"

@@ -25,6 +25,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,24 +36,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.Keen;
 import com.builtinmenlo.selfieclub.R;
 import com.builtinmenlo.selfieclub.dataSources.Club;
 import com.builtinmenlo.selfieclub.fragments.ActivityTabBtnFragment;
-import com.builtinmenlo.selfieclub.fragments.CameraFragment;
 import com.builtinmenlo.selfieclub.fragments.ClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.FriendsTabBtnFragment;
-import com.builtinmenlo.selfieclub.fragments.NewCameraStep2Fragment;
+import com.builtinmenlo.selfieclub.fragments.NewClubsTabBtnFragment;
 import com.builtinmenlo.selfieclub.fragments.NewsTabBtnFragment;
-import com.builtinmenlo.selfieclub.listeners.TabButtonListener;
+import com.builtinmenlo.selfieclub.fragments.WebviewFragment;
+import com.builtinmenlo.selfieclub.models.AnalyticsManager;
 import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.DeepLinksManager;
-import com.builtinmenlo.selfieclub.models.KeenManager;
-import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.UserClubsProtocol;
 import com.builtinmenlo.selfieclub.models.UserManager;
+import com.tapstream.sdk.Config;
+import com.tapstream.sdk.Tapstream;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -66,12 +71,15 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
     public final static String INTENT_PAYLOAD_AS_STRING = "com.builtinmenlo.selfieclub.activity.INTENT_PAYLOAD_AS_STRING";
 
-    Tab friendsTab, clubsTab, newsTab, notificationsTab;
 
-    Fragment friendsFragment = new FriendsTabBtnFragment();
-    Fragment clubsFragment = new ClubsTabBtnFragment();
-    Fragment newsFragment = new NewsTabBtnFragment();
-    Fragment notificationsFragment = new ActivityTabBtnFragment();
+    private Tab friendsTab, clubsTab, newsTab, notificationsTab;
+
+    public Fragment tabSelected;
+
+    private Fragment friendsFragment = new FriendsTabBtnFragment();
+    private Fragment clubsFragment = new NewClubsTabBtnFragment();
+    private Fragment newsFragment = new NewsTabBtnFragment();
+    private Fragment notificationsFragment = new ActivityTabBtnFragment();
     //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
 
 
@@ -87,6 +95,10 @@ public class MainActivity extends Activity implements UserClubsProtocol{
         deepLinksManager.context = this.getApplicationContext();
         deepLinksManager.activity = this;
         deepLinksManager.deepLinkRegistry(data);
+
+        Config config = new Config();
+        Tapstream.create(getApplication(), Constants.TAPSTREAM_PROJECT_NAME, Constants.TAPSTREAM_SECRET_KEY, config);
+
 
         setContentView(R.layout.activity_main);
         getOverflowMenu();
@@ -127,31 +139,25 @@ public class MainActivity extends Activity implements UserClubsProtocol{
 
         //TODO Use a real userId
         ApplicationManager applicationManager = new ApplicationManager(this);
-        applicationManager.setUserId("151159");
-        applicationManager.setUserName("matt");
+        //applicationManager.setUserId("151159");
+        //applicationManager.setUserName("matt");
 
         //Request the user's personal club
         UserManager userManager = new UserManager();
         String userId =applicationManager.getUserId();
-        userManager.requestUserClubs(this,userId);
+        userManager.requestUserClubs(this,userId,this);
 
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onMainCameraClick(View view) {
-        CameraFragment newFragment = new CameraFragment();
-        //NewCameraStep2Fragment newFragment = new NewCameraStep2Fragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, newFragment);
-        //newFragment.setNextView(new CameraStep2Fragment());
-        newFragment.setNextView(new NewCameraStep2Fragment());
-        transaction.commit();
-    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
+    }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     private void getOverflowMenu() {
 
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
+
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
             if (menuKeyField != null) {
                 menuKeyField.setAccessible(true);
@@ -173,18 +179,47 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     // handle click events for action bar items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        String url = null;
         switch (item.getItemId()) {
+            case R.id.menuTerms:
+                url = "Http://www.getselfieclub.com/terms.html";
+
+                break;
+            case R.id.menuNetworkStatus:
+                url = "Http://mobile.twitter.com/selfiec_status";
+                break;
+            case R.id.menuRate:
+                url = "Http://www.getselfieclub.com/rateapp.html";
+                break;
+            case  R.id.menuPrivacyPolicy:
+                url = "Http://www.getselfieclub.com/privacy.html";
+                break;
+            case R.id.menuSupport:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri
+                        .parse("mailto:support@getselfieclub.com"));
+                startActivity(intent);
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
+
+        if (url!=null) {
+            WebviewFragment newFragment = new WebviewFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, newFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString(WebviewFragment.EXTRA_URL_ITEM, url);
+            newFragment.setArguments(bundle);
+            transaction.commit();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
     @Override
     public void onResume(){
         super.onResume();
-        KeenManager keenManager = KeenManager.sharedInstance();
-        keenManager.initialize(this.getApplicationContext());
-        keenManager.trackEvent(Constants.KEEN_EVENT_RESUMEBACKGROUND);
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getApplication());
+        analyticsManager.trackEvent(Keen.LEAVING_BACKGROUND);
     }
 
     public void didReceiveUserClubs(ArrayList<Club> userClubs){
@@ -201,5 +236,63 @@ public class MainActivity extends Activity implements UserClubsProtocol{
     }
     public void didReceiveUserClubsError(String errorMessage){
         Log.e("MainActivity","Error getting the clubs");
+    }
+
+    class TabButtonListener implements ActionBar.TabListener {
+//]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+
+        //] class properties ]>
+        //]=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~.
+        Fragment fragment;
+        //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
+
+        // <*] class constructor [*>
+        public TabButtonListener(Fragment fragment) {
+            //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
+            this.fragment = fragment;
+        }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
+
+        //]~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=[>
+        //]~=~=~=~=~=~=~=~=~=[>
+
+
+        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+            //get the view for the tab
+            RelativeLayout tabLayout = (RelativeLayout) tab.getCustomView();
+            ImageView redDot = (ImageView) tabLayout.findViewById(R.id.imgRedDot);
+            if (tabLayout != null && redDot == null) {
+                ((TextView) tabLayout.findViewById(R.id.lblTitleText)).setTextColor(Color.parseColor("#005de9"));
+                ((TextView) tabLayout.findViewById(R.id.lblTitleText)).setTypeface(Typeface.DEFAULT_BOLD);
+            } else {
+                if (redDot != null) {
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.fade_in);
+                }
+            }
+
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            tabSelected = fragment;
+        }
+
+        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+            //get the view for the tab
+            RelativeLayout tabLayout = (RelativeLayout) tab.getCustomView(); //get the view for the tab
+            ImageView redDot = (ImageView) tabLayout.findViewById(R.id.imgRedDot);
+            if (tabLayout != null && redDot == null) {
+                ((TextView) tabLayout.findViewById(R.id.lblTitleText)).setTextColor(Color.parseColor("#bababa"));
+                ((TextView) tabLayout.findViewById(R.id.lblTitleText)).setTypeface(Typeface.DEFAULT);
+            } else {
+                if (redDot != null) {
+                    fragmentTransaction.setCustomAnimations(R.anim.fade_out,R.anim.slide_out);
+                }
+            }
+            if (fragment != null) {
+                fragmentTransaction.remove(fragment);
+            }
+        }
+
+        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+        }
+
     }
 }

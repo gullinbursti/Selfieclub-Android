@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:background="@android:color/transparent"
     android:id="@+id/camera"
-    android:layout_height="fill_parent">
+    android:layout_height="match_parent"
+    android:clickable="true">
 
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="0dip"
-        android:paddingRight="0dip"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip">
-
-        <SurfaceView
-            android:id="@+id/camera_surface"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></SurfaceView>
-    </FrameLayout>
+    <SurfaceView
+        android:id="@+id/camera_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></SurfaceView>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnClose"
         android:background="@android:color/transparent"
-        android:text="Close"
+        android:text="@string/btn_close_label"
         android:textStyle="bold"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -36,9 +27,9 @@
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
         android:id="@+id/btnFlip"
-        android:text="Flip"
+        android:text="@string/btn_flip_label"
         android:textStyle="bold"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp" />
 
 
     <Button
@@ -49,8 +40,9 @@
         android:background="@android:color/transparent"
         android:id="@+id/btnGallery"
         android:textStyle="bold"
-        android:text="Camera Roll"
-        android:layout_margin="5dp"/>
+        android:text="@string/btn_camera_roll_label"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="5dp" />
 
     <ImageButton
         android:id="@+id/imagebutton_camera"

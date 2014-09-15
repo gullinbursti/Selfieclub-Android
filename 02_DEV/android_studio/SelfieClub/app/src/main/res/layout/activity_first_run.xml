@@ -3,13 +3,4 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
-
-    <RelativeLayout
-        android:id="@+id/tab_fragment_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    </RelativeLayout>
-
 </FrameLayout>

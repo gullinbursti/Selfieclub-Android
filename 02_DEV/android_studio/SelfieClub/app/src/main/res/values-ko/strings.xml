@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="app_name">SelfieClub</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="accessibility_topnav_tab">TOPNAV</string>
+    <string name="accessibility_imagebutton_maincamera">카메라</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="empty_string"></string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="tab_friends_title">친구</string>
+    <string name="tab_clubs_title">클럽</string>
+    <string name="tab_news_title">뉴스</string>
+
+    <string name="menu_terms">서비스 약관</string>
+    <string name="menu_privacy_policy">개인정보 보호정책</string>
+    <string name="menu_support">지원 요청</string>
+    <string name="menu_rate_app">이 앱을 평가하기</string>
+    <string name="menu_network_status">네트워크 상태</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="title_activity_invite">초대</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">설정</string>
+
+    <string name="yes_button_title">예</string>
+    <string name="no_button_title">아니요</string>
+    <string name="ok_button_title">OK</string>
+    <string name="retry_button_title">RETRY</string>
+
+    <!-- Dialog messages -->
+    <string name="invite_friend_dialog">내 Selfieclub에 %s 을 (를) 초대</string>
+    <string name="invite_random_friends_dialog">클럽을 입력하려면 어떤 친구를 초대하세요!</string>
+    <string name="already_club_member_dialog">당신은 이미 회원!</string>
+    <string name="would_you_like_joinclub_dialog">당신은 %s 에 가입 하시겠습니까?</string>
+
+    <!-- Layout messages -->
+
+    <string name="btn_close_label">뒤로</string>
+    <string name="btn_flip_label">플립</string>
+    <string name="btn_camera_roll_label">카메라 롤</string>
+    <string name="btn_next_label">다음</string>
+    <string name="btn_submit_label">제출</string>
+
+    <string name="title_how_do_you_feel">느낌을 선택</string>
+    <string name="title_select_club">클럽 선택하기</string>
+
+    <string name="label_is_feeling">기분이...</string>
+    <string name="label_no_clubs">사용 가능한 클럽 없다</string>
+    <string name="label_no_friends">사용 가능한 주소록이 없습니다</string>
+    <string name="label_no_news">게시물이 없습니다, 작성하려면 여기를 누르세요</string>
+    <string name="label_select_all_clubs">모든 클럽을 선택</string>
+    <string name="label_create_a_club">클럽 만들기</string>
+    <string name="label_coming_soon">출시 예정 ...</string>
+    <string name="label_fill_phone_username">사용자 이름과 전화 필드 모두를 입력하세요</string>
+    <string name="label_minutes_ago"> 분 전</string>
+    <string name="label_checking_username">username_ 확인 중</string>
+    <string name="label_please_wait">로딩 중...</string>
+    <string name="label_register_user">사용자 인증 ...</string>
+    <string name="label_uploading_image">이미지 업로드 ...</string>
+    <string name="label_successfully_uploaded">성공적으로 업로드!</string>
+
+
+
+    <string name="hint_enter_username">사용자 이름</string>
+    <string name="hint_enter_phone">전화번호</string>
+
+    <string name="default_country_code">1</string>
+    <string name="default_followers_number">0</string>
+
+</resources>

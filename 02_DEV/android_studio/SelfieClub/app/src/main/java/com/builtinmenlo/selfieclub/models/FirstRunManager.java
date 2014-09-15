@@ -1,6 +1,10 @@
 package com.builtinmenlo.selfieclub.models;
+import android.app.Activity;
+
 import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.util.Util;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
@@ -23,9 +27,13 @@ public class FirstRunManager {
     }
 
 
-    public void requestFreeUserId(final FirstRunProtocol firstRunProtocol){
+    public void requestFreeUserId(final FirstRunProtocol firstRunProtocol,
+                                  Activity activity){
 
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            asyncHttpClient.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("action","1");
         RequestParams requestParams = new RequestParams(data);
@@ -50,17 +58,25 @@ public class FirstRunManager {
     }
 
 
-    public void usernameAndPhoneCheck(final FirstRunProtocol firstRunProtocol, String userId,String username, String phoneNumber){
+    public void usernameAndPhoneCheck(final FirstRunProtocol firstRunProtocol,
+                                      String userId,
+                                      String username,
+                                      String phoneNumber,
+                                      Activity activity){
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            asyncHttpClient.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         data.put("username",username);
         data.put("password",phoneNumber);
         RequestParams requestParams = new RequestParams(data);
-        asyncHttpClient.post(Constants.API_ENDPOINT + Constants.CHECK_USERNAMEPASSWORD_PATH, requestParams, new JsonHttpResponseHandler() {
+        asyncHttpClient.post(Constants.API_ENDPOINT + Constants.CHECK_USERNAMEPASSWORD_PATH, requestParams, new AsyncHttpResponseHandler() {
                     @Override
-                    public void onSuccess(JSONObject data) {
+                    public void onSuccess(String strData) {
                         try {
+                            JSONObject data = new JSONObject(strData);
                             int result = data.getInt("result");
                             switch (result){
                                 case 0:
@@ -96,8 +112,12 @@ public class FirstRunManager {
                              String username,
                              String email,
                              String pushNotificationToken,
-                             String avatarUrl){
+                             String avatarUrl,
+                             Activity activity){
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            asyncHttpClient.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("action","9");
         data.put("userID",userId);
@@ -128,8 +148,14 @@ public class FirstRunManager {
         );
     }
 
-    public void sendPIN(final PINVerificationProtocol pinVerificationProtocol, String userId,String phoneNumber){
+    public void sendPIN(final PINVerificationProtocol pinVerificationProtocol,
+                        String userId,
+                        String phoneNumber,
+                        Activity activity){
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            asyncHttpClient.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         data.put("phone",phoneNumber);
@@ -162,8 +188,15 @@ public class FirstRunManager {
 
     }
 
-    public void validatePIN(final PINVerificationProtocol pinVerificationProtocol, String userId, String phone, String pin){
+    public void validatePIN(final PINVerificationProtocol pinVerificationProtocol,
+                            String userId,
+                            String phone,
+                            String pin,
+                            Activity activity){
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            asyncHttpClient.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("userID",userId);
         data.put("phone",phone);
@@ -196,12 +229,4 @@ public class FirstRunManager {
         );
 
     }
-
-
-
-
-
-
-
-
 }

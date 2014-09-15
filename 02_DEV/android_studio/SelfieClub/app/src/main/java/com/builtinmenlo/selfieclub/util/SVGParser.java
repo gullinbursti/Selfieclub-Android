@@ -950,11 +950,7 @@ public class SVGParser {
             if (opacity == null) {
                 opacity = atts.getFloat(fillMode ? "fill-opacity" : "stroke-opacity");
             }
-            if (opacity == null) {
                 paint.setAlpha(255);
-            } else {
-                paint.setAlpha((int) (255 * opacity));
-            }
         }
 
         private boolean hidden = false;
@@ -1083,14 +1079,14 @@ public class SVGParser {
                             color = Integer.parseInt(colorStyle, 16);
                         }
                     }
-                    String opacityStyle = styleSet.getStyle("stop-opacity");
+                    /*String opacityStyle = styleSet.getStyle("stop-opacity");
                     if (opacityStyle != null) {
                         float alpha = Float.parseFloat(opacityStyle);
                         int alphaInt = Math.round(255 * alpha);
                         color |= (alphaInt << 24);
                     } else {
                         color |= 0xFF000000;
-                    }
+                    }*/
                     gradient.positions.add(offset);
                     gradient.colors.add(color);
                 }

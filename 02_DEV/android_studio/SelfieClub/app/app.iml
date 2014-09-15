@@ -56,38 +56,55 @@
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/rs" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/bundles" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/coverage-instrumented-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dependency-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jacoco" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaResources" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/libs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/ndk" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/pre-dexed" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/proguard" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="android-async-http-1.4.4" level="project" />
-    <orderEntry type="library" exported="" name="aws-android-sdk-2.0.5-core" level="project" />
-    <orderEntry type="library" exported="" name="aws-android-sdk-2.0.5-s3" level="project" />
     <orderEntry type="library" exported="" name="tapjoyconnectlibrary" level="project" />
+    <orderEntry type="library" exported="" name="aws-android-sdk-2.0.5-core.debug" level="project" />
+    <orderEntry type="library" exported="" name="picocandy-android-sdk-0.5.1" level="project" />
+    <orderEntry type="library" exported="" name="android-gif-drawable-1.0.9" level="project" />
+    <orderEntry type="library" exported="" name="picasso-2.3.3" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
+    <orderEntry type="library" exported="" name="jackson-databind-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="aws-android-sdk-2.0.5-s3.debug" level="project" />
+    <orderEntry type="library" exported="" name="Tapstream" level="project" />
+    <orderEntry type="library" exported="" name="commons-codec-1.9" level="project" />
+    <orderEntry type="library" exported="" name="couchbase-lite-java-core-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="jackson-core-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="couchbase-lite-android-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="aws-android-sdk-2.0.5-core" level="project" />
+    <orderEntry type="library" exported="" name="android-async-http-1.4.4" level="project" />
     <orderEntry type="library" exported="" name="commons-codec-1.2" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="1_jackson-annotations-2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="xmlwise-1_2" level="project" />
-    <orderEntry type="library" exported="" name="picocandy-android-sdk-0.5.1" level="project" />
+    <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
-    <orderEntry type="library" exported="" name="android-gif-drawable-1.0.9" level="project" />
     <orderEntry type="library" exported="" name="stickerintentmanager-0.5" level="project" />
-    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
-    <orderEntry type="library" exported="" name="picasso-2.3.3" level="project" />
-    <orderEntry type="library" exported="" name="jackson-databind-2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="1_jackson-databind-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="bcprov-jdk15on-151" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-asl-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="1_jackson-core-asl-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="annotations-13.0" level="project" />
     <orderEntry type="library" exported="" name="keen-client-api-android-2.0.1" level="project" />
-    <orderEntry type="library" exported="" name="keen-client-api-android-2.0.0-rc1-sources" level="project" />
-    <orderEntry type="library" exported="" name="keen-client-api-android-2.0.0-rc1-javadoc" level="project" />
-    <orderEntry type="library" exported="" name="couchbase-lite-java-core-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="couchbase-lite-android-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="jackson-core-2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="1_jackson-core-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="jackson-mapper-asl-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="1_jackson-mapper-asl-1.9.2" level="project" />
   </component>

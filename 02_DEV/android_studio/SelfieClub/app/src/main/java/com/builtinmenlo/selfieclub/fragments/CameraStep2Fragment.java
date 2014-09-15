@@ -37,8 +37,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.Keen;
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.activity.CameraPreview;
+import com.builtinmenlo.selfieclub.models.AnalyticsManager;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -88,14 +90,12 @@ public class CameraStep2Fragment extends Fragment {
         final ActionBar actionBar = getActivity().getActionBar();
         actionBar.hide();
 
-        /*final ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setTitle("How do I feel?");
-        actionBar.setBackgroundDrawable(new ColorDrawable());*/
+
 
         bundle = getArguments();
         byte[] avatarImage = null;
         if (bundle!= null) {
-            avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
+            avatarImage = bundle.getByteArray(CameraFragment.EXTRA_IMAGE);
         }
 
         ImageView avatar = (ImageView) view.findViewById(R.id.imgAvatar);
@@ -114,7 +114,8 @@ public class CameraStep2Fragment extends Fragment {
                 CameraFragment newFragment = new CameraFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
-                newFragment.setNextView(new CameraStep2Fragment());
+                //transaction.replace(R.id.fragment_container, newFragment);
+                //newFragment.setNextView(new CameraStep2Fragment());
                 transaction.commit();
             }
         });
@@ -145,6 +146,8 @@ public class CameraStep2Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
         super.onCreate(savedInstanceState);
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getActivity().getApplication());
+        analyticsManager.trackEvent(Keen.CAMERA2_NEXT);
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     public void onAttach(Activity activity) {
@@ -174,13 +177,7 @@ public class CameraStep2Fragment extends Fragment {
                 transaction.commit();
                 return true;
 
-            /*case R.id.copyLink:
-                showToast("Copy link was clicked.");
-                return true;
 
-            case R.id.share:
-                showToast("Share was clicked.");
-                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }

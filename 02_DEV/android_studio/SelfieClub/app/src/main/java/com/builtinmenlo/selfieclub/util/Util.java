@@ -1,14 +1,17 @@
 package com.builtinmenlo.selfieclub.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
-import android.widget.ImageView;
+import android.util.Base64;
+import android.util.Log;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
@@ -20,17 +23,29 @@ import com.amazonaws.services.s3.transfer.TransferManagerConfiguration;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
 import com.builtinmenlo.selfieclub.Constants;
-import com.squareup.picasso.Picasso;
+
+import org.apache.commons.codec.binary.Hex;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+
+import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.text.MessageFormat;
+import java.util.Formatter;
 import java.util.Random;
 import java.util.UUID;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 
 /**
  * Created by Leonardo on 6/25/14.
@@ -43,13 +58,14 @@ public class Util {
         MEDIUM_320x320,
         SMALL_160x160
     }
-    public static String getUDID(Context context){
+
+    public static String getUDID(Context context) {
         final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         final String tmDevice, tmSerial, androidId;
         tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
         androidId = "" + android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
         String deviceId = deviceUuid.toString();
         return deviceId;
     }
@@ -64,71 +80,170 @@ public class Util {
         }
         digest.reset();
         byte[] data = digest.digest(s.getBytes());
-        return String.format("%0" + (data.length*2) + "X", new BigInteger(1, data));
+        return String.format("%0" + (data.length * 2) + "X", new BigInteger(1, data));
+    }
+    /*
+    public static String generateHMAC(Activity activity) {
+        String deviceWithDash = getDeviceId(activity);
+        String deviceNoDash = deviceWithDash.replace("-", "");
+        //String combinedHash = deviceNoDash + "+" + deviceWithDash;
+        String combinedHash = deviceNoDash + deviceWithDash;
+        String hash;
+        try {
+            hash = hashMac(combinedHash, "YARJSuo6/r47LczzWjUx/T8ioAJpUKdI/ZshlTUP8q4ujEVjC0seEUAAtS6YEE1Veghz+IDbNQ");
+        } catch (Exception e) {
+            hash = "";
+        }
+        String result = hash + "+" + combinedHash;
+        return result;
+    }
+    */
+    public static String generateHMAC(Activity activity) {
+        try {
+            String deviceWithDash = getDeviceId(activity);
+            String deviceNoDash = deviceWithDash.replace("-", "");
+            String combinedHash = deviceNoDash + "+" + deviceWithDash;
+            String hmac = HmacSha1Signature.calculateRFC2104HMAC(combinedHash,"YARJSuo6/r47LczzWjUx/T8ioAJpUKdI/ZshlTUP8q4ujEVjC0seEUAAtS6YEE1Veghz+IDbNQ");
+            return hmac;
+        } catch (SignatureException e) {
+            e.printStackTrace();
+            return "";
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "";
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+            return "";
+        }
+
     }
 
-    public static String generateRandomString(int lenght){
+
+
+    public static String getDeviceId(Activity activity) {
+        Context context = activity.getApplicationContext();
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        String deviceId = sharedPreferences.getString("DEVICE_ID", "");
+        if (deviceId.equalsIgnoreCase("")) {
+            String rawHash = sha1(getUDID(context) + generateRandomString(40));
+
+            MessageFormat messageFormat = new MessageFormat("{0}-{1}-{2}-{3}");
+            String[] hashArray = {rawHash.substring(0, 9), rawHash.substring(10, 19), rawHash.substring(20, 29), rawHash.substring(30, 39)};
+            deviceId = messageFormat.format(hashArray);
+            SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+            preferences.edit().putString("DEVICE_ID", deviceId).apply();
+        }
+        return deviceId;
+    }
+
+    /**
+     * Generates hashMac256
+     *
+     * @param text      Text to generate
+     * @param secretKey Secret key
+     * @return
+     * @throws SignatureException
+     */
+    private static String hashMac(String text, String secretKey)
+            throws SignatureException {
+
+        try {
+            Key sk = new SecretKeySpec(secretKey.getBytes(), "HmacSHA256");
+            Mac mac = Mac.getInstance(sk.getAlgorithm());
+            mac.init(sk);
+            final byte[] hmac = mac.doFinal(text.getBytes());
+            return toHexString(hmac);
+        } catch (NoSuchAlgorithmException e1) {
+            // throw an exception or pick a different encryption method
+            throw new SignatureException(
+                    "error building signature, no such algorithm in device "
+                            + "HmacSHA256"
+            );
+        } catch (InvalidKeyException e) {
+            throw new SignatureException(
+                    "error building signature, invalid key " + "HmacSHA256");
+        }
+    }
+
+    private static String toHexString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
+
+        Formatter formatter = new Formatter(sb);
+        for (byte b : bytes) {
+            formatter.format("%02x", b);
+        }
+
+        return sb.toString();
+    }
+
+    private static String generateRandomString(int lenght) {
         String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random random = new Random();
         StringBuffer sb = new StringBuffer(lenght);
-        for (int i=0;i<lenght;i++){
+        for (int i = 0; i < lenght; i++) {
             sb.append(AB.charAt(random.nextInt(AB.length())));
         }
 
         return sb.toString();
     }
 
-    public static String generateUniqueString(Context context){
-        return sha1(getUDID(context)+generateRandomString(40));
 
+    public static String generateUniqueString(Activity activity) {
+        String string = sha1(getUDID(activity.getApplicationContext()) + generateRandomString(40));
+        return string;
     }
 
-    public static File resizeImage(IMAGE_SIZES size, File imageFile, Context context){
+    public static File resizeImage(IMAGE_SIZES size, byte[] imageFile, Context context) {
         int width = 50;
         int height = 50;
-        switch (size){
+        switch (size) {
             case LARGE_640x1136:
-                width=640;
-                height=1136;
+                width = 640;
+                height = 1136;
                 break;
             case TAB_640x960:
-                width=640;
-                height=960;
+                width = 640;
+                height = 960;
                 break;
             case MEDIUM_320x320:
-                width=320;
-                height=320;
+                width = 320;
+                height = 320;
                 break;
             case SMALL_160x160:
-                width=160;
-                height=160;
+                width = 160;
+                height = 160;
                 break;
 
 
         }
+
+        Bitmap source = BitmapFactory.decodeByteArray(imageFile, 0, imageFile.length);
+        int tempWidth = ((source.getWidth() / 2) - (width / 2) > 0) ? (source.getWidth() / 2) - (width / 2) : 0;
+        int tempHeight = ((source.getHeight() / 2) - (height / 2) > 0) ? (source.getHeight() / 2) - (height / 2) : 0;
         Bitmap result = null;
-        try{
-            ImageView mImageView = new ImageView(context);
-            Picasso.with(context).load(imageFile).resize(width,height).centerCrop().into(mImageView);
-            result = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-            Canvas canvas = new Canvas(result);
-            mImageView.draw(canvas);
+        try {
+            result = Bitmap.createBitmap(source, tempWidth, tempHeight, width, height);
+        } catch (Exception e) {
+            result = Bitmap.createScaledBitmap(source, width, height, true);
+        }
+        try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            result.compress(Bitmap.CompressFormat.JPEG,100,bos);
+            result.compress(Bitmap.CompressFormat.JPEG, 75, bos);
             byte[] bitmapData = bos.toByteArray();
             bos.flush();
             bos.close();
-            FileOutputStream fos = new FileOutputStream(imageFile);
+            File file = new File(context.getCacheDir().getPath() + "/temp.jpg");
+            FileOutputStream fos = new FileOutputStream(file);
             fos.write(bitmapData);
-        }
-        catch (Exception e){
+            fos.close();
+            return file;
+        } catch (Exception e) {
             return null;
         }
-        return imageFile;
     }
 
 
-    public static void playDefaultNotificationSound(Context context){
+    public static void playDefaultNotificationSound(Context context) {
         Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         MediaPlayer mediaPlayer = new MediaPlayer();
@@ -140,8 +255,7 @@ public class Util {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                 @Override
-                public void onCompletion(MediaPlayer mp)
-                {
+                public void onCompletion(MediaPlayer mp) {
                     mp.release();
                 }
             });
@@ -159,8 +273,9 @@ public class Util {
 
     /**
      * Returns an array of unique ramdom numbers
-     * @param count Number of items
-     * @param minInclusive Inclusive lower number
+     *
+     * @param count           Number of items
+     * @param minInclusive    Inclusive lower number
      * @param maxNonInclusive Exclusive max number
      * @return
      */
@@ -168,13 +283,13 @@ public class Util {
         int randoms[] = new int[count];
         Random rand = new Random();
         int impossibleValue = minInclusive - 1;
-        for(int i = 0; i < randoms.length; i++) {
+        for (int i = 0; i < randoms.length; i++) {
             randoms[i] = impossibleValue;
         }
-        for(int x = 0; x < count; x++) {
+        for (int x = 0; x < count; x++) {
             int thisTry = impossibleValue;
-            while(thisTry == impossibleValue || arrayContainsInt(randoms, thisTry, x)) {
-                thisTry = (int)(rand.nextFloat() * (float)(maxNonInclusive - minInclusive)) + minInclusive;
+            while (thisTry == impossibleValue || arrayContainsInt(randoms, thisTry, x)) {
+                thisTry = (int) (rand.nextFloat() * (float) (maxNonInclusive - minInclusive)) + minInclusive;
             }
             randoms[x] = thisTry;
         }
@@ -190,8 +305,8 @@ public class Util {
         return false;
     }
 
-    public static void uploadPhotoToS3(File imageFile, String fileName){
-        AWSCredentials credential = new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET);
+    public static void uploadPhotoToS3(File imageFile, String fileName) {
+        AWSCredentials credential = new BasicAWSCredentials(Constants.AMAZON_S3_KEY, Constants.AMAZON_S3_SECRET);
 
 // TransferManager manages its own thread pool, so
 // please share it when possible.
@@ -218,29 +333,20 @@ public class Util {
             System.out.println("Bucket:" + bucket.getName());
         }*/
         //Upload upload = manager.upload(Constants.AMAZON_S3_BUCKET, fileName, imageFile);
-        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile);
+        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET, fileName, imageFile);
         Upload upload = manager.upload(por);
         try {
-            if (upload.isDone() == false) {
+            /*if (upload.isDone() == false) {
                 System.out.println("Transfer: " + upload.getDescription());
                 System.out.println("  - State: " + upload.getState());
                 System.out.println("  - Progress: " + upload.getProgress().getBytesTransferred());
-            }
+            }*/
             UploadResult result = upload.waitForUploadResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        System.err.print(upload.toString());
-
-        /*AmazonS3 s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AMAZON_S3_KEY,Constants.AMAZON_S3_SECRET));
-        s3Client.createBucket(Constants.AMAZON_S3_BUCKET);
-        for (Bucket bucket : s3Client.listBuckets()) {
-            System.out.println("Bucket:" + bucket.getName());
-        }
-        //PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,fileName,imageFile).withBucketName(Constants.AMAZON_S3_BUCKET).withKey(Constants.AMAZON_S3_KEY);
-        PutObjectRequest por = new PutObjectRequest(Constants.AMAZON_S3_BUCKET,"/thumbs/upload.jpg",imageFile);
-        s3Client.putObject(por);*/
+        System.out.println(upload.getDescription());
 
     }
 

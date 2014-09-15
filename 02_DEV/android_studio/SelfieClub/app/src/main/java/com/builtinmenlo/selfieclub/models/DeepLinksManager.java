@@ -41,7 +41,7 @@ public class DeepLinksManager implements UserFinderProtocol,OtherUserClubsProtoc
                 userName = tokens[1];
                 clubName = tokens[2];
                 UserManager userManager = new UserManager();
-                userManager.findUserByUsername(this,userName);
+                userManager.findUserByUsername(this,userName,activity);
             }
             catch (Exception e){}
 
@@ -55,7 +55,7 @@ public class DeepLinksManager implements UserFinderProtocol,OtherUserClubsProtoc
             try {
                 userId = user.getString("id");
                 UserManager userManager = new UserManager();
-                userManager.requestOtherUserClubs(this,userId);
+                userManager.requestOtherUserClubs(this,userId,activity);
             }
             catch (Exception e){}
 
@@ -123,7 +123,7 @@ public class DeepLinksManager implements UserFinderProtocol,OtherUserClubsProtoc
             if(buttonIndex==1){
                 ApplicationManager applicationManager = new ApplicationManager(activity);
                 ClubManager clubManager = new ClubManager();
-                clubManager.joinClub(this,applicationManager.getUserId(),clubId,ownerId);
+                clubManager.joinClub(this,applicationManager.getUserId(),clubId,ownerId,activity);
 
             }
 

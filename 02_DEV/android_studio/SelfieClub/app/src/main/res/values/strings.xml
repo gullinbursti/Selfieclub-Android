@@ -20,22 +20,11 @@
     <string name="tab_clubs_title">Clubs</string>
     <string name="tab_news_title">News</string>
 
-    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
-
-    <string name="notifications">Notifications</string>
-    <string name="search_friends_hint">Search for friends</string>
-
-    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
-
-    <string name="menu_notifications">Notifications</string>
     <string name="menu_terms">Terms of Service</string>
     <string name="menu_privacy_policy">Privacy Policy</string>
     <string name="menu_support">Support</string>
     <string name="menu_rate_app">Rate this app</string>
     <string name="menu_network_status">Network Status</string>
-    <string name="menu_sign_up">Sign Up</string>
-
-    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
 
     <string name="title_activity_invite">Invite</string>
     <string name="hello_world">Hello world!</string>
@@ -44,10 +33,58 @@
     <string name="yes_button_title">YES</string>
     <string name="no_button_title">NO</string>
     <string name="ok_button_title">OK</string>
+    <string name="retry_button_title">RETRY</string>
 
     <!-- Dialog messages -->
     <string name="invite_friend_dialog">Invite %s to my Selfieclub</string>
     <string name="invite_random_friends_dialog">To enter the club please invite some friends!</string>
     <string name="already_club_member_dialog">You are already a member!</string>
-    <string name="would_you_like_joinclub_dialog">Would you like to join %s ?</string>
+    <string name="would_you_like_joinclub_dialog">Would you like to join %s\'s club?</string>
+    <string name="would_you_like_invite_friends_dialog">Would you like to invite friends to your Club?</string>
+
+    <!-- Layout messages -->
+
+    <string name="btn_close_label">Close</string>
+    <string name="btn_flip_label">Flip</string>
+    <string name="btn_camera_roll_label">Camera Roll</string>
+    <string name="btn_next_label">Next</string>
+    <string name="btn_submit_label">Submit</string>
+
+    <string name="title_how_do_you_feel">How do you feel?</string>
+    <string name="title_select_club">Select Club</string>
+
+    <string name="label_is_feeling">is feeling...</string>
+    <string name="label_no_clubs">No clubs available</string>
+    <string name="label_no_friends">No contacts available</string>
+    <string name="label_no_news">No posts yet, tap here to create</string>
+    <string name="label_select_all_clubs">Select All</string>
+    <!--<string name="label_create_a_club">Create a club</string>-->
+    <string name="label_create_a_club">Add Friends</string>
+    <string name="label_coming_soon">Coming soon ...</string>
+    <string name="label_fill_phone_username">Please Fill Both Username and Phone Fields</string>
+    <string name="label_minutes_ago"> mins ago</string>
+    <string name="label_checking_username">Checking Username...</string>
+    <string name="label_please_wait">Please Wait...</string>
+    <string name="label_register_user">Authenticating User...</string>
+    <string name="label_uploading_image">Uploading Image...</string>
+    <string name="label_successfully_uploaded">Successfully Uploaded!</string>
+    <string name="label_upload_failed">Upload Failed. Try Again?</string>
+    <string name="label_registration_enter_phone">Enter your phone number\nfor device verification.</string>
+    <string name="label_registration_terms">Terms.</string>
+
+    <string name="message_no_selected_emotions">You need to select an emotion!</string>
+    <string name="message_no_selected_club">You need to select an club!</string>
+
+    <string name="hint_enter_username">Enter Username</string>
+    <string name="hint_enter_phone">Enter Phone #</string>
+
+    <string name="default_country_code">1</string>
+    <string name="default_followers_number">0</string>
+
+    <string name="default_user_club">Personal Club</string>
+    <string name="default_school_club">My School Club</string>
+    <string name="default_family_club">My Family Club</string>
+    <string name="default_area_code_club">My %s Club</string>
+
+
 </resources>

@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
@@ -43,7 +42,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
 import com.builtinmenlo.selfieclub.dataSources.NewsItem;
+import com.builtinmenlo.selfieclub.models.ApplicationManager;
 import com.builtinmenlo.selfieclub.models.ClubManager;
 import com.builtinmenlo.selfieclub.models.NewsFeedProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
@@ -66,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 ;
 //]~=~=~=~=~=~=~=~=~=~=~=~=~=~[]~=~=~=~=~=~=~=~=~=~=~=~=~=~[
@@ -88,12 +90,38 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     public NewsTabBtnFragment() {
     }
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_tab, container, false);
+
+        view.findViewById(R.id.imagebutton_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CameraFragment newFragment = new CameraFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.remove(NewsTabBtnFragment.this);
+                transaction.add(R.id.fragment_container, newFragment);
+                transaction.setCustomAnimations(R.anim.no_amin, R.anim.no_amin);
+                transaction.setTransition(0);
+                ((MainActivity)getActivity()).tabSelected = NewsTabBtnFragment.this;
+                //newFragment.setNextView(new NewCameraStep2Fragment());
+                //newFragment.setBackView(NewsTabBtnFragment.this);
+                transaction.commit();
+            }
+        });
+
         lv = (ListView) view.findViewById(android.R.id.list);
         news = new ArrayList<NewsItem>();
         loadingIcon = (ProgressBar)view.findViewById(R.id.loadingIcon);
+        view.findViewById(R.id.txtError).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CameraFragment newFragment = new CameraFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, newFragment);
+                newFragment.setNextView(new NewCameraStep2Fragment());
+                transaction.commit();
+            }
+        });
         populate();
 
         PicoCandyManager.sharedInstance().requestStickers(this);
@@ -222,8 +250,8 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             for (int i = 0; i < newsItem.getStatus().length(); i++) {
                 try {
                     ImageView imgSticker = new ImageView(getActivity());
-                    //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(48,48);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(88,88);
+                    //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
                     imgSticker.setLayoutParams(params);
                     viewHolder.listStickers.addView(imgSticker);
                     if (newsItem.getStatus() != null && newsItem.getStatus().length() > 0) {
@@ -252,6 +280,7 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
             status += "...</strong>";*/
             viewHolder.lblStatus.setText(Html.fromHtml(status));
             SimpleDateFormat from_format = new SimpleDateFormat("yyyy-MM-d HH:mm:ss");
+            from_format.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date rowDate = null;
             try {
                 rowDate = from_format.parse(newsItem.getTimestamp());
@@ -370,13 +399,10 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     }
 
     public void didReceiveNewsFeed(ArrayList<NewsItem> newsItemArrayList) {
-        loadingIcon.setVisibility(View.INVISIBLE);
+        if (loadingIcon != null)
+            loadingIcon.setVisibility(View.INVISIBLE);
         if (newsItemArrayList.size() < 1 ) {
-            SCDialog scdialog = new SCDialog();
-            scdialog.setScDialogProtocol(this);
-            scdialog.setMessage("No News Related with this user");
-            scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-            //scdialog.show(getFragmentManager(), NO_NEWS_TAG);
+            getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
         } else {
             news = newsItemArrayList;
             adapter.notifyDataSetChanged();
@@ -384,23 +410,19 @@ public class NewsTabBtnFragment extends Fragment implements NewsFeedProtocol, St
     }
 
     public void didReceiveNewsFeedError(String errorMessage) {
-        //getActivity().findViewById(R.id.loadingIcon).setVisibility(View.INVISIBLE);
-        loadingIcon.setVisibility(View.INVISIBLE);
-        SCDialog scdialog = new SCDialog();
-        scdialog.setScDialogProtocol(this);
-        scdialog.setMessage(errorMessage);
-        scdialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        //scdialog.show(getFragmentManager(), RECEIVE_NEWS_ERROR_TAG);
+        if (getActivity() != null && getActivity().findViewById(R.id.txtError) != null)
+            getActivity().findViewById(R.id.txtError).setVisibility(View.VISIBLE);
+        if (loadingIcon != null)
+            loadingIcon.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
         ClubManager clubManager = new ClubManager();
-        SharedPreferences preferences = getActivity().getSharedPreferences("prefs",
-                Activity.MODE_PRIVATE);
-        String userId = preferences.getString(FirstRunRegistrationFragment.EXTRA_ID, "");
-        clubManager.requestNews(this, "155489");
-        //clubManager.requestNews(this, userId);
+        if (getActivity() != null) {
+            ApplicationManager applicationManager = new ApplicationManager(getActivity());
+            clubManager.requestNews(this, applicationManager.getUserId(),this.getActivity());
+        }
     }
 
     @Override

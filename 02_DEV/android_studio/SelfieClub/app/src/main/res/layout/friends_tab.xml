@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-<!--
-        <EditText
-            android:id="@+id/searchBar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/search_background"
-            android:singleLine="true"
-            android:gravity="center_vertical"
-            android:paddingLeft="40dp"
-            android:paddingRight="60dp"
-            android:hint="@string/search_friends_hint"/>-->
+        <!--
+                <EditText
+                    android:id="@+id/searchBar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/search_background"
+                    android:singleLine="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="60dp"
+                    android:hint="@string/search_friends_hint"/>-->
 
         <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Club Invite"-->
-            <!--android:id="@+id/button"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:onClick="onClubInviteClick" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Club Invite"-->
+        <!--android:id="@+id/button"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:onClick="onClubInviteClick" />-->
 
         <ListView
             android:id="@android:id/list"
@@ -44,7 +44,27 @@
 
     <ProgressBar
         android:id="@+id/loadingIcon"
+        android:paddingBottom="70dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/txtError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/label_no_friends"
+        android:paddingBottom="40dp"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/imagebutton_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/selector_camera_button"
+        android:contentDescription="@string/accessibility_imagebutton_maincamera" />
+
 </RelativeLayout>

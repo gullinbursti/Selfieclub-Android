@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -30,7 +31,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.builtinmenlo.selfieclub.Constants;
+import com.builtinmenlo.selfieclub.Keen;
 import com.builtinmenlo.selfieclub.R;
+import com.builtinmenlo.selfieclub.activity.MainActivity;
+import com.builtinmenlo.selfieclub.models.AnalyticsManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -75,8 +80,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     private Camera openCamera() {
         stopCamera();
-
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getActivity().getApplication());
         if (isUsingFrontCamera) {
+            analyticsManager.trackEvent(Keen.CAMERA1_TAKE);
             int cameraCount = 0;
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             cameraCount = Camera.getNumberOfCameras();
@@ -95,6 +101,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
         } else {
             try {
+                analyticsManager.trackEvent(Keen.CAMERA1_FLIP);
                 mCamera = Camera.open();
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Failed to Open Camera", Toast.LENGTH_SHORT).show();
@@ -120,7 +127,16 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(this.getActivity().getApplication());
+        analyticsManager.trackEvent(Keen.CAMERA1_ROLL);
         View view = inflater.inflate(R.layout.camera_fragment, container, false);
+
+        container.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         isUsingFrontCamera = true;
 
@@ -130,18 +146,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         view.findViewById(R.id.btnClose).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment;
-                if (backView == null)
-                    newFragment = new FriendsTabBtnFragment();
-                    //newFragment = new FirstRunRegistrationFragment();
-                else
-                    newFragment = backView;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.remove(CameraFragment.this);
-                transaction.replace(R.id.fragment_container, newFragment);
-                if (bundle == null)
-                    bundle = new Bundle();
-                newFragment.setArguments(bundle);
+                if (((MainActivity) getActivity()).tabSelected != null) {
+                    transaction.replace(R.id.fragment_container, ((MainActivity) getActivity()).tabSelected);
+                    ((MainActivity) getActivity()).tabSelected = null;
+                }
                 transaction.commit();
             }
         });
@@ -258,35 +268,33 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
         Camera.Parameters parameters = mCamera.getParameters();
         Camera.Size size = getBestPreviewSize(w, h, parameters);
         parameters.setPreviewSize(size.width, size.height);
-        //parameters.setPictureFormat(PixelFormat.JPEG);
+        Camera.Size previewSize = getBestPictureSize();
+        parameters.setPictureFormat(ImageFormat.JPEG);
+        //parameters.setPreviewFormat(ImageFormat.JPEG);
+        parameters.setPictureSize(previewSize.width, previewSize.height);
         //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         //setFlash(parameters);
         //setZoom(parameters);
-        //mCamera.setParameters(parameters);
+        mCamera.setParameters(parameters);
         mCamera.setDisplayOrientation(90);
 
         mCamera.startPreview();
         // mCamera.autoFocus(this);
     }
 
-    private Camera.Size getBestPictureSize(int width, int height) {
+    private Camera.Size getBestPictureSize() {
         Camera.Size result = null;
-        for (Camera.Size size : mCamera.getParameters().getSupportedPreviewSizes()) {
-            if (size.width <= width && size.height <= height) {
-                if (result == null) {
+        for (Camera.Size size : mCamera.getParameters().getSupportedPictureSizes()) {
+            if (result == null) {
+                result = size;
+            } else {
+                int resultArea = result.width * result.height;
+                int newArea = size.width * size.height;
+                if (newArea > resultArea) {
                     result = size;
-                } else {
-                    if (size.width >= 1600 && size.height >= 1200) {
-                        result = size;
-                        break;
-                    }
-                    int resultArea = result.width * result.height;
-                    int newArea = size.width * size.height;
-                    if (newArea > resultArea) {
-                        result = size;
-                    }
                 }
             }
+
         }
         return (result);
     }
@@ -302,7 +310,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
     }
 
     private void stopCamera() {
-        System.out.println("stopCamera method");
+        AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(this.getActivity().getApplication());
+        analyticsManager.trackEvent(Keen.CAMERA1_CANCEL);
         if (mCamera != null) {
             mCamera.stopPreview();
             mCamera.setPreviewCallback(null);
@@ -330,17 +339,16 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
-        Fragment newFragment;
-        if (nextView == null)
+        Fragment newFragment = new NewCameraStep2Fragment();
+        /*if (nextView == null)
             newFragment = new FirstRunRegistrationFragment();
         else
-            newFragment = nextView;
+            newFragment = nextView;*/
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.remove(CameraFragment.this);
-        transaction.replace(R.id.fragment_container, newFragment);
+        //transaction.remove(CameraFragment.this);
+        transaction.add(R.id.fragment_container, newFragment);
         if (bundle == null)
             bundle = new Bundle();
-
 
         Bitmap thePicture = BitmapFactory.decodeByteArray(data, 0, data.length);
         if (isUsingFrontCamera) {

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="app_name">SelfieClub</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="accessibility_topnav_tab">TOPNAV</string>
+    <string name="accessibility_imagebutton_maincamera">CAMERA</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="empty_string"></string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="tab_friends_title">Amigos</string>
+    <string name="tab_clubs_title">Clubes</string>
+    <string name="tab_news_title">Novidades</string>
+
+    <string name="menu_terms">Termos de serviço</string>
+    <string name="menu_privacy_policy">Política de privacidade</string>
+    <string name="menu_support">Suporte</string>
+    <string name="menu_rate_app">Avalie este aplicativo</string>
+    <string name="menu_network_status">Status da rede</string>
+
+    <!-- _//-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-/_/-//_ -->
+
+    <string name="title_activity_invite">Convidar</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">configurações</string>
+
+    <string name="yes_button_title">Sim</string>
+    <string name="no_button_title">Não</string>
+    <string name="ok_button_title">OK</string>
+    <string name="retry_button_title">Repetir</string>
+
+    <!-- Dialog messages -->
+    <string name="invite_friend_dialog">Convide %s para entrar clube!</string>
+    <string name="invite_random_friends_dialog">Para entrar no clube, por favor convide alguns amigos!</string>
+    <string name="already_club_member_dialog">Você já é membro!</string>
+    <string name="would_you_like_joinclub_dialog">Você gostaria de participar %s ?</string>
+
+    <!-- Layout messages -->
+
+    <string name="btn_close_label">Voltar</string>
+    <string name="btn_flip_label">Aleta</string>
+    <string name="btn_camera_roll_label">rolo da Câmera</string>
+    <string name="btn_next_label">Avançar</string>
+    <string name="btn_submit_label">Enviar</string>
+
+    <string name="title_how_do_you_feel">Escolha o sentimento</string>
+    <string name="title_select_club">Selecionar clube</string>
+
+    <string name="label_is_feeling">está se sentindo...</string>
+    <string name="label_no_clubs">Não há clubes disponíveis</string>
+    <string name="label_no_friends">Nenhum contato disponíveis</string>
+    <string name="label_no_news">Ainda não há publicações. Clique aqui para criar.</string>
+    <string name="label_select_all_clubs">Selecionar todos os clubes</string>
+    <string name="label_create_a_club">Criar um clube</string>
+    <string name="label_coming_soon">Em breve ...</string>
+    <string name="label_fill_phone_username">Por favor, preencha os dois campos usuário e telefone</string>
+    <string name="label_minutes_ago"> mins ago</string>
+    <string name="label_checking_username">Verificando nome de usuário...</string>
+    <string name="label_please_wait">Carregando...</string>
+    <string name="label_register_user">Authenticating User...</string>
+    <string name="label_uploading_image">Uploading Image...</string>
+    <string name="label_successfully_uploaded">Enviado com sucesso!</string>
+
+
+
+    <string name="hint_enter_username">Digite o nome de usuário</string>
+    <string name="hint_enter_phone">Digite o telefone</string>
+
+    <string name="default_country_code">1</string>
+    <string name="default_followers_number">0</string>
+
+</resources>

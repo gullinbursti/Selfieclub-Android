@@ -72,16 +72,20 @@
         <EditText
             android:layout_toLeftOf="@+id/imgCheckUserName"
             android:id="@+id/txtUserName"
-            android:layout_marginLeft="15dp"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="35dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:imeOptions="actionNext"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:hint="Enter Username"
+            android:hint="@string/hint_enter_username"
             android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:textSize="14sp"
+            android:textColorHint="#b4b4b4"
+            android:textStyle="bold"
+            />
 
     </RelativeLayout>
 
@@ -100,12 +104,15 @@
         android:layout_toRightOf="@+id/btnCountrySelect"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:hint="Enter Phone #"
+        android:background="@android:color/transparent"
+        android:hint="@string/hint_enter_phone"
         android:layout_toLeftOf="@+id/imgCheckPhone"
         android:layout_alignBottom="@+id/lblEnterPhone"
         android:layout_alignTop="@+id/lblEnterPhone"
         android:textColor="@android:color/black"
-        android:textSize="20sp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColorHint="#b4b4b4"
         android:imeOptions="actionDone"
         android:inputType="phone" />
 
@@ -117,27 +124,39 @@
         android:layout_alignBottom="@+id/lblEnterPhone"
         android:layout_alignTop="@+id/lblEnterPhone"
         android:textColor="@color/actionbar_text_color"
-        android:text="1"
-        android:textSize="20sp" />
+        android:text="@string/default_country_code"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
 
     <ImageView
         android:id="@+id/imgCheckPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/btnCountrySelect"
         android:layout_margin="10dp"
-        android:background="@drawable/check_mark"
+        android:layout_alignBottom="@id/btnCountrySelect"
+        android:layout_alignTop="@id/btnCountrySelect"
+        android:src="@drawable/check_mark"
         android:visibility="invisible" />
 
-    <TextView
+    <!--<TextView
         android:background="@drawable/enter_phone_text"
         android:id="@+id/lblEnterPhoneText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/lblEnterPhone"
+        android:layout_marginTop="25dp" /> -->
+
+    <TextView
+        android:id="@+id/lblTermsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/lblEnterPhone"
+        android:background="@drawable/enter_phone_text"
         android:layout_marginTop="25dp" />
+
 
     <ProgressBar
         android:id="@+id/loadingIcon"

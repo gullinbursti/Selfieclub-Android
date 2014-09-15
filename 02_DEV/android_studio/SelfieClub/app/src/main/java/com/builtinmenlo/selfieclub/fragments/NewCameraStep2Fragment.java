@@ -37,10 +37,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.builtinmenlo.selfieclub.R;
-import com.builtinmenlo.selfieclub.activity.CameraPreview;
 import com.builtinmenlo.selfieclub.dataSources.Emoticon;
-import com.builtinmenlo.selfieclub.models.ClubManager;
-import com.builtinmenlo.selfieclub.models.ClubPhotoSubmissionProtocol;
 import com.builtinmenlo.selfieclub.models.PicoCandyManager;
 import com.builtinmenlo.selfieclub.models.SCDialogProtocol;
 import com.builtinmenlo.selfieclub.models.StikersProtocol;
@@ -49,8 +46,6 @@ import com.picocandy.android.data.PCContentGroup;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 ;
@@ -58,7 +53,7 @@ import java.util.ArrayList;
 
 
 // <[!] class delaration [¡]>
-public class NewCameraStep2Fragment extends Fragment implements StikersProtocol, SCDialogProtocol, ClubPhotoSubmissionProtocol {
+public class NewCameraStep2Fragment extends Fragment implements StikersProtocol, SCDialogProtocol {
 //]~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~._
 
     //] class properties ]>
@@ -75,15 +70,6 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
     private Fragment nextView;
 
     private static String NO_EMOTICON_TAG = "no_emoticon";
-
-
-    public void setBackView(Fragment backView) {
-        this.backView = backView;
-    }
-
-    public void setNextView(Fragment nextView) {
-        this.nextView = nextView;
-    }
 
     // <*] class constructor [*>
     public NewCameraStep2Fragment() {/*..\(^_^)/..*/}
@@ -106,6 +92,7 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
         final ActionBar actionBar = getActivity().getActionBar();
         actionBar.hide();
 
+        loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
         lv = (ListView) view.findViewById(android.R.id.list);
         emoticons = new ArrayList<Emoticon>();
         populate();
@@ -118,9 +105,6 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
             avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
         }*/
 
-
-        loadingIcon = (ProgressBar) view.findViewById(R.id.loadingIcon);
-
         container.setBackgroundColor(getResources().getColor(android.R.color.white));
 
         view.findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
@@ -128,8 +112,9 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
             public void onClick(View view) {
                 CameraFragment newFragment = new CameraFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.remove(NewCameraStep2Fragment.this);
                 transaction.replace(R.id.fragment_container, newFragment);
-                newFragment.setNextView(new NewCameraStep2Fragment());
+                //newFragment.setNextView(new NewCameraStep2Fragment());
                 transaction.commit();
             }
         });
@@ -140,36 +125,21 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
                 ArrayList<String> selected = new ArrayList<String>();
                 for (Emoticon emoticon:emoticons){
                     if (emoticon.isSelected()){
-                        selected.add(emoticon.getContent().getName());
-                        break;
+                        String []stickerName = emoticon.getContent().getName().split("\\.");
+                        selected.add(stickerName[0]);
                     }
                 }
                 if (selected.size() < 1){
                     showNoEmoticonDialog();
                 }else{
-                    ClubManager manager = new ClubManager();
-                    byte[] avatarImage = null;
-                    if (bundle != null) {
-                        avatarImage = bundle.getByteArray(CameraPreview.EXTRA_IMAGE);
-                    }
-                    try {
-                        File file = new File(getActivity().getCacheDir().getPath() + "/temp.jpg");
-                        FileOutputStream fos=new FileOutputStream(file);
-                        fos.write(avatarImage);
-                        fos.close();
-                        manager.submitPhoto(NewCameraStep2Fragment.this, getActivity(), "155489", "3560", file, selected);
-                    }
-                    catch (java.io.IOException e) {
-                        e.printStackTrace();
-                    }
+                    Fragment newFragment = new CameraStep3Fragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.add(R.id.fragment_container, newFragment);
+                    bundle.putStringArrayList(CameraStep3Fragment.EXTRA_STICKERS,selected);
+                    newFragment.setArguments(bundle);
+                    transaction.commit();
                 }
-                /*Fragment newFragment = new CameraStep3Fragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, newFragment);
-                if (bundle == null)
-                    bundle = new Bundle();
-                newFragment.setArguments(bundle);
-                transaction.commit();*/
+                /*;*/
             }
         });
 
@@ -178,12 +148,12 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
     }//]~*~~*~~*~~*~~*~~*~~*~~*~~·¯
 
     private void showNoEmoticonDialog(){
-        String message = "You need to select an emotion!";
+        String message = getString(R.string.message_no_selected_emotions);
         SCDialog dialog = new SCDialog();
         dialog.setScDialogProtocol(this);
         dialog.setMessage(message);
         dialog.setPositiveButtonTitle(getResources().getString(R.string.ok_button_title));
-        //dialog.setNegativeButtonTitle(getResources().getString(R.string.no_button_title));
+        dialog.showTwoButtons = true;
         dialog.show(getFragmentManager(),NO_EMOTICON_TAG);
     }
 
@@ -282,7 +252,13 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
 
             Emoticon emoticon = emoticons.get(position);
 
-            viewHolder.lblName.setText(emoticon.getContent().getName());
+            if (emoticon.isSelected())
+                convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.green_selection_dot);
+            else
+                convertView.findViewById(R.id.imgAddOrCheck).setBackgroundResource(R.drawable.gray_selection_dot);
+
+            String []stickerName = emoticon.getContent().getName().split("\\.");
+            viewHolder.lblName.setText(stickerName[0]);
 
             Picasso.with(getActivity()).load(emoticon.getContent().getSmall_image()).into(viewHolder.imgEmoticon, new Callback() {
 
@@ -305,11 +281,14 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
 
     @Override
     public void didReceiveStickers(ArrayList<PCContentGroup> contentGroupsList, ArrayList<PCContent> stickerList) {
-        for (PCContent sticker:stickerList)
-            emoticons.add(new Emoticon(sticker));
-        //emoticons = stickerList;
-        loadingIcon.setVisibility(View.GONE);
-        adapter.notifyDataSetChanged();
+        if (getActivity() != null) {
+            for (PCContent sticker : stickerList)
+                emoticons.add(new Emoticon(sticker));
+            //emoticons = stickerList;
+            if (loadingIcon != null)
+                loadingIcon.setVisibility(View.INVISIBLE);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -319,15 +298,5 @@ public class NewCameraStep2Fragment extends Fragment implements StikersProtocol,
 
             }
         }
-    }
-
-    @Override
-    public void didSubmittedPhotoInClub(Boolean result){
-
-    }
-
-    @Override
-    public void didFailSubmittingPhotoInClub(String message){
-
     }
 }

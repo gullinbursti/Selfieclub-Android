@@ -1,15 +1,17 @@
 package com.builtinmenlo.selfieclub.models;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
-
+import android.util.Log;
 
 import com.builtinmenlo.selfieclub.Constants;
 import com.builtinmenlo.selfieclub.dataSources.User;
-import com.builtinmenlo.selfieclub.listeners.CountryCodeProtocol;
+import com.builtinmenlo.selfieclub.util.Util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -21,9 +23,10 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import xmlwise.Plist;
 
@@ -35,31 +38,77 @@ public class PhoneManager {
 
     /**
      * Retuens the number list of contacts stored in the phone's address book
-     * @param contentResolver The caller activity's ContentResolver
+     * @param activity The caller activity's
      * @return An array list with the contacts
      */
-    public ArrayList<HashMap<String,String>> getContacts(ContentResolver contentResolver) {
+    public ArrayList<HashMap<String,String>> getContacts(Activity activity) {
+        ContentResolver contentResolver = activity.getContentResolver();
         ArrayList<HashMap<String,String>> contactData=new ArrayList<HashMap<String,String>>();
-        ContentResolver cr = contentResolver;
-        Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
-        while (cursor.moveToNext()) {
-            try{
-                String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                String name=cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-                    Cursor phones = cr.query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId, null, null);
-                    while (phones.moveToNext()) {
-                        String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        HashMap<String,String> map=new HashMap<String,String>();
-                        map.put("name", name);
-                        map.put("number", phoneNumber);
-                        contactData.add(map);
+        //Read the contacts
+        SharedPreferences preferences = activity.getSharedPreferences("prefs", Activity.MODE_PRIVATE);
+        String contacts = preferences.getString("contacts","");
+        if(contacts.equalsIgnoreCase("")){
+            ContentResolver cr = contentResolver;
+            Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
+            while (cursor.moveToNext()) {
+                try{
+                    String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    String name=cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                        Cursor phones = cr.query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId, null, null);
+                        while (phones.moveToNext()) {
+                            String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            HashMap<String,String> map=new HashMap<String,String>();
+                            map.put("name", name);
+                            map.put("number", phoneNumber);
+                            contactData.add(map);
+                        }
+                        phones.close();
                     }
-                    phones.close();
-                }
-            }catch(Exception e){}
+                }catch(Exception e){}
+            }
+            JSONArray jsonArray = new JSONArray(contactData);
+            String jsonString = jsonArray.toString();
+            preferences.edit().putString("contacts",jsonString).apply();
         }
+        else {
+            try {
+                JSONArray jsonArray = new JSONArray(contacts);
+                for (int i=0;i<jsonArray.length();i++){
+                    String itemString = jsonArray.getString(i);
+                    JSONObject item = new JSONObject(itemString.replace(" ","_"));
+                    HashMap<String,String> map=new HashMap<String,String>();
+                    map.put("name", item.getString("name").replace("_"," "));
+                    map.put("number", item.getString("number"));
+                    contactData.add(map);
+                }
+            }
+            catch (Exception e){
+                Log.w("",e.toString());
+            }
+
+
+        }
+        Collections.sort(contactData, new Comparator<HashMap<String, String>>() {
+            @Override
+            public int compare(HashMap<String, String> stringStringHashMap, HashMap<String, String> stringStringHashMap2) {
+                return stringStringHashMap.get("name").compareTo(stringStringHashMap2.get("name"));
+            }
+        });
         return contactData;
+    }
+
+    public String getContactsPhones(Activity activity){
+        ArrayList<HashMap<String,String>> contacts = getContacts(activity);
+        String strContacts="";
+        if(contacts.size()>0){
+            strContacts = contacts.get(0).get("number");
+        }
+        for(int i=1;i<contacts.size();i++){
+            HashMap<String,String> contact = contacts.get(i);
+            strContacts = strContacts + "|" + contact.get("number");
+        }
+        return strContacts;
     }
 
     /**
@@ -68,7 +117,10 @@ public class PhoneManager {
      * @param userId User's id
      * @param phoneNumbersArray The array of phone numbers separated by |
      */
-    public void matchPhoneNumbers(final PhoneMatchProtocol phoneMatchInterface,String userId, String[] phoneNumbersArray){
+    public void matchPhoneNumbers(final PhoneMatchProtocol phoneMatchInterface,
+                                  String userId,
+                                  String[] phoneNumbersArray,
+                                  Activity activity){
         StringBuilder builder = new StringBuilder();
         for(String s : phoneNumbersArray){
             builder.append(s);
@@ -81,6 +133,9 @@ public class PhoneManager {
         data.put("action","11");
         data.put("phone",phoneNumbers);
         AsyncHttpClient client = new AsyncHttpClient();
+        if(Constants.USE_HMAC){
+            client.addHeader("HMAC", Util.generateHMAC(activity));
+        }
         RequestParams requestParams = new RequestParams(data);
         client.post(Constants.API_ENDPOINT+Constants.USER_PATH,requestParams,new JsonHttpResponseHandler() {
                     @Override
