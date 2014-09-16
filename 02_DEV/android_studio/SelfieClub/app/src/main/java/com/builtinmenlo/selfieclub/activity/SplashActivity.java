@@ -51,7 +51,6 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         AnalyticsManager analyticsManager = AnalyticsManager.sharedInstance(getApplication());
         analyticsManager.trackEvent(Keen.LAUNCHING);
 

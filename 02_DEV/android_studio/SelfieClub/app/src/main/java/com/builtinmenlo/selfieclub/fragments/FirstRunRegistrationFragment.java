@@ -235,7 +235,7 @@ public class FirstRunRegistrationFragment
             applicationManager.setUserName(txtUsername.getText().toString());
 
             clubCounter = 0;
-
+            PhoneManager phoneManager = new PhoneManager();
             ClubManager clubManager = new ClubManager();
             Random rn = new Random();
             int rnd = rn.nextInt(10)+1;
@@ -251,8 +251,10 @@ public class FirstRunRegistrationFragment
             if(rnd!=10){
                 suffix="0"+rnd;
             }
+
             clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
-            clubManager.createClub(this,freeUserId,getString(R.string.default_family_club),getString(R.string.default_family_club),clubAvatar,this.getActivity());
+            clubManager.createClub(this,freeUserId,phoneManager.getFamilyName(this.getActivity())+"'s Family",getString(R.string.default_family_club),clubAvatar,this.getActivity());
+
 
             rnd = rn.nextInt(10)+1;
             suffix="10";
@@ -260,16 +262,16 @@ public class FirstRunRegistrationFragment
                 suffix="0"+rnd;
             }
             clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
-            clubManager.createClub(this,freeUserId,getString(R.string.default_school_club),getString(R.string.default_school_club),clubAvatar,this.getActivity());
-
-            rnd = rn.nextInt(10)+1;
-            suffix="10";
-            if(rnd!=10){
-                suffix="0"+rnd;
-            }
-            clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
-            String areaCodeClubName = String.format(getString(R.string.default_area_code_club), btnCountrySelector.getText().toString());
+            String areaCodeClubName = txtPhone.getText().toString().substring(0,3);
             clubManager.createClub(this,freeUserId,areaCodeClubName,areaCodeClubName,clubAvatar,this.getActivity());
+
+            rnd = rn.nextInt(10)+1;
+            suffix="10";
+            if(rnd!=10){
+                suffix="0"+rnd;
+            }
+            clubAvatar = String.format(Constants.DEFAULT_CLUB_AVATAR_URL, suffix);
+            clubManager.createClub(this,freeUserId,phoneManager.getDomain(this.getActivity()),"Domain club",clubAvatar,this.getActivity());
 
         }
     }

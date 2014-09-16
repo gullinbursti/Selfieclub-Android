@@ -85,6 +85,50 @@ public class PhoneManager {
         }
         return response;
     }
+
+    /**
+     * Tries to get the family name
+     * @param activity
+     * @return
+     */
+    public String getFamilyName(Activity activity){
+        String response ="";
+        HashMap<String,Integer>ocurrences = new HashMap<String, Integer>();
+        ContentResolver contentResolver = activity.getContentResolver();
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
+        while (cursor.moveToNext()){
+            try {
+                String name=cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                String[] tokens = name.split(" ");
+                if(tokens.length>1){
+                    String lastName = tokens[1];
+                    if(ocurrences.get(lastName)!=null){
+                        int counter = ocurrences.get(lastName);
+                        ocurrences.put(lastName,counter+1);
+                    }
+                    else{
+                        ocurrences.put(lastName,1);
+                    }
+                }
+            }
+            catch (Exception e){}
+        }
+        cursor.close();
+        if(!ocurrences.isEmpty()){
+            List sorted = Util.sortHasMapByValues(ocurrences);
+            Map.Entry<String,Integer>pair = (Map.Entry)sorted.get(0);
+            int mode = pair.getValue();
+            String strLastName = pair.getKey();
+            if(mode>=4){
+                response=strLastName;
+            }
+
+
+        }
+        return response;
+    }
+
+
     /**
      * Retuens the number list of contacts stored in the phone's address book
      * @param activity The caller activity's
